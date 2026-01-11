@@ -1,5 +1,5 @@
 <!-- POST BOX -->
-<div class="shadow-post bg-[#f4f6f9] px-10 pt-7 pb-4 mb-5">
+<div class="shadow-bg px-10 pt-7 pb-4 mb-5">
     <!-- HEADER -->
     <div class="flex items-center gap-2 text-sm mb-8">
         <img src="/img/user.png" alt="" class="w-7 h-7">
