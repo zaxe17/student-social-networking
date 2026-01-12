@@ -1,22 +1,30 @@
-// OPEN AND CLOSE FOR ALL MODAL
-// Get modal and buttons
-const modal = document.getElementById('modalBox');
-const openModalBtn = document.getElementById('openModalBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
+// OPEN MODAL
+document.addEventListener('click', function (e) {
+    const openBtn = e.target.closest('[target-modal]');
+    if (!openBtn) return;
 
-// Open the modal when the "open" button is clicked
-openModalBtn.onclick = function () {
-    modal.classList.remove('hidden'); // Show the modal
-}
+    const modalId = openBtn.getAttribute('target-modal');
+    const modal = document.getElementById(modalId);
 
-// Close the modal when the "close" button is clicked
-closeModalBtn.onclick = function () {
-    modal.classList.add('hidden'); // Hide the modal
-}
-
-// Close the modal if the user clicks outside of the modal content
-window.onclick = function (event) {
-    if (event.target === modal) {
-        modal.classList.add('hidden'); // Hide the modal
+    if (modal) {
+        modal.classList.remove('hidden');
     }
-}
+});
+
+// CLOSE MODAL (buttons inside modal)
+document.addEventListener('click', function (e) {
+    const closeBtn = e.target.closest('[close-modal]');
+    if (!closeBtn) return;
+
+    const modal = closeBtn.closest('.modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+});
+
+// CLOSE MODAL WHEN CLICKING OVERLAY
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('modal')) {
+        e.target.classList.add('hidden');
+    }
+});
