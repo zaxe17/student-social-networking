@@ -2,15 +2,15 @@
 
 @section('page')
 @include('layout.navbar')
-<div class="grid grid-cols-12 px-20 py-13 h-full gap-15">
+<div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
     <!-- POST -->
-    <div class="shadow-bg col-span-9 px-18 py-13 overflow-scroll no-scrollbar">
+    <div class="shadow-bg h-full px-18 py-13 overflow-scroll no-scrollbar">
         @include('component.createpost')
         @include('component.postcard')
     </div>
 
     <!-- CATEGORY -->
-    <div class="col-span-3">
+    <div class="h-full">
         @include('component.categoryfilter')
     </div>
 </div>
