@@ -22,7 +22,7 @@ class Student extends Model
         'birthday',
     ];
 
-    // Automatically hash password when saving
+    // Automatically hash password
     public function setPasswordHashAttribute($value)
     {
         $this->attributes['password_hash'] = Hash::make($value);
