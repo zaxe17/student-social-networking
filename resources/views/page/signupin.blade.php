@@ -20,61 +20,67 @@
                     <!-- Student ID (col-span-12) -->
                     <div class="flex flex-col col-span-12">
                         <label for="">Student ID</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- First Name (col-span-6) -->
                     <div class="flex flex-col col-span-6">
                         <label for="">First Name</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Last Name (col-span-6) -->
                     <div class="flex flex-col col-span-6">
                         <label for="">Last Name</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Birthday (col-span-4) -->
                     <div class="flex flex-col col-span-4">
                         <label for="">Birthday</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" placeholder="yyyy" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Empty field 1 (col-span-4) -->
                     <div class="flex flex-col col-span-4">
                         <label for="">&nbsp;</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" placeholder="mm" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Empty field 2 (col-span-4) -->
                     <div class="flex flex-col col-span-4">
                         <label for="">&nbsp;</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" placeholder="dd" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Year Level (col-span-4) -->
                     <div class="flex flex-col col-span-4">
                         <label for="">Year Level</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <select name="" id="" class="text-sm bg-[#dde0e5] w-full h-8 rounded-sm focus:outline-none">
+                            <option value="">1st year</option>
+                            <option value="">2nd year</option>
+                            <option value="">3rd year</option>
+                            <option value="">4th year</option>
+                            <option value="">5th year</option>
+                        </select>
                     </div>
 
                     <!-- Course (col-span-8) -->
                     <div class="flex flex-col col-span-8">
                         <label for="">Course</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Year Level (col-span-12) -->
                     <div class="flex flex-col col-span-12">
-                        <label for="">Year Level</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <label for="">Create Password</label>
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
 
                     <!-- Course (col-span-12) -->
                     <div class="flex flex-col col-span-12">
-                        <label for="">Course</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
+                        <label for="">Confirm Password</label>
+                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
                     </div>
                 </div>
 
