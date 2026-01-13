@@ -13,74 +13,57 @@
     <!-- BODY -->
     <div class="container flex justify-center items-center mx-auto h-full p-10">
         <!-- REGITRATION FORM -->
-        <form action="" method="" class="bg-[#f4f6f9]/60 rounded-3xl w-md h-full p-8 gap-1">
-            <div class="flex justify-center items-center flex-col gap-1.5">
-                <h1 class="text-center font-medium text-3xl">Registration</h1>
-                <div class="grid grid-cols-12 gap-4">
-                    <!-- Student ID (col-span-12) -->
-                    <div class="flex flex-col col-span-12">
-                        <label for="">Student ID</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
+        <form action="" method="" class="bg-[#f4f6f9]/60 flex flex-col justify-between items-center rounded-3xl w-md h-full p-8 gap-1">
+            <h1 class="text-center font-medium text-3xl">Registration</h1>
+            <div class="grid grid-cols-12 gap-4">
+                @include('component.input', [
+                'label' => 'Student ID',
+                'col_span' => 12
+                ])
 
-                    <!-- First Name (col-span-6) -->
-                    <div class="flex flex-col col-span-6">
-                        <label for="">First Name</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
+                @include('component.input', [
+                'label' => 'First Name',
+                'col_span' => 6
+                ])
+                @include('component.input', [
+                'label' => 'Last Name',
+                'col_span' => 6
+                ])
 
-                    <!-- Last Name (col-span-6) -->
-                    <div class="flex flex-col col-span-6">
-                        <label for="">Last Name</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
+                @include('component.input', [
+                'label' => 'Birthday',
+                'col_span' => 4
+                ])
+                @include('component.input', [
+                'label' => ' ',
+                'col_span' => 4
+                ])
+                @include('component.input', [
+                'label' => ' ',
+                'col_span' => 4
+                ])
 
-                    <!-- Birthday (col-span-4) -->
-                    <div class="flex flex-col col-span-4">
-                        <label for="">Birthday</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
+                @include('component.input', [
+                'label' => 'Year Level',
+                'col_span' => 4
+                ])
+                @include('component.input', [
+                'label' => 'Course',
+                'col_span' => 8
+                ])
 
-                    <!-- Empty field 1 (col-span-4) -->
-                    <div class="flex flex-col col-span-4">
-                        <label for="">&nbsp;</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
+                @include('component.input', [
+                'label' => 'Year Level',
+                'col_span' => 12
+                ])
+                @include('component.input', [
+                'label' => 'Course',
+                'col_span' => 12
+                ])
+            </div>
 
-                    <!-- Empty field 2 (col-span-4) -->
-                    <div class="flex flex-col col-span-4">
-                        <label for="">&nbsp;</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
-
-                    <!-- Year Level (col-span-4) -->
-                    <div class="flex flex-col col-span-4">
-                        <label for="">Year Level</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
-
-                    <!-- Course (col-span-8) -->
-                    <div class="flex flex-col col-span-8">
-                        <label for="">Course</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
-
-                    <!-- Year Level (col-span-12) -->
-                    <div class="flex flex-col col-span-12">
-                        <label for="">Year Level</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
-
-                    <!-- Course (col-span-12) -->
-                    <div class="flex flex-col col-span-12">
-                        <label for="">Course</label>
-                        <input type="text" name="" id="" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm">
-                    </div>
-                </div>
-
-                <div class="flex justify-center mt-5">
-                    <button type="submit" class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5">Sign Up</button>
-                </div>
+            <div class="flex justify-center">
+                <button type="submit" class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5">Sign Up</button>
             </div>
         </form>
     </div>
