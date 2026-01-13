@@ -19,4 +19,4 @@
 'title' => 'Create new post'
 
 ])
-@endSection
+@endsection
