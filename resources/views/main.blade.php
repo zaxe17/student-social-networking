@@ -63,3 +63,41 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const btn = document.getElementById('dotBtn');
+        const dropdown = document.getElementById('dotDropdown');
+
+        // TOGGLE DROPDOWN
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+        });
+
+        // CLICK OUTSIDE = CLOSE
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && e.target !== btn) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // PARA SA target-modal ITEMS
+        dropdown.querySelectorAll('[target-modal]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const modalId = this.getAttribute('target-modal');
+                const modal = document.getElementById(modalId);
+
+                if (modal) {
+                    modal.classList.remove('hidden');
+                }
+
+                dropdown.classList.add('hidden');
+            });
+        });
+
+    });
+</script>

@@ -7,17 +7,17 @@
 
         <!-- SIDEBAR LIST -->
         <ul class="flex flex-col gap-8 px-6 py-15 justify-start flex-1">
-            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg">
-                <a href="">Edit profile</a>
+            <li target-modal="editprofModal" class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
+                <span>Edit profile</span>
             </li>
-            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg">
-                <a href="">Change password</a>
+            <li target-modal="changepassModal" class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
+                <span>Change password</span>
             </li>
-            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg">
-                <a href="">View archive posts</a>
+            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer" onclick="window.location.href=`{{ route('archived.page') }}`;">
+                <span>View archive posts</span>
             </li>
-            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg">
-                <a href="">Delete account</a>
+            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
+                <span>Delete account</span>
             </li>
         </ul>
 
