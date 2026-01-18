@@ -4,7 +4,7 @@
 @include('layout.navbar')
 <div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
     <!-- USER PROFILE -->
-    <div class="h-full px-18 py-13 overflow-scroll no-scrollbar">
+    <div class="h-full px-18 overflow-scroll no-scrollbar">
         <!-- USER PROFILE -->
         <div class="flex justify-between items-center border-b border-b-[#770d08] mb-7 pb-10">
             <!-- USER IMAGE -->
@@ -23,10 +23,10 @@
 
             </div>
 
-            <div class="flex items-center">
-                <span class="icon transition-all duration-300 bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 28px; --icon-color: black;"></span>
-                <span class="icon transition-all duration-300 bg-black" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 28px; --icon-color: black;"></span>
-                <span class="icon transition-all duration-300 bg-black" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 28px; --icon-color: black;"></span>
+            <div class="flex items-center gap-2">
+                <span class="icon transition-all duration-300 bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 30px; --icon-color: black;"></span>
+                <span class="icon transition-all duration-300 bg-[#0e2391]" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 30px; --icon-color: black;"></span>
+                <span class="icon transition-all duration-300 bg-[#0a66c2]" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 30px; --icon-color: black;"></span>
             </div>
         </div>
         <!-- USER POST -->

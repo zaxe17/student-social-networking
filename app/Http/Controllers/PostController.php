@@ -10,4 +10,9 @@ class PostController extends Controller
     {
         return view('page.feed');
     }
+
+    public function category()
+    {
+        return view('page.category');
+    }
 }

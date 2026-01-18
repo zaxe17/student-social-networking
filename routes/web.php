@@ -16,9 +16,11 @@ Route::group([], function () {
 // Feed routes
 Route::group(['prefix' => 'feed'], function () {
     Route::get('/', [PostController::class, 'index'])->name('feed.page');
+    Route::get('/category', [PostController::class, 'category'])->name('category.page');
 });
 
 // Profile routes
 Route::group(['prefix' => 'profile'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.page');
+    Route::get('/archived', [ProfileController::class, 'archived'])->name('archived.page');
 });

@@ -10,4 +10,9 @@ class ProfileController extends Controller
     {
         return view('page.profile');
     }
+    
+    public function archived()
+    {
+        return view('page.archived');
+    }
 }
