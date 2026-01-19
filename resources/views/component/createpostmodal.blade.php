@@ -26,11 +26,11 @@
                     </span>
                 </div>
 
-                <!-- POST CONTENT (IMPORTANT: name="content") -->
+                <!-- POST CONTENT -->
                 <textarea name="content" placeholder="Type something..."
                     class="w-full h-25 px-3 focus:outline-none resize-none" required></textarea>
 
-                <!-- CATEGORY (IMPORTANT: name="category_id") -->
+                <!-- CATEGORY -->
                 <select name="category_id"
                     class="w-full bg-black/15 px-4 py-2 rounded-md border-none focus:outline-none">
                     <option value="">Select category</option>
