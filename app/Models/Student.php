@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Student extends Authenticatable
 {
     protected $table = 'students';
-
     protected $primaryKey = 'student_id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -27,12 +26,8 @@ class Student extends Authenticatable
         'photo',
     ];
 
+    protected $hidden = ['password_hash'];
 
-    protected $hidden = [
-        'password_hash',
-    ];
-
-    // Laravel auth password field
     public function getAuthPassword()
     {
         return $this->password_hash;
