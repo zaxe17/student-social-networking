@@ -11,27 +11,42 @@
                 <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px; --icon-color: black;"></span>
             </div>
 
-            <form action="" method="" class="flex flex-col gap-3.5 p-8">
+            <form action="{{ route('posts.store') }}" method="POST" class="flex flex-col gap-3.5 p-8">
+                @csrf
+
                 <!-- USER DISPLAY -->
                 <div class="flex items-center gap-5">
-                    <img src="/img/user.png" alt="" class="w-10 h-10">
-                    <span class="text-xl">Jan Marc Soberano Jacolbia</span>
+                    <img src="{{ auth()->user()->photo
+                   ? asset('storage/' . auth()->user()->photo)
+                   : asset('/img/user.png') }}"
+                     class="w-8 h-8 rounded-full object-cover" />
+
+                    <span class="text-xl">
+                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                    </span>
                 </div>
 
-                <!-- COMMENT / POST -->
-                <textarea name="" id="" placeholder="Type something..." class="w-full h-25 px-3 focus:outline-none resize-none"></textarea>
+                <!-- POST CONTENT (IMPORTANT: name="content") -->
+                <textarea name="content" placeholder="Type something..."
+                    class="w-full h-25 px-3 focus:outline-none resize-none" required></textarea>
 
-                <select class="w-full bg-black/15 px-4 py-2 rounded-md border-none focus:outline-none" aria-label="">
-                    <option selected>Select category</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <!-- CATEGORY (IMPORTANT: name="category_id") -->
+                <select name="category_id"
+                    class="w-full bg-black/15 px-4 py-2 rounded-md border-none focus:outline-none">
+                    <option value="">Select category</option>
+                    @foreach($categories as $cat)
+                    <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                    @endforeach
                 </select>
 
                 <div class="flex justify-center">
-                    <button type="submit" class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">Post</button>
+                    <button type="submit"
+                        class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">
+                        Post
+                    </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('students.store') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
+            <form action="{{ route('students.login') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
                 @csrf
                 <div class="w-full h-full flex flex-col justify-center gap-8">
                     <h2 class="text-4xl font-medium">Sign-in</h2>
@@ -34,7 +34,7 @@
                             <input type="text" name="student_id" id="student_id" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
                         </div>
                         <div class="flex flex-col col-span-12">
-                            <label for="first_name">First Name</label>
+                            <label for="password">Password</label>
                             <input type="password" name="password" id="password" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
                         </div>
                     </div>

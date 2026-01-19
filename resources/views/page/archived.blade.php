@@ -7,7 +7,12 @@
         <div class="py-8 border-b border-b-[#770d08] mb-12">
             <h1 class="text-[#36384e] text-3xl font-bold ">Archived Posts</h1>
         </div>
-        @include('component.postcard')
+        @forelse($posts as $post)
+        @include('component.postcard', ['post' => $post])
+        @empty
+        <p class="text-[#545454] text-center mt-10">No archived posts yet.</p>
+        @endforelse
+
     </div>
 </div>
 @endsection

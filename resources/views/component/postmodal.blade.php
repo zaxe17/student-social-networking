@@ -66,8 +66,6 @@
                     </div>
                 </div>
 
-                @include('component.comment')
-
             </div>
 
             <div class="p-5 border-t border-black/20 bg-[#F5F5F5]">

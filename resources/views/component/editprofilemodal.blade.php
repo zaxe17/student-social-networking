@@ -1,65 +1,98 @@
 <div id="editprofModal" class="modal hidden">
-    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen py-8 flex justify-center items-center z-50 backdrop-blur-[1px]">
+    <div class="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
 
-        <div class="w-2/5 h-3/4 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col">
+        <div class="w-2/5 h-[80%] bg-[#F5F5F5] rounded-3xl overflow-hidden flex flex-col">
 
-            <div class="shadow-postheader w-full pb-3 pt-7 relative">
-                <h2 class="text-center text-xl font-medium">{{ $title }}</h2>
-
-                <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;"></span>
+            <!-- HEADER -->
+            <div class="border-b px-6 py-4 relative">
+                <h2 class="text-center text-xl font-medium">Edit Profile</h2>
+                <span close-modal
+                      class="absolute right-6 top-4 cursor-pointer text-xl">✕</span>
             </div>
 
-            <form class="flex flex-col flex-1 overflow-y-auto p-8 gap-9">
+            <!-- FORM -->
+            <form action="{{ route('profile.update') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  onsubmit="return confirm('Save changes to your profile?')"
+                  class="flex-1 overflow-y-auto p-6 space-y-6">
+                @csrf
 
-                <div class="p-8 pb-2">
-                    <!-- USER PORFILE PIC -->
-                    <div class="flex flex-col justify-center items-center gap-2">
-                        <img src="/img/user.png" alt="" class="w-40 h-40">
-                        <label class="block w-50 mx-auto text-center cursor-pointer">
-                            <span class="flex justify-center items-center bg-[#770d08] text-white py-2 rounded-lg hover:bg-[#5a0a06] transition">
-                                <span close-modal class="icon bg-white cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols/upload.svg'); --size: 25px;"></span>
-                                Upload Photo
-                            </span>
-                            <input type="file" class="hidden">
-                        </label>
+                <!-- PROFILE PHOTO -->
+                <div class="flex flex-col items-center gap-3">
+                    <img
+                        src="{{ auth()->user()->photo
+                                ? asset('storage/' . auth()->user()->photo)
+                                : asset('/img/user.png') }}"
+                        class="w-36 h-36 rounded-full object-cover"
+                    >
+
+                    <label class="cursor-pointer bg-[#770d08] text-white px-4 py-2 rounded-md">
+                        Upload Photo
+                        <input type="file" name="photo" accept="image/*" hidden>
+                    </label>
+
+                    @error('photo')
+                        <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- NAMES -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label>First Name</label>
+                        <input type="text" name="first_name"
+                               value="{{ old('first_name', auth()->user()->first_name) }}"
+                               class="w-full bg-gray-200 p-2 rounded" required>
+                    </div>
+
+                    <div>
+                        <label>Last Name</label>
+                        <input type="text" name="last_name"
+                               value="{{ old('last_name', auth()->user()->last_name) }}"
+                               class="w-full bg-gray-200 p-2 rounded" required>
                     </div>
                 </div>
 
-                <!-- USER INPUT FIELDS -->
-                <div class="grid grid-cols-12 gap-1.5">
-                    <div class="flex flex-col gap-1.5 col-span-6">
-                        <label for="">First Name</label>
-                        <input type="text" value="" class="bg-[#000000]/10 py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
-                    <div class="flex flex-col gap-1.5 col-span-6">
-                        <label for="">Last Name</label>
-                        <input type="text" value="" class="bg-[#000000]/10 py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
-                    <div class="flex flex-col gap-1.5 col-span-12">
-                        <label for="">Bio</label>
-                        <input type="text" value="" class="bg-[#000000]/10 py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
+                <!-- BIO -->
+                <div>
+                    <label>Bio</label>
+                    <textarea name="bio"
+                              class="w-full bg-gray-200 p-2 rounded"
+                              rows="2">{{ old('bio', auth()->user()->bio) }}</textarea>
                 </div>
 
-                <!-- USER LINKS -->
-                <div class="flex flex-col mx-20">
-                    <label for="">Acount links</label>
+                <!-- LINKS -->
+                <div class="space-y-3">
+                    <input type="text" name="instagram"
+                           value="{{ old('instagram', auth()->user()->instagram) }}"
+                           placeholder="Instagram link"
+                           class="w-full bg-gray-200 p-2 rounded">
 
-                    <div class="flex items-center gap-2">
-                        <span class="icon transition-all duration-300 bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 35px; --icon-color: black;"></span>
-                        <input type="text" value="" placeholder="instagram" class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
-                    
-                    <div class="flex items-center gap-2">
-                        <span class="icon transition-all duration-300 bg-[#0e2391]" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 35px; --icon-color: black;"></span>
-                        <input type="text" value="" placeholder="facebook" class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
-                    
-                    <div class="flex items-center gap-2">
-                        <span class="icon transition-all duration-300 bg-[#0a66c2]" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 35px; --icon-color: black;"></span>
-                        <input type="text" value="" placeholder="linkedin" class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
-                    </div>
+                    <input type="text" name="facebook"
+                           value="{{ old('facebook', auth()->user()->facebook) }}"
+                           placeholder="Facebook link"
+                           class="w-full bg-gray-200 p-2 rounded">
+
+                    <input type="text" name="linkedin"
+                           value="{{ old('linkedin', auth()->user()->linkedin) }}"
+                           placeholder="LinkedIn link"
+                           class="w-full bg-gray-200 p-2 rounded">
                 </div>
+
+                <!-- SAVE -->
+                <div class="flex justify-center pt-4">
+                    <button type="submit"
+                        class="bg-[#770d08] hover:bg-[#5e0a06] text-white px-8 py-2 rounded-md">
+                        Save
+                    </button>
+                </div>
+
+                @if(session('success'))
+                    <p class="text-green-700 text-center mt-2">
+                        {{ session('success') }}
+                    </p>
+                @endif
             </form>
         </div>
     </div>
