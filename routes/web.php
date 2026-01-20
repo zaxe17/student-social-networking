@@ -39,3 +39,5 @@ Route::prefix('profile')->group(function () {
 
     Route::post('/student/change-password', [ProfileController::class, 'changePassword'])->name('student.changePassword');
 });
+
+Route::post('/posts/{post}/comment', [PostController::class, 'storeComment'])->name('posts.comment');

@@ -35,8 +35,14 @@ class Post extends Model
         return $this->hasMany(PostLike::class, 'post_id', 'post_id');
     }
 
+    public function isLikedBy($studentId)
+    {
+        if (!$studentId) return false;
+        return $this->likes->contains('student_id', $studentId);
+    }
+
     public function comments()
     {
-        return $this->hasMany(PostComment::class, 'post_id', 'post_id')->latest();
+        return $this->hasMany(PostComment::class, 'post_id', 'post_id')->with('author')->latest();
     }
 }

@@ -202,7 +202,8 @@
         document.getElementById('modalCategoryIcon').style.setProperty('--svg', `url('https://api.iconify.design/${icon}.svg')`);
         document.getElementById('modalContent').innerHTML = content;
         document.getElementById('modalLikes').textContent = likes;
-        document.getElementById('modalComments').textContent = commentCount;
+        document.getElementById('modalComments').textContent = `${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
+
 
         document.getElementById('modalUserPhoto').src = userPhoto;
     });
