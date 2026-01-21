@@ -5,12 +5,8 @@
     @yield('page')
 </main>
 
-@auth
-@include('layout.sidebar')
-    @include('component.createpostmodal', ['title' => 'Create new post'])
-    @include('component.postmodal', ['title' => 'Jan Marc\'s post'])
-    @include('component.reportmodal', ['title' => 'Report this post'])
-    @include('component.changepassmodal', ['title' => 'Change password'])
-    @include('component.editprofilemodal', ['title' => 'Edit Profile'])
-@endauth
+@include('component.postmodal')
+@include('component.reportmodal', ['title' => 'Report this post'])
+@include('component.changepassmodal', ['title' => 'Change password'])
+@include('component.editprofilemodal', ['title' => 'Edit Profile'])
 @endsection

@@ -3,81 +3,43 @@
 @section('page')
 @include('layout.navbar')
 
-<div class="container mx-auto px-20 py-10">
-    <div class="w-full">
-
-        <!-- USER PROFILE -->
+<div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
+    <!-- USER PROFILE -->
+    <div class="w-full h-full px-18 pb-13 overflow-scroll no-scrollbar">
         <div class="flex justify-between items-center border-b border-b-[#770d08] mb-7 pb-10">
             <div class="flex items-center text-3xl gap-6">
-                <!-- PROFILE IMAGE -->
-                <img
-                    src="{{ $student?->photo ? asset('storage/' . $student->photo) : asset('/img/user.png') }}"
-                    class="w-32 h-32 rounded-full object-cover"
-                    alt="Profile Photo" />
-
+                <img src="/img/user.png" alt="" class="w-27 h-27 rounded-full object-cover cursor-pointer border-3 border-gray-300">
                 <div class="flex flex-col">
-                    <!-- NAME + COURSE -->
                     <div class="flex items-center gap-8">
-                        <h2>{{ $student?->first_name }} {{ $student?->last_name }}</h2>
-                        <span class="text-xl text-[#545454]">
-                            {{ $student?->course ?? 'N/A' }} | {{ $student?->year_level ?? 'N/A' }}
-                        </span>
+                        <h2>{{ $student->first_name }} {{ $student->last_name }}</h2>
+                        <span>{{ $student->year_level }} | {{ $student->course }}</span>
                     </div>
-
-                    <!-- BIO -->
-                    <span class="text-lg text-start italic text-[#545454]">
-                        {{ $student?->bio ?: 'No bio yet.' }}
-                    </span>
+                    <span class="text-lg text-start italic">{{ $student->bio ?? '' }}</span>
                 </div>
             </div>
 
-            <!-- SOCIAL LINKS -->
-            @php
-                $ig = $student?->instagram;
-                $fb = $student?->facebook;
-                $li = $student?->linkedin;
-
-                if ($ig && !preg_match('/^https?:\/\//i', $ig)) $ig = 'https://' . $ig;
-                if ($fb && !preg_match('/^https?:\/\//i', $fb)) $fb = 'https://' . $fb;
-                if ($li && !preg_match('/^https?:\/\//i', $li)) $li = 'https://' . $li;
-            @endphp
-
-            <div class="flex items-center gap-3">
-                @if(!empty($ig))
-                <a href="{{ $ig }}" target="_blank" rel="noopener"
-                    class="icon bg-black hover:scale-110 transition"
-                    style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 34px;">
+            <div class="flex items-center gap-2">
+                <a href="{{ $student->instagram }}" class="{{ $student->instagram === null ? 'hidden' : '' }}">
+                    <span class="icon bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 30px;"></span>
                 </a>
-                @endif
-
-                @if(!empty($fb))
-                <a href="{{ $fb }}" target="_blank" rel="noopener"
-                    class="icon bg-[#0e2391] hover:scale-110 transition"
-                    style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 34px;">
+                <a href="{{ $student->facebook }}" class="{{ $student->facebook === null ? 'hidden' : '' }}">
+                    <span class="icon bg-[#0e2391]" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 30px;"></span>
                 </a>
-                @endif
-
-                @if(!empty($li))
-                <a href="{{ $li }}" target="_blank" rel="noopener"
-                    class="icon bg-[#0a66c2] hover:scale-110 transition"
-                    style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 34px;">
+                <a href="{{ $student->linkedin }}" class="{{ $student->linkedin === null ? 'hidden' : '' }}">
+                    <span class="icon bg-[#0a66c2]" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 30px;"></span>
                 </a>
-                @endif
             </div>
         </div>
 
-        {{-- USER POSTS --}}
-        @if(!empty($posts) && count($posts))
-            @foreach($posts as $post)
-                @include('component.postcard', ['post' => $post])
-            @endforeach
-        @else
-            <div class="text-center text-[#545454] py-10">
-                <p class="text-lg font-medium">No posts yet.</p>
-                <p class="text-sm">Create one from the Feed page.</p>
-            </div>
-        @endif
-
+        @foreach($posts as $post)
+        @include('component.postcard', [
+        'post' => $post,
+        'student' => $student,
+        'categories' => $categories
+        ])
+        @endforeach
     </div>
 </div>
+
+@include('layout.sidebar', ['student' => $student ?? null])
 @endsection

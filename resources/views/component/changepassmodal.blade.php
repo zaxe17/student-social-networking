@@ -11,22 +11,28 @@
                 <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px; --icon-color: black;"></span>
             </div>
 
-            <form action="" method="" class="flex flex-col gap-3.5 p-8">
+            <form action="{{ route('student.changePassword') }}" method="POST" class="flex flex-col gap-3.5 p-8">
+                @csrf
+
                 <div class="flex flex-col gap-2">
-                    <label for="">Old password</label>
-                    <input type="password" class="shadow-input p-2 bg-[#dde0e5] focus:outline-none">
+                    <label for="current_password">Old Password</label>
+                    <input type="password" name="current_password" id="current_password" class="shadow-input p-2 bg-[#dde0e5] focus:outline-none" required>
                 </div>
+
                 <div class="flex flex-col gap-2">
-                    <label for="">New password</label>
-                    <input type="password" class="shadow-input p-2 focus:outline-none">
+                    <label for="new_password">New Password</label>
+                    <input type="password" name="new_password" id="new_password" class="shadow-input p-2 focus:outline-none" required>
                 </div>
+
                 <div class="flex flex-col gap-2">
-                    <label for="">Confirm password</label>
-                    <input type="password" class="shadow-input p-2 focus:outline-none">
+                    <label for="new_password_confirmation">Confirm New Password</label>
+                    <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="shadow-input p-2 focus:outline-none" required>
                 </div>
 
                 <div class="flex justify-center mt-7">
-                    <button type="submit" class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">Save</button>
+                    <button type="submit" class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">
+                        Save
+                    </button>
                 </div>
             </form>
         </div>
