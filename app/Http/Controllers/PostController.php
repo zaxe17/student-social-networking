@@ -36,6 +36,7 @@ class PostController extends Controller
     return view('page.category', compact('posts', 'categories', 'categoryId'));
 
 }
+
     public function archived()
 {
     $categories = \App\Models\PostCategory::orderBy('category_name')->get();
