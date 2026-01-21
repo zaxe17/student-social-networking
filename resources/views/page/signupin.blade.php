@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('students.store') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
+            <form action="{{ route('students.login') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
                 @csrf
                 <div class="w-full h-full flex flex-col justify-center gap-8">
                     <h2 class="text-4xl font-medium">Sign-in</h2>

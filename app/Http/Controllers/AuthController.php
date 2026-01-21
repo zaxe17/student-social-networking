@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
-use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
-use function Symfony\Component\Clock\now;
 
 class AuthController extends Controller
 {
+    // Show signup/login page
     public function index()
     {
+        // Redirect to feed if already logged in
+        if (session()->has('student_id')) {
+            return redirect()->route('feed.page');
+        }
         return view('page.signupin');
     }
 
     public function store(StoreStudentRequest $request)
     {
-        Log::info('Registration request received', $request->all());
-
         $validated = $request->validated();
 
         try {
@@ -29,31 +31,52 @@ class AuthController extends Controller
                 'student_id'    => $validated['student_id'],
                 'first_name'    => $validated['first_name'],
                 'last_name'     => $validated['last_name'],
-                'password_hash' => $validated['password'],
+                'password_hash' => Hash::make($validated['password']),
                 'course'        => $validated['course'],
                 'year_level'    => $validated['year_level'],
                 'birthday'      => $birthday,
-                'bio'      => null,
-                'photo'      => null,
-                'linkedin'      => null,
-                'facebook'      => null,
-                'instagram'      => null,
-                'created_at'      => date('Y-m-d H:i:s'),
-                'updated_at'      => date('Y-m-d H:i:s'),
             ]);
 
-            Log::info('Student successfully registered', [
-                'student_id' => $student->student_id
-            ]);
+            // Store in session
+            $request->session()->put('student_id', $student->student_id);
 
-            return redirect()->back()->with('success', 'Student registered successfully!');
+            return redirect()->route('feed.page');
         } catch (\Exception $e) {
-            Log::error('Failed to register student', [
-                'error' => $e->getMessage(),
-                'request' => $request->all()
-            ]);
-
-            return redirect()->back()->with('error', 'Failed to register student. Please try again.');
+            Log::error('Failed to register student', ['error' => $e->getMessage()]);
+            return back()->withErrors(['registration' => 'Failed to register student.'])->withInput();
         }
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|string',
+            'password'   => 'required|string',
+        ]);
+
+        $student = Student::where('student_id', $request->student_id)->first();
+
+        if (!$student) {
+            return back()->withErrors(['login' => 'Student ID not found'])->withInput();
+        }
+
+        if (!Hash::check($request->password, $student->password_hash)) {
+            return back()->withErrors(['login' => 'Incorrect password'])->withInput();
+        }
+
+        // Successful login → store in session
+        $request->session()->put('student_id', $student->student_id);
+
+        return redirect()->route('feed.page');
+    }
+
+    // Logout student
+    public function logout(Request $request)
+    {
+        $request->session()->forget('student_id');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('auth.page');
     }
 }
