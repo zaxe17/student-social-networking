@@ -1,7 +1,10 @@
 @php
-$isLiked = $post->isLikedBy($student->student_id ?? null);
+// ✅ FIX: avoid Undefined variable $post when modal is included in pages without $post
+$isLiked = false;
+if (isset($post) && isset($student)) {
+    $isLiked = $post->isLikedBy($student->student_id ?? null);
+}
 @endphp
-
 
 <div id="commentModal" class="modal hidden">
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen py-8 flex justify-center items-center z-50 backdrop-blur-[1px]">
@@ -83,6 +86,9 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                     @csrf
                     <img id="modalCommentUserPhoto" src="/img/user.png" alt="" class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
                     <input type="text" name="content" placeholder="write a comment..." class="w-full h-full px-2.5 rounded-lg bg-[#dde0e5] focus:outline-none placeholder:text-[#545454]">
+                    <button type="submit" class="flex items-center justify-center w-10 h-10 rounded-lg bg-[#770d08] text-white hover:bg-[#5f0a06] transition" aria-label="Send comment">
+                        <span class="icon bg-white" style="--svg: url('https://api.iconify.design/material-symbols:send-rounded.svg'); --size: 20px;"></span>
+                    </button>
                     <button type="submit" class="hidden"></button>
                 </form>
             </div>
@@ -102,18 +108,19 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
             const postId = commentForm.dataset.postId;
             const content = commentForm.querySelector('input[name="content"]').value;
 
+            if (!postId) return;
             if (!content.trim()) return;
 
             try {
+                // ✅ FIXED URL: /posts/{id}/comment (matches your web.php)
                 const res = await fetch(`/posts/${postId}/comment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        content
-                    })
+                    body: JSON.stringify({ content })
                 });
 
                 const data = await res.json();
@@ -121,7 +128,8 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                 if (data.success) {
                     commentsContainer.insertAdjacentHTML('beforeend', data.comment_html);
                     commentForm.querySelector('input[name="content"]').value = '';
-                    document.getElementById('modalComments').textContent = data.comments_count + ' comment' + (data.comments_count > 1 ? 's' : '');
+                    document.getElementById('modalComments').textContent =
+                        data.comments_count + ' comment' + (data.comments_count > 1 ? 's' : '');
                 }
 
             } catch (error) {

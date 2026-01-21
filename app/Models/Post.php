@@ -45,4 +45,12 @@ class Post extends Model
     {
         return $this->hasMany(PostComment::class, 'post_id', 'post_id')->with('author')->latest();
     }
+
+    public function getRouteKeyName()
+{
+    return 'post_id';
 }
+
+}
+
+    

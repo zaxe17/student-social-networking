@@ -2,16 +2,7 @@
 
 @section('page')
 @include('layout.navbar')
-<div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
-    <!-- POST -->
-    <div class="shadow-bg w-full h-full px-18 py-13 overflow-scroll no-scrollbar">
-        @include('component.postbutton')
 
-        {{-- Loop through all posts --}}
-        @foreach($posts as $post)
-        @include('component.postcard', ['post' => $post])
-        @endforeach
-    </div>
 
 <div class="w-full px-10 py-8">
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">

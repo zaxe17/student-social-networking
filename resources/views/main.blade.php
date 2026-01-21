@@ -178,8 +178,47 @@
         const category = btn.getAttribute('category-data') || '';
         const content = btn.getAttribute('content-data') || '';
         const likes = btn.getAttribute('likes-data') || '0';
-        const commentCount = btn.getAttribute('comment-data') || '0 comment';
+        const commentCount = parseInt(btn.getAttribute('comment-data') || '0', 10);
+        const postId = btn.getAttribute('postid-data') || '';
         const userPhoto = btn.getAttribute('userphoto-data') || '/img/user.png'; // optional if you want dynamic photo
+
+        // Set the post id so the modal comment form knows where to submit
+        const commentForm = document.getElementById('modalAddCommentForm');
+        if (commentForm) {
+            commentForm.dataset.postId = postId;
+        }
+
+        const commentsContainer = document.getElementById('modalCommentsContainer');
+        if (commentsContainer) {
+            commentsContainer.innerHTML = `<div class="px-8 text-sm text-[#545454]">Loading comments...</div>`;
+        }
+
+        // ✅ FIXED URL: use /posts/{id}/comments because that’s the route we added
+        if (commentsContainer && postId) {
+            fetch(`/posts/${postId}/comments`, {
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    commentsContainer.innerHTML = data.comment_html || '';
+                    document.getElementById('modalComments').textContent =
+                        `${data.comments_count} comment${data.comments_count !== 1 ? 's' : ''}`;
+                } else {
+                    commentsContainer.innerHTML = '';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                commentsContainer.innerHTML = '';
+            });
+        }
+
+        // Set the like action inside the modal
+        const reactForm = document.getElementById('modalReactForm');
+        if (reactForm && postId) {
+            reactForm.action = `/feed/posts/${postId}/like`;
+        }
 
         const categoryIcons = {
             'Announcements': 'mdi:bullhorn',
@@ -200,10 +239,9 @@
         document.getElementById('modalTimestamp').textContent = timestamp;
         document.getElementById('modalCategoryName').textContent = category;
         document.getElementById('modalCategoryIcon').style.setProperty('--svg', `url('https://api.iconify.design/${icon}.svg')`);
-        document.getElementById('modalContent').innerHTML = content;
+        document.getElementById('modalContent').innerHTML = (content || '').replace(/\n/g, '<br>');
         document.getElementById('modalLikes').textContent = likes;
         document.getElementById('modalComments').textContent = `${commentCount} comment${commentCount !== 1 ? 's' : ''}`;
-
 
         document.getElementById('modalUserPhoto').src = userPhoto;
     });
@@ -244,4 +282,66 @@
         // I-show yung modal
         modal.classList.remove('hidden');
     });
+</script>
+
+<!-- EDIT POST -->
+<script>
+    document.addEventListener('click', async function(e) {
+        const btn = e.target.closest('.editPostBtn');
+        if (!btn) return;
+
+        e.preventDefault();
+
+        const postId = btn.getAttribute('data-post-id');
+        const oldContent = btn.getAttribute('data-post-content') || '';
+
+        if (!postId) return;
+
+        const newContent = prompt("Edit your post:", oldContent);
+        if (newContent === null) return;
+        if (!newContent.trim()) return;
+
+        try {
+            const res = await fetch(`/feed/posts/${postId}/edit`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ content: newContent })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                window.location.reload();
+            } else {
+                console.error(data);
+                alert('Edit failed. Check console.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error editing post. Check console.');
+        }
+    });
+</script>
+
+<script>
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[target-modal="reportModal"]');
+    if (!btn) return;
+
+    const modal = document.getElementById('reportModal');
+    if (modal) modal.classList.remove('hidden');
+
+    const postId = btn.getAttribute('postid-data');
+    const form = document.getElementById('reportForm');
+
+    if (form && postId) {
+        form.action = `/feed/posts/${postId}/report`;
+    } else {
+        console.error('Report modal: missing postId-data or #reportForm');
+    }
+});
 </script>

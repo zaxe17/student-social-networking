@@ -19,13 +19,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('students.logout
 Route::prefix('feed')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('feed.page');
     Route::get('/category', [PostController::class, 'category'])->name('category.page');
-
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
+    Route::put('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::delete('/posts/{id}/force-delete', [PostController::class, 'forceDelete'])
     ->name('posts.forceDelete');
+    Route::post('/posts/{post}/report', [PostController::class, 'reportPost'])->name('posts.report');
+
+
 });
 
 // ----------------------
@@ -40,4 +43,6 @@ Route::prefix('profile')->group(function () {
     Route::post('/student/change-password', [ProfileController::class, 'changePassword'])->name('student.changePassword');
 });
 
+
+Route::get('/posts/{post}/comments', [PostController::class, 'fetchComments'])->name('posts.comments');
 Route::post('/posts/{post}/comment', [PostController::class, 'storeComment'])->name('posts.comment');

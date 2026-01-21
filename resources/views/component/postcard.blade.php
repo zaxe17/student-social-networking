@@ -76,58 +76,106 @@
             <div
                 id="dotDropdown-{{ $post->post_id }}"
                 class="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 hidden z-50">
+
                 <ul class="py-2 text-sm">
 
+                    {{-- ✅ OTHER PEOPLE'S POST: REPORT ONLY --}}
                     @if ($student && $post->student_id !== $student->student_id)
-                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454]">
-                        <span
-                            class="icon bg-[#545454]"
+                    <li
+                        target-modal="reportModal"
+                        postid-data="{{ $post->post_id }}"
+                        class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
+                        <span class="icon bg-[#545454]"
                             style="--svg: url('https://api.iconify.design/mdi/report.svg'); --size: 18px;"></span>
                         Report
                     </li>
                     @endif
 
+                    {{-- ✅ YOUR POST --}}
                     @if ($student && $post->student_id === $student->student_id)
-                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454]">
-                        <span
-                            class="icon bg-[#545454]"
+
+                    {{-- ✅ Archived page: ONLY Restore + Permanent Delete --}}
+                    @if (request()->routeIs('archived.page'))
+
+                    <li
+                        class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100"
+                        onclick="document.getElementById('restoreForm-{{ $post->post_id }}').submit();">
+                        <span class="icon bg-[#545454]"
+                            style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
+                        Restore
+                    </li>
+
+                    <li class="hover:bg-red-50">
+                        <form action="{{ route('posts.forceDelete', $post->post_id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Permanently delete this post?')">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
+                                <span class="icon bg-red-600"
+                                    style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                                Delete
+                            </button>
+                        </form>
+                    </li>
+
+
+                    @else
+                    {{-- ✅ Normal pages: Edit + Archive + Delete --}}
+
+                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
+                        <span class="icon bg-[#545454]"
                             style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
-                        Edit
+
+                        <button type="button"
+                            class="editPostBtn text-left w-full"
+                            data-post-id="{{ $post->post_id }}"
+                            data-post-content="{{ e($post->content) }}">
+                            Edit
+                        </button>
                     </li>
 
                     <li class="px-4 py-2">
-                        <form
-                            action="{{ route('posts.destroy', $post->post_id) }}"
+                        <form action="{{ route('posts.destroy', $post->post_id) }}"
                             method="POST"
                             class="flex items-center gap-1.5 text-[#545454]">
                             @csrf
                             @method('DELETE')
-                            <span
-                                class="icon bg-[#545454]"
+                            <span class="icon bg-[#545454]"
                                 style="--svg: url('https://api.iconify.design/mdi/archive-outline.svg'); --size: 18px;"></span>
                             <button type="submit">Archive</button>
                         </form>
                     </li>
 
-                    <li class="px-4 py-2 text-red-600">
-                        <form
-                            action="{{ route('posts.forceDelete', $post->post_id) }}"
+                    <li class="hover:bg-red-50">
+                        <form action="{{ route('posts.forceDelete', $post->post_id) }}"
                             method="POST"
-                            class="flex items-center gap-1.5">
+                            onsubmit="return confirm('Permanently delete this post?')">
                             @csrf
                             @method('DELETE')
-                            <span
-                                class="icon bg-red-600"
-                                style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
-                            <button type="submit">Delete</button>
+
+                            <button type="submit"
+                                class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
+                                <span class="icon bg-red-600"
+                                    style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                                Delete
+                            </button>
                         </form>
                     </li>
+
+
+                    @endif
                     @endif
 
                 </ul>
             </div>
         </div>
+
     </div>
+    <!-- ✅ END HEADER (CLOSED PROPERLY HERE) -->
+
 
     <!-- ================= CONTENT ================= -->
     @php
@@ -149,9 +197,10 @@
             lastname-data="{{ $post->author?->last_name }}"
             timestamp-data="{{ $post->created_at?->diffForHumans() }}"
             category-data="{{ $post->category?->category_name ?? 'Uncategorized' }}"
-            content-data='{!! nl2br(e($post->content)) !!}'
+            content-data="{{ e($post->content) }}"
             likes-data="{{ $post->likes_count }}"
             comment-data="{{ $post->comments_count }}"
+            postid-data="{{ $post->post_id }}"
             class="cursor-pointer hover:underline">
             {{ $post->comments_count }} comment{{ $post->comments_count > 1 ? 's' : '' }}
         </span>
@@ -185,9 +234,10 @@
             lastname-data="{{ $post->author?->last_name }}"
             timestamp-data="{{ $post->created_at?->diffForHumans() }}"
             category-data="{{ $post->category?->category_name ?? 'Uncategorized' }}"
-            content-data='{!! nl2br(e($post->content)) !!}'
+            content-data="{{ e($post->content) }}"
             likes-data="{{ $post->likes_count }}"
             comment-data="{{ $post->comments_count }}"
+            postid-data="{{ $post->post_id }}"
             class="flex items-center gap-2 text-[#545454] cursor-pointer hover:text-black transition">
             <span
                 class="icon mt-1 bg-[#545454] hover:bg-black transition"
@@ -196,4 +246,5 @@
         </button>
 
     </div>
+
 </div>

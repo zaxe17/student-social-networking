@@ -7,6 +7,8 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\PostLike;
 use App\Models\Student;
+use App\Models\PostComment;
+use App\Models\PostReport;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
@@ -56,6 +58,26 @@ class PostController extends Controller
             ->get();
 
         return view('page.profile', compact('posts', 'categories', 'student'));
+    }
+
+    public function fetchComments(Post $post)
+    {
+        $comments = $post->comments()
+            ->with('author')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $html = '';
+
+        foreach ($comments as $comment) {
+            $html .= view('component.comment', ['comment' => $comment])->render();
+        }
+
+        return response()->json([
+            'success' => true,
+            'comment_html' => $html,
+            'comments_count' => $comments->count(),
+        ]);
     }
 
     public function archived(Request $request)
@@ -121,6 +143,24 @@ class PostController extends Controller
         $postModel->save();
 
         return back()->with('success', 'Post created!');
+    }
+
+    public function edit(Request $request, Post $post)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        if (!$studentId || $post->student_id !== $studentId) {
+            abort(403);
+        }
+
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $post->content = $request->content;
+        $post->save();
+
+        return response()->json(['success' => true]);
     }
 
     public function destroy(Post $post, Request $request)
@@ -247,4 +287,26 @@ class PostController extends Controller
             'comments_count' => $commentsCount,
         ]);
     }
+
+public function reportPost(request $request, Post $post)
+{
+    $studentId = $request->session()->get('student_id');
+    if (!$studentId) {
+        return back()->with('error', 'You must be logged in.');
+    }
+
+    $request->validate([
+        'reason'  => 'required|string|max:255',
+        'details' => 'nullable|string|max:2000',
+    ]);
+
+    PostReport::create([
+        'post_id'      => $post->post_id,
+        'reported_by'  => $studentId,
+        'reason'       => $request->reason,
+        'details'      => $request->details,
+    ]);
+
+    return back()->with('success', 'Report submitted.');
+}
 }
