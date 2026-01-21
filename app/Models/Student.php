@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     protected $table = 'students';
     protected $primaryKey = 'student_id';
@@ -20,11 +19,17 @@ class Student extends Model
         'course',
         'year_level',
         'birthday',
+        'bio',
+        'facebook',
+        'instagram',
+        'linkedin',
+        'photo',
     ];
 
-    // Automatically hash password
-    public function setPasswordHashAttribute($value)
+    protected $hidden = ['password_hash'];
+
+    public function getAuthPassword()
     {
-        $this->attributes['password_hash'] = Hash::make($value);
+        return $this->password_hash;
     }
 }

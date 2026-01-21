@@ -4,7 +4,7 @@
         <div class="w-2/4 h-full bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col">
 
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
-                <h2 class="text-center text-xl font-medium">{{ $title }}</h2>
+                <h2 class="text-center text-xl font-medium" id="modalTitle"></h2>
 
                 <span close-modal
                     class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer"
@@ -18,36 +18,35 @@
 
                     <!-- POST HEADER -->
                     <div class="flex items-center gap-2 mb-8">
-                        <img src="/img/user.png" alt="" class="w-8 h-8">
+                        <img id="modalUserPhoto" src="/img/user.png" alt="" class="w-8 h-8 rounded-full object-cover cursor-pointer border-2 border-gray-300">
                         <div class="flex flex-col text-sm">
-                            <span>Zaxe</span>
+                            <span id="modalUserName">Zaxe</span>
 
                             <div class="flex items-center gap-3">
-                                <span class="text-[#545454]">2h ago</span>
+                                <span id="modalTimestamp" class="text-[#545454]"></span>
                                 <span>•</span>
-                                <span class="icon bg-[#770d08]"
+                                <span id="modalCategoryIcon" class="icon bg-[#770d08]"
                                     style="--svg: url('https://api.iconify.design/mdi/book-open-variant.svg'); --size: 18px;">
                                 </span>
+                                <span id="modalCategoryName" class="text-[#545454]"></span>
                             </div>
                         </div>
                     </div>
 
                     <!-- POST CONTENT -->
-                    <p class="mb-6">
-                        Hello! Anyone here who has taken Prof. Reyes for Hist 1? How is the workload?
-                        Do they require a lot of 'blue book' exams or more on research papers?
-                        Also, are they 'ghosting' during synchronous sessions? TIA!
+                    <p id="modalContent" class="mb-6">
+                        
                     </p>
 
                     <!-- REACT AND COMMENT COUNT -->
                     <div class="flex justify-between items-center">
                         <div class="flex items-center cursor-pointer">
                             <span>❤️</span>
-                            <span class="text-sm text-[#545454]">21</span>
+                            <span id="modalLikes" class="text-sm text-[#545454]"></span>
                         </div>
 
-                        <span class="text-[#545454] text-sm cursor-pointer hover:underline">
-                            20 comment
+                        <span id="modalComments" class="text-[#545454] text-sm cursor-pointer hover:underline">
+                            
                         </span>
                     </div>
 
@@ -74,7 +73,7 @@
                 <form action="" method="" class="flex items-center gap-5 h-10">
 
                     <!-- USER PROFILE -->
-                    <img src="/img/user.png" alt="" class="w-10 h-10">
+                    <img id="modalCommentUserPhoto" src="/img/user.png" alt="" class="w-10 h-10">
 
                     <input type="text" placeholder="write a comment..." class="w-full h-full px-2.5 rounded-lg bg-[#dde0e5] focus:outline-none placeholder:text-[#545454]">
                 </form>
