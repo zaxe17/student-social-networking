@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -13,21 +12,16 @@ class AuthController extends Controller
 {
     public function index()
     {
-        // If already logged in, go straight to feed
-        if (Auth::check()) {
-            return redirect()->route('feed.page');
+        if (session()->has('student_id')) {
+            return redirect()->route('feed.page'); // already logged in
         }
-
         return view('page.signupin');
     }
 
-    // SIGN UP
+    // Register
     public function store(StoreStudentRequest $request)
     {
-        Log::info('Registration request received', $request->all());
-
         $validated = $request->validated();
-
         try {
             $birthday = "{$validated['birth_year']}-{$validated['birth_month']}-{$validated['birth_day']}";
 
@@ -41,50 +35,42 @@ class AuthController extends Controller
                 'birthday'      => $birthday,
             ]);
 
-            Auth::login($student);
+            // ✅ Store student_id in session
+            $request->session()->put('student_id', $student->student_id);
 
             return redirect()->route('feed.page');
-
         } catch (\Exception $e) {
-            Log::error('Failed to register student', [
-                'error' => $e->getMessage(),
-            ]);
-
-            return redirect()->back()->with('error', 'Failed to register student. Please try again.');
+            Log::error('Failed to register student', ['error' => $e->getMessage()]);
+            return back()->withErrors(['registration' => 'Failed to register student.']);
         }
     }
 
-    // SIGN IN
+    // Login
     public function login(Request $request)
     {
         $request->validate([
-            'student_id' => ['required'],
-            'password'   => ['required'],
+            'student_id' => 'required|string',
+            'password'   => 'required|string',
         ]);
 
         $student = Student::where('student_id', $request->student_id)->first();
 
-        if (!$student) {
-            return back()->with('error', 'Student ID not found.');
+        if (!$student || !Hash::check($request->password, $student->password_hash)) {
+            return back()->withErrors(['login' => 'Invalid credentials.'])->withInput();
         }
 
-        if (!Hash::check($request->password, $student->password_hash)) {
-            return back()->with('error', 'Incorrect password.');
-        }
-
-        Auth::login($student);
+        // ✅ Store in session
+        $request->session()->put('student_id', $student->student_id);
 
         return redirect()->route('feed.page');
     }
 
-    // LOGOUT
+    // Logout
     public function logout(Request $request)
     {
-        Auth::logout();
-
+        $request->session()->forget('student_id');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('auth.page');
     }
 }
