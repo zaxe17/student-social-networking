@@ -6,26 +6,18 @@
     </div>
 
     <!-- PAGE LIST ICON -->
-    <div class="grid grid-cols-3 h-full gap-3">
+    <div class="flex items-center h-full gap-3">
         <!-- FEED PAGE -->
-        <a href="{{ route('feed.page') }}" class="group border-b-2 border-solid transition-all duration-300 w-35 h-full flex justify-center items-center {{ Route::currentRouteName() == 'feed.page' ? 'border-b-white' : 'border-b-transparent hover:border-b-white' }}">
-            <div class="flex justify-center transition-all duration-300 rounded-lg w-full p-4 {{ Route::currentRouteName() == 'feed.page' ? '' : 'group-hover:bg-white/10' }}">
+        <a href="{{ route('feed.page') }}" class="group border-b-2 border-solid transition-all duration-300 w-35 h-full flex justify-center items-center {{ (Route::currentRouteName() == 'feed.page' || Route::currentRouteName() == 'category.page') ? 'border-b-white' : 'border-b-transparent hover:border-b-white' }}">
+            <div class="flex justify-center transition-all duration-300 rounded-lg w-full p-4 {{ (Route::currentRouteName() == 'feed.page' || Route::currentRouteName() == 'category.page') ? '' : 'group-hover:bg-white/10' }}">
                 <span class="icon transition-all duration-300 bg-white" style="--svg: url('https://api.iconify.design/ion/newspaper-outline.svg'); --size: 24px; --icon-color: black;"></span>
             </div>
         </a>
-
 
         <!-- PROFILE PAGE -->
         <a href="{{ route('profile.page') }}" class="group border-b-2 border-solid border-b-transparent hover:border-b-white transition-all duration-300 w-35 h-full flex justify-center items-center {{ Route::currentRouteName() == 'profile.page' ? 'border-b-white' : 'border-b-transparent hover:border-b-white' }}">
             <div class="flex justify-center group-hover:bg-white/10 transition-all duration-300 rounded-lg w-full p-4">
                 <span class="icon bg-white" style="--svg: url('https://api.iconify.design/mdi/user.svg'); --size: 28px; --icon-color: black;"></span>
-            </div>
-        </a>
-
-        <!-- SETTINGS PAGE -->
-        <a href="" class="group border-b-2 border-solid border-b-transparent hover:border-b-white transition-all duration-300 w-35 h-full flex justify-center items-center">
-            <div class="flex justify-center group-hover:bg-white/10 transition-all duration-300 rounded-lg w-full p-4">
-                <span class="icon bg-white" style="--svg: url('https://api.iconify.design/mdi/settings.svg'); --size: 28px; --icon-color: black;"></span>
             </div>
         </a>
     </div>

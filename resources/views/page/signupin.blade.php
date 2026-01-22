@@ -10,7 +10,7 @@
         </div>
     </nav>
 
-    <div class="container mx-auto w-full h-full">
+    <div class="mx-auto w-full h-full">
         <div id="signin-form" class="flex justify-between w-full h-full">
             <div class="w-1/2 h-full flex flex-col justify-end items-start">
                 <div class="mx-25 my-20">
@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('students.store') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
+            <form action="{{ route('students.login') }}" method="POST" class="shadow-form bg-[#f4f6f9]/40 w-1/2 px-35 backdrop-blur-sm">
                 @csrf
                 <div class="w-full h-full flex flex-col justify-center gap-8">
                     <h2 class="text-4xl font-medium">Sign-in</h2>
@@ -50,9 +50,7 @@
         </div>
 
 
-
-
-        <div id="signup-form" class="hidden flex justify-center items-center p-10">
+        <div id="signup-form" class="hidden flex justify-center items-center p-4 lg:p-10 h-full">
             <form action="{{ route('students.store') }}" method="POST" class="shadow-form bg-[#f4f6f9]/25 rounded-3xl w-md p-8 backdrop-blur-sm">
                 @csrf
                 <div class="flex flex-col justify-center items-center gap-1.5">

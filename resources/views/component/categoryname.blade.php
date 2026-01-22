@@ -1,0 +1,21 @@
+<div class="flex justify-start items-start flex-col mb-8 h-10 text-[#36384e]">
+
+    <!-- FILTER -->
+    <span class="font-light">Filter by Categories ></span>
+
+    @php
+    $selectedCategoryIds = request()->query('category', []);
+
+    $selectedCategoryNames = collect($categories)
+    ->whereIn('category_id', $selectedCategoryIds)
+    ->pluck('category_name')
+    ->all();
+    @endphp
+
+    @if(count($selectedCategoryNames))
+    <p class="font-medium">{{ implode(', ', $selectedCategoryNames) }}</p>
+    @else
+    <p class="font-medium text-gray-500">All Categories</p>
+    @endif
+
+</div>
