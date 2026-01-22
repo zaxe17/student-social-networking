@@ -21,7 +21,12 @@ class PostController extends Controller
 
         $categories = $categoryModel->orderBy('category_name')->get();
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
+        $posts = $postModel->with([
+            'author',
+            'category',
+            'comments.author',
+            'likes'
+        ])
             ->withCount(['likes', 'comments'])
             ->latest('created_at')
             ->get();
@@ -39,7 +44,12 @@ class PostController extends Controller
 
         $categories = $categoryModel->orderBy('category_name')->get();
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
+        $posts = $postModel->with([
+            'author',
+            'category',
+            'comments.author',
+            'likes'
+        ])
             ->withCount(['likes', 'comments'])
             ->where('student_id', $studentId)
             ->latest('created_at')
@@ -59,7 +69,12 @@ class PostController extends Controller
         $categories = $categoryModel->orderBy('category_name')->get();
 
         $posts = $postModel->onlyTrashed()
-            ->with(['author', 'category', 'comments.author'])
+            ->with([
+                'author',
+                'category',
+                'comments.author',
+                'likes'
+            ])
             ->withCount(['likes', 'comments'])
             ->where('student_id', $studentId)
             ->latest('deleted_at')
@@ -117,6 +132,7 @@ class PostController extends Controller
         }
 
         $post->delete();
+
         return back()->with('success', 'Post archived');
     }
 
@@ -133,6 +149,7 @@ class PostController extends Controller
         }
 
         $post->restore();
+
         return back()->with('success', 'Post restored');
     }
 
@@ -145,41 +162,48 @@ class PostController extends Controller
         $student = $this->student($studentId);
 
         $categories = $categoryModel->orderBy('category_name')->get();
-
         $selectedCategories = $request->query('category', []);
 
         if (empty($selectedCategories)) {
             return redirect()->route('feed.page');
         }
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
+        $posts = $postModel->with([
+            'author',
+            'category',
+            'comments.author',
+            'likes'
+        ])
             ->withCount(['likes', 'comments'])
             ->whereIn('category_id', $selectedCategories)
             ->latest('created_at')
             ->get();
 
-        return view('page.category', compact('posts', 'categories', 'student', 'selectedCategories'));
+        return view('page.category', compact(
+            'posts',
+            'categories',
+            'student',
+            'selectedCategories'
+        ));
     }
-
-
-
-
-
 
     public function toggleLike(Post $post, Request $request)
     {
         $studentId = $request->session()->get('student_id');
-        if (!$studentId) return back()->with('error', 'Student not logged in.');
 
-        $existingLike = PostLike::where('post_id', $post->id)
+        if (!$studentId) {
+            return back()->with('error', 'Student not logged in.');
+        }
+
+        $existingLike = PostLike::where('post_id', $post->post_id)
             ->where('student_id', $studentId)
             ->first();
 
         if ($existingLike) {
-            $existingLike->delete();
+            $existingLike->delete(); // UNLIKE
         } else {
             PostLike::create([
-                'post_id' => $post->id,
+                'post_id' => $post->post_id,
                 'student_id' => $studentId,
             ]);
         }
@@ -190,8 +214,37 @@ class PostController extends Controller
     private function student($studentId)
     {
         $studentModel = new Student();
-        $student = $studentId ? $studentModel->find($studentId) : null;
 
-        return $student;
+        return $studentId
+            ? $studentModel->find($studentId)
+            : null;
+    }
+
+    public function storeComment(Request $request, Post $post)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        if (!$studentId) return response()->json(['error' => 'Not logged in'], 403);
+
+        $request->validate(['content' => 'required|string']);
+
+        $comment = \App\Models\PostComment::create([
+            'post_id' => $post->post_id,
+            'student_id' => $studentId,
+            'content' => $request->content,
+        ]);
+
+        $comment->load('author');
+
+        // Render the comment HTML using Blade
+        $commentHtml = view('component.comment', ['comment' => $comment])->render();
+
+        $commentsCount = $post->comments()->count();
+
+        return response()->json([
+            'success' => true,
+            'comment_html' => $commentHtml,
+            'comments_count' => $commentsCount,
+        ]);
     }
 }
