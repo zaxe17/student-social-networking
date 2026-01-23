@@ -20,14 +20,19 @@
     <!-- ================= HEADER ================= -->
     <div class="flex items-center gap-2 text-sm mb-5">
 
-        {{-- User photo --}}
-        <img
-            src="{{ $post->author?->photo ? asset('storage/' . $post->author->photo) : asset('/img/user.png') }}"
-            class="w-7 h-7 rounded-full object-cover cursor-pointer border-2 border-gray-300"
-            alt="">
+        <a href="{{ route('profile.view', $post->author->student_id) }}" class="flex items-center gap-2 hover:underline">
+            {{-- User photo --}}
+            <img
+                src="{{ $post->author?->photo ? asset('storage/' . $post->author->photo) : asset('/img/user.png') }}"
+                class="w-7 h-7 rounded-full object-cover border-2 border-gray-300"
+                alt="">
 
-        {{-- Student name --}}
-        <span>{{ $post->author?->first_name }} {{ $post->author?->last_name }}</span>
+            {{-- Student name --}}
+            <span class="font-medium">
+                {{ $post->author?->first_name }} {{ $post->author?->last_name }}
+            </span>
+        </a>
+
 
         <span>•</span>
 
@@ -152,6 +157,7 @@
             content-data='{!! nl2br(e($post->content)) !!}'
             likes-data="{{ $post->likes_count }}"
             comment-data="{{ $post->comments_count }}"
+            userphoto-data='{{ $post->author && $post->author->photo ? asset("storage/".$post->author->photo) : asset("/img/user.png") }}'
             class="cursor-pointer hover:underline">
             {{ $post->comments_count }} comment{{ $post->comments_count > 1 ? 's' : '' }}
         </span>
@@ -188,6 +194,7 @@
             content-data='{!! nl2br(e($post->content)) !!}'
             likes-data="{{ $post->likes_count }}"
             comment-data="{{ $post->comments_count }}"
+            userphoto-data='{{ $post->author && $post->author->photo ? asset("storage/".$post->author->photo) : asset("/img/user.png") }}'
             class="flex items-center gap-2 text-[#545454] cursor-pointer hover:text-black transition">
             <span
                 class="icon mt-1 bg-[#545454] hover:bg-black transition"

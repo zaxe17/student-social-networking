@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Student extends Authenticatable
@@ -31,5 +32,10 @@ class Student extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password_hash;
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class, 'student_id', 'student_id');
     }
 }

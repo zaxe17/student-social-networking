@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------------
@@ -19,13 +20,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('students.logout
 Route::prefix('feed')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('feed.page');
     Route::get('/category', [PostController::class, 'category'])->name('category.page');
+    Route::get('/category/{category_id}', [PostController::class, 'category'])->name('category.page');
+
 
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
-    Route::delete('/posts/{id}/force-delete', [PostController::class, 'forceDelete'])
-    ->name('posts.forceDelete');
+    Route::delete('/posts/{id}/force-delete', [PostController::class, 'forceDelete'])->name('posts.forceDelete');
 });
 
 // ----------------------
@@ -34,10 +36,26 @@ Route::prefix('feed')->group(function () {
 Route::prefix('profile')->group(function () {
     Route::get('/', [PostController::class, 'profile'])->name('profile.page');
     Route::get('/archived', [PostController::class, 'archived'])->name('archived.page');
-    
-    Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/student/change-password', [ProfileController::class, 'changePassword'])->name('student.changePassword');
 });
 
+// ----------------------
+// Comments
+// ----------------------
 Route::post('/posts/{post}/comment', [PostController::class, 'storeComment'])->name('posts.comment');
+
+// ----------------------
+// AJAX Search
+// ----------------------
+// web.php
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [SearchController::class, 'search']);
+Route::get('/search/results', [SearchController::class, 'searchResults'])->name('search.results');
+Route::get('/search', [PostController::class, 'search'])->name('search.ajax');
+
+// ----------------------
+// View another student's profile
+// ----------------------
+Route::get('/profile/{student_id}', [PostController::class, 'viewProfile'])->name('profile.view');

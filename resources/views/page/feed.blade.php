@@ -20,8 +20,9 @@
 </div>
 
 @include('component.createpostmodal', [
-'student' => $student,
-'categories' => $categories
+    'student' => $student,
+    'categories' => $categories,
+    'post' => $posts->first() ?? null, // safely pass first post or null
 ])
 
 

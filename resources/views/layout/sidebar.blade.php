@@ -8,13 +8,13 @@
         <!-- SIDEBAR LIST -->
         <ul class="flex flex-col gap-8 px-6 py-15 justify-start flex-1">
             <li target-modal="editprofModal"
-                studentId-data="{{ $student->student_id }}"
-                firstname-data="{{ $student->first_name }}"
-                lastname-data="{{ $student->last_name }}"
-                bio-data="{{ $student->bio }}"
-                instagram-data="{{ $student->instagram }}"
-                facebook-data="{{ $student->facebook }}"
-                linkedin-data="{{ $student->linkedin }}"
+                studentId-data="{{ $loggedInStudent->student_id ?? '' }}"
+                firstname-data="{{ $loggedInStudent->first_name ?? '' }}"
+                lastname-data="{{ $loggedInStudent->last_name ?? '' }}"
+                bio-data="{{ $loggedInStudent->bio ?? '' }}"
+                instagram-data="{{ $loggedInStudent->instagram ?? '' }}"
+                facebook-data="{{ $loggedInStudent->facebook ?? '' }}"
+                linkedin-data="{{ $loggedInStudent->linkedin ?? '' }}"
                 class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
                 <span>Edit profile</span>
             </li>
@@ -31,9 +31,12 @@
 
         <!-- USER PROFILE FOOTER -->
         <div class="w-full bg-[#bababa] px-16 py-10 border-t-2 border-t-[#770d08] flex items-center gap-5">
-            <img src="/img/user.png" class="w-13 h-13 rounded-full object-cover cursor-pointer border-2 border-white">
+            <img
+                src="{{ $student?->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
+                class="w-15 h-15 rounded-full object-cover border cursor-pointer"
+                alt="Profile picture">
             <div class="text-lg">
-                <span>{{ $student->first_name ?? 'Guest' }}</span>
+                <span>{{ $loggedInStudent->first_name ?? 'Guest' }}</span>
                 <form method="POST" action="{{ route('students.logout') }}">
                     @csrf
                     <button type="submit" class="text-[#545454] underline block">Log-out</button>

@@ -1,5 +1,5 @@
 @php
-$isLiked = $post->isLikedBy($student->student_id ?? null);
+$isLiked = isset($post) && $post ? $post->isLikedBy($student->student_id ?? null) : false;
 @endphp
 
 
@@ -24,7 +24,8 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
 
                     <!-- POST INFO -->
                     <div class="flex items-center gap-2 mb-8">
-                        <img id="modalUserPhoto" src="/img/user.png" alt="" class="w-8 h-8 rounded-full object-cover cursor-pointer border-2 border-gray-300">
+                        <img id="modalUserPhoto" 
+                            alt="Profile Picture" class="w-8 h-8 rounded-full object-cover cursor-pointer border-2 border-gray-300">
                         <div class="flex flex-col text-sm">
                             <span id="modalUserName">Zaxe</span>
                             <div class="flex items-center gap-3">

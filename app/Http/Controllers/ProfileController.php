@@ -11,38 +11,43 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     // Show profile page
-    /* public function index(Request $request)
+    public function index(Request $request)
     {
         $studentId = $request->session()->get('student_id');
-        $student = $studentId ? Student::find($studentId) : null;
+        $loggedInStudent = $this->student($studentId);
 
-        $posts = $student
-            ? Post::with(['author', 'category', 'comments.author'])
+        if (!$loggedInStudent) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
+        }
+
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
-            ->where('student_id', $student->student_id)
+            ->where('student_id', $studentId)
             ->latest('created_at')
-            ->get()
-            : [];
+            ->get();
 
         $categories = PostCategory::orderBy('category_name')->get();
 
-        // Pass $student to the app.blade layout
-        return view('page.profile', compact('student', 'posts', 'categories'));
-    } */
-
-
+        return view('page.profile', [
+            'student' => $loggedInStudent,
+            'posts' => $posts,
+            'categories' => $categories,
+            'loggedInStudent' => $loggedInStudent,
+            'loggedInStudentId' => $loggedInStudent->student_id,
+        ]);
+    }
 
     // Update profile
+
     public function update(Request $request)
     {
-        $studentId = $request->session()->get('student_id');
-        $student = Student::find($studentId);
+        $student = Student::find(session('student_id'));
 
         if (!$student) {
-            return back()->with('error', 'Student session not found.');
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             'bio'        => 'nullable|string|max:1000',
@@ -52,19 +57,20 @@ class ProfileController extends Controller
             'photo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $student->update([
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'bio'        => $request->bio,
-            'facebook'   => $request->facebook,
-            'instagram'  => $request->instagram,
-            'linkedin'   => $request->linkedin,
-            'photo'      => $request->hasFile('photo')
-                ? $request->file('photo')->store('profile_photos', 'public')
-                : $student->photo,
-        ]);
+        if ($request->hasFile('photo')) {
+            if ($student->photo && \Storage::disk('public')->exists($student->photo)) {
+                \Storage::disk('public')->delete($student->photo);
+            }
 
-        return back()->with('success', 'Profile updated!');
+            $validated['photo'] = $request->file('photo')
+                ->store('profile_photos', 'public');
+        }
+
+        $student->update($validated);
+
+        return response()->json([
+            'message' => 'Profile updated successfully'
+        ]);
     }
 
     public function changePassword(Request $request)
