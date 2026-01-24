@@ -28,8 +28,15 @@ class Student extends Authenticatable
 
     protected $hidden = ['password_hash'];
 
+    // Used by Laravel Auth
     public function getAuthPassword()
     {
         return $this->password_hash;
+    }
+
+    // Relationship: a student can have many posts
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class, 'student_id', 'student_id');
     }
 }

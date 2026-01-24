@@ -8,6 +8,15 @@ document.addEventListener('click', function (e) {
 
     if (modal) {
         modal.classList.remove('hidden');
+        
+        // Pass postId to the comment form if this is a post modal
+        if (modalId === 'commentModal') {
+            const postId = openBtn.getAttribute('postid-data');
+            const commentForm = document.getElementById('modalAddCommentForm');
+            if (commentForm && postId) {
+                commentForm.dataset.postId = postId;
+            }
+        }
     }
 });
 

@@ -17,7 +17,10 @@
 
                 <!-- USER DISPLAY -->
                 <div class="flex items-center gap-5">
-                    <img src="{{ auth()->user()?->photo ? asset('storage/' . auth()->user()->photo) : asset('/img/user.png') }}" alt="" class="w-10 h-10 rounded-full object-cover cursor-pointer border-2 border-gray-300">
+                    <img id="modalCommentUserPhoto"
+                        src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
+                        alt="User Photo"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
                     <span class="text-xl">{{ $student->first_name ?? 'Guest' }} {{ $student->last_name ?? '' }}</span>
                 </div>
 

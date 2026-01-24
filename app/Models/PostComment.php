@@ -18,13 +18,15 @@ class PostComment extends Model
         'content',
     ];
 
+    // Author relationship
     public function author()
     {
-        return $this->belongsTo(\App\Models\Student::class, 'student_id', 'student_id');
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
+    // Likes relationship
     public function likes()
     {
-        return $this->hasMany(\App\Models\PostCommentLike::class, 'comment_id', 'comment_id');
+        return $this->hasMany(PostComment::class, 'comment_id', 'comment_id');
     }
 }

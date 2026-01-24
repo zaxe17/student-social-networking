@@ -20,6 +20,8 @@ class Post extends Model
 
     protected $dates = ['deleted_at'];
 
+    /* ================= RELATIONSHIPS ================= */
+
     public function author()
     {
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
@@ -35,22 +37,33 @@ class Post extends Model
         return $this->hasMany(PostLike::class, 'post_id', 'post_id');
     }
 
-    public function isLikedBy($studentId)
+    // ✅ THIS IS WHAT YOUR VIEW EXPECTS
+    public function likesWithUser()
     {
-        if (!$studentId) return false;
-        return $this->likes->contains('student_id', $studentId);
+        return $this->hasMany(PostLike::class, 'post_id', 'post_id')
+                    ->with('student');
     }
 
     public function comments()
     {
-        return $this->hasMany(PostComment::class, 'post_id', 'post_id')->with('author')->latest();
+        return $this->hasMany(PostComment::class, 'post_id', 'post_id')
+                    ->with('author')
+                    ->latest();
+    }
+
+    /* ================= HELPERS ================= */
+
+    public function isLikedBy($studentId)
+    {
+        if (!$studentId) return false;
+
+        return $this->likes()
+            ->where('student_id', $studentId)
+            ->exists();
     }
 
     public function getRouteKeyName()
-{
-    return 'post_id';
+    {
+        return 'post_id';
+    }
 }
-
-}
-
-    

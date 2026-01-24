@@ -3,7 +3,6 @@
 @section('page')
 @include('layout.navbar')
 
-
 <div class="w-full px-10 py-8">
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">
 
@@ -31,10 +30,9 @@
 </div>
 
 @include('component.createpostmodal', [
-'student' => $student,
-'categories' => $categories
+    'student' => $student,
+    'categories' => $categories
 ])
 
-@include('layout.sidebar', ['student' => $student ?? null])
+@include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])
 @endsection
-
