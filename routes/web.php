@@ -51,9 +51,11 @@ Route::prefix('profile')->group(function () {
 
     Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/student/change-password', [ProfileController::class, 'changePassword'])->name('student.changePassword');
-
+    Route::post('/student/validate-old-password', [ProfileController::class, 'validateOldPassword'])->name('student.validateOldPassword');
     // View another student's profile
     Route::get('/{student_id}', [PostController::class, 'viewProfile'])->name('profile.view');
+    // Delete student account
+    Route::delete('/student/delete', [ProfileController::class, 'deleteAccount'])->name('student.delete');
 });
 
 // ----------------------

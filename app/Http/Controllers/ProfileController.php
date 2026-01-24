@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $loggedInStudent = $this->student($studentId);
 
         if (!$loggedInStudent) {
-            return redirect()->route('login')->with('error', 'Please log in first.');
+            return redirect()->route('auth.page')->with('error', 'Please log in first.');
         }
 
         $categories = PostCategory::orderBy('category_name')->get();
@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $loggedInStudent = $this->student($studentId);
 
         if (!$loggedInStudent) {
-            return redirect()->route('login')->with('error', 'Please log in first.');
+            return redirect()->route('auth.page')->with('error', 'Please log in first.');
         }
 
         $categories = PostCategory::orderBy('category_name')->get();
@@ -138,9 +138,9 @@ class ProfileController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             'bio'        => 'nullable|string|max:1000',
-            'facebook'   => 'nullable|url',
-            'instagram'  => 'nullable|url',
-            'linkedin'   => 'nullable|url',
+            'facebook'   => ['nullable', 'url', 'regex:/^(https?:\/\/)?(www\.)?facebook\.com\/[A-Za-z0-9\.]+\/?$/i'],
+            'instagram'  => ['nullable', 'url', 'regex:/^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_\.]+\/?$/i'],
+            'linkedin'   => ['nullable', 'url', 'regex:/^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/i'],
             'photo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -185,6 +185,23 @@ class ProfileController extends Controller
         $student->save();
 
         return back()->with('success', 'Password changed successfully!');
+    }
+
+    // ----------------------
+    // AJAX: validate old password in real-time
+    // ----------------------
+    public function validateOldPassword(Request $request)
+    {
+        $studentId = $request->session()->get('student_id');
+        $student = $this->student($studentId);
+
+        if (!$student) {
+            return response()->json(['valid' => false]);
+        }
+
+        $isValid = Hash::check($request->current_password, $student->password_hash);
+
+        return response()->json(['valid' => $isValid]);
     }
 
     // ----------------------
@@ -266,5 +283,37 @@ class ProfileController extends Controller
     private function student($studentId)
     {
         return $studentId ? Student::find($studentId) : null;
+    }
+
+    // ----------------------
+    // Delete account permanently
+    // ----------------------
+    public function deleteAccount(Request $request)
+    {
+        $studentId = $request->session()->get('student_id');
+        $student = $this->student($studentId);
+
+        if (!$student) {
+            return redirect()->route('auth.page')->with('error', 'Student session not found.');
+        }
+
+        // Delete profile photo if exists
+        if ($student->photo && \Storage::disk('public')->exists($student->photo)) {
+            \Storage::disk('public')->delete($student->photo);
+        }
+
+        // Optionally: delete related posts, comments, likes
+        $student->posts()->delete();
+        $student->comments()->delete();
+        $student->likes()->delete();
+
+        // Delete the student account
+        $student->delete();
+
+        // Clear session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('auth.page')->with('success', 'Your account has been permanently deleted.');
     }
 }

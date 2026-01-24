@@ -22,7 +22,7 @@ class PostController extends Controller
         $loggedInStudent = $this->student($studentId);
 
         if (!$loggedInStudent) {
-            return redirect()->route('login')->with('error', 'Please log in first.');
+            return redirect()->route('auth.page')->with('error', 'Please log in first.');
         }
 
         $categories = PostCategory::orderBy('category_name')->get();

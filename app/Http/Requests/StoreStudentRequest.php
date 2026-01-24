@@ -37,12 +37,19 @@ class StoreStudentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'password'     => 'password must 6 character',
-            'course'       => '',
-            'year_level'   => '',
-            'birth_year'   => '',
-            'birth_month'  => '',
-            'birth_day'    => '',
+            'student_id.required' => 'Student ID is required',
+            'student_id.unique'   => 'This Student ID is already registered',
+            'first_name.required' => 'First name is required',
+            'last_name.required'  => 'Last name is required',
+            'password.required'   => 'Password is required',
+            'password.min'        => 'Password must be at least 6 characters',
+            'password.confirmed'  => 'Passwords do not match',
+            'course.required'     => 'Course is required',
+            'year_level.required' => 'Year level is required',
+            'year_level.in'       => 'Invalid year level selected',
+            'birth_year.required' => 'Birth year is required',
+            'birth_month.required' => 'Birth month is required',
+            'birth_day.required'  => 'Birth day is required',
         ];
     }
 }

@@ -8,7 +8,7 @@
         <!-- SIDEBAR LIST -->
         <ul class="flex flex-col gap-8 px-6 py-15 justify-start flex-1">
             {{-- EDIT PROFILE BUTTON --}}
-            <li 
+            <li
                 class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer"
                 target-modal="editProfileModal"
                 firstname-data="{{ $loggedInStudent->first_name ?? '' }}"
@@ -17,8 +17,7 @@
                 instagram-data="{{ $loggedInStudent->instagram ?? '' }}"
                 facebook-data="{{ $loggedInStudent->facebook ?? '' }}"
                 linkedin-data="{{ $loggedInStudent->linkedin ?? '' }}"
-                studentId-data="{{ $loggedInStudent->student_id ?? '' }}"
-            >
+                studentId-data="{{ $loggedInStudent->student_id ?? '' }}">
                 <span>Edit profile</span>
             </li>
 
@@ -35,7 +34,8 @@
             </li>
 
             {{-- DELETE ACCOUNT --}}
-            <li class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
+            <li target-modal="deleteaccount"
+                class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
                 <span>Delete account</span>
             </li>
         </ul>

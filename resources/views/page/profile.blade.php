@@ -3,6 +3,7 @@
 @section('page')
 @include('layout.navbar')
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])
+@include('component.changepassmodal', ['title' => 'Change password'])
 
 <div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
     <!-- USER PROFILE -->

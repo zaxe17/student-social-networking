@@ -18,7 +18,11 @@ return new class extends Migration
             $table->text('content');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('student_id')->references('student_id')->on('students');
+            $table->foreign('student_id')
+                ->references('student_id')
+                ->on('students')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

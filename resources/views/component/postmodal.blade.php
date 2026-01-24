@@ -1,7 +1,7 @@
 @php
 $isLiked = false;
 if (isset($post) && isset($student)) {
-    $isLiked = $post->isLikedBy($student->student_id ?? null);
+$isLiked = $post->isLikedBy($student->student_id ?? null);
 }
 @endphp
 
@@ -78,9 +78,9 @@ if (isset($post) && isset($student)) {
                 <form id="modalAddCommentForm" action="" method="POST" class="flex items-center gap-5 h-10" data-post-id="{{ $post->post_id ?? '' }}">
                     @csrf
                     <img id="modalCommentUserPhoto"
-                         src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
-                         alt="User Photo"
-                         class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
+                        src="{{ isset($loggedInStudent) && $loggedInStudent->photo ? asset('storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
+                        alt="User Photo"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
                     <input type="text" name="content" placeholder="write a comment..." class="w-full h-full px-2.5 rounded-lg bg-[#dde0e5] focus:outline-none placeholder:text-[#545454]">
                     <button type="submit" class="flex items-center justify-center w-10 h-10 rounded-lg bg-[#770d08] text-white hover:bg-[#5f0a06] transition" aria-label="Send comment">
                         <span class="icon bg-white" style="--svg: url('https://api.iconify.design/material-symbols:send-rounded.svg'); --size: 20px;"></span>

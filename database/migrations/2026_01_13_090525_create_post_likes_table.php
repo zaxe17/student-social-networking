@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('student_id', 15);
             $table->timestamps();
             $table->unique(['post_id', 'student_id']);
-            $table->foreign('student_id')->references('student_id')->on('students');
+            $table->foreign('student_id')
+                ->references('student_id')
+                ->on('students')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

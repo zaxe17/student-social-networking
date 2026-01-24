@@ -2,19 +2,25 @@
 
 @section('page')
 @include('layout.navbar')
-
+@include('component.changepassmodal', ['title' => 'Change password'])
 <div class="w-full px-10 py-8">
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">
 
         {{-- LEFT: POSTS --}}
         <div class="col-span-12 lg:col-span-8">
             <div class="shadow-bg w-full h-[calc(100vh-8rem)] px-8 py-6 overflow-y-auto no-scrollbar rounded-lg">
+                @if(empty($selectedCategories))
                 @include('component.postbutton')
+                @endif
+
+                @if(!empty($selectedCategories))
+                @include('component.categoryname')
+                @endif
 
                 @forelse($posts as $post)
-                    @include('component.postcard', ['post' => $post])
+                @include('component.postcard', ['post' => $post])
                 @empty
-                    <p class="text-[#545454] text-center mt-10">No posts yet.</p>
+                <p class="text-[#545454] text-center mt-10">No posts yet.</p>
                 @endforelse
             </div>
         </div>
@@ -29,9 +35,11 @@
     </div>
 </div>
 
+@include('component.deleteaccountmodal')
+
 @include('component.createpostmodal', [
-    'student' => $student,
-    'categories' => $categories
+'student' => $student,
+'categories' => $categories
 ])
 
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])

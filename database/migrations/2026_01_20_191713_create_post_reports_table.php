@@ -27,7 +27,6 @@ return new class extends Migration
                 ->on('posts')
                 ->onDelete('cascade');
 
-            // IMPORTANT: this only works IF students.student_id is also string/varchar
             $table->foreign('reported_by')
                 ->references('student_id')
                 ->on('students')

@@ -40,9 +40,18 @@ class AuthController extends Controller
             // Store in session
             $request->session()->put('student_id', $student->student_id);
 
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'redirect' => route('feed.page')]);
+            }
+
             return redirect()->route('feed.page');
         } catch (\Exception $e) {
             Log::error('Failed to register student', ['error' => $e->getMessage()]);
+
+            if ($request->ajax()) {
+                return response()->json(['errors' => ['registration' => ['Failed to register student.']]]);
+            }
+
             return back()->withErrors(['registration' => 'Failed to register student.'])->withInput();
         }
     }

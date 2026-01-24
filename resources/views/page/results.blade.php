@@ -15,4 +15,5 @@
     @endif
 </div>
 @include('component.editprofilemodal', ['title' => 'Edit Profile'])
+@include('component.changepassmodal', ['title' => 'Change password'])
 @endsection
