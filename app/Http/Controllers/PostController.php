@@ -9,6 +9,7 @@ use App\Models\PostLike;
 use App\Models\Student;
 use App\Models\PostComment;
 use App\Models\PostReport;
+use App\Models\Event;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
@@ -17,29 +18,40 @@ class PostController extends Controller
     // Feed page
     // ----------------------
     public function index(Request $request)
-    {
-        $studentId = $request->session()->get('student_id');
-        $loggedInStudent = $this->student($studentId);
+{
+    $studentId = $request->session()->get('student_id');
+    $loggedInStudent = $this->student($studentId);
 
-        if (!$loggedInStudent) {
-            return redirect()->route('auth.page')->with('error', 'Please log in first.');
-        }
-
-        $categories = PostCategory::orderBy('category_name')->get();
-
-        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
-            ->withCount(['likes', 'comments'])
-            ->latest('created_at')
-            ->get();
-
-        return view('page.feed', [
-            'posts' => $posts,
-            'categories' => $categories,
-            'student' => $loggedInStudent,
-            'loggedInStudent' => $loggedInStudent,
-            'loggedInStudentId' => $loggedInStudent->student_id,
-        ]);
+    if (!$loggedInStudent) {
+        return redirect()->route('auth.page')->with('error', 'Please log in first.');
     }
+
+    $categories = PostCategory::orderBy('category_name')->get();
+
+    // ✅ Sidebar events (upcoming only)
+    $sidebarEvents = Event::query()
+        ->whereRaw("TIMESTAMP(event_date, COALESCE(end_time, '23:59:59')) >= ?", [now()])
+        ->orderBy('event_date', 'asc')
+        ->take(5)
+        ->get();
+
+    // ✅ IMPORTANT: use pagination instead of ->get() to avoid memory/timeouts
+    $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
+        ->withCount(['likes', 'comments'])
+        ->latest('created_at')
+        ->paginate(10);
+
+    return view('page.feed', [
+        'posts' => $posts,
+        'categories' => $categories,
+        'student' => $loggedInStudent,
+        'loggedInStudent' => $loggedInStudent,
+        'loggedInStudentId' => $loggedInStudent->student_id,
+
+        // ✅ pass this to blade
+        'sidebarEvents' => $sidebarEvents,
+    ]);
+}
 
     // ----------------------
     // Logged-in student's profile

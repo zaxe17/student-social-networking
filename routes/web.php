@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------------
@@ -79,3 +80,6 @@ Route::post('/adminn', [AdminAuthController::class, 'login'])->name('admin.login
 
 Route::get('/adminn/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
 Route::post('/adminn/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
