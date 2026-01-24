@@ -172,7 +172,8 @@
 
 
         <!-- 💬 COMMENTS -->
-        <span
+        <span 
+
             target-modal="commentModal"
             postid-data="{{ $post->post_id }}"
             firstname-data="{{ $post->author->first_name }}"

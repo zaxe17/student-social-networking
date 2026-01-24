@@ -352,26 +352,27 @@ class PostController extends Controller
     // Report post
     // ----------------------
     public function reportPost(Request $request, Post $post)
-    {
-        $studentId = $request->session()->get('student_id');
-        if (!$studentId) {
-            return back()->with('error', 'You must be logged in.');
-        }
+{
+    $studentId = $request->session()->get('student_id');
 
-        $request->validate([
-            'reason'  => 'required|string|max:255',
-            'details' => 'nullable|string|max:2000',
-        ]);
-
-        PostReport::create([
-            'post_id'      => $post->post_id,
-            'reported_by'  => $studentId,
-            'reason'       => $request->reason,
-            'details'      => $request->details,
-        ]);
-
-        return back()->with('success', 'Report submitted.');
+    if (!$studentId) {
+        return back()->with('error', 'You must be logged in.');
     }
+
+    $request->validate([
+        'reason'  => 'required|string|max:255',
+        'details' => 'nullable|string|max:2000',
+    ]);
+
+    PostReport::create([
+        'post_id'     => $post->post_id,
+        'reported_by' => $studentId,
+        'reason'      => $request->reason,
+        'details'     => $request->details,
+    ]);
+
+    return back()->with('success', 'Report submitted.');
+}
 
     // ----------------------
     // Helper: get student by id

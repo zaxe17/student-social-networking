@@ -59,4 +59,50 @@ class CommentController extends Controller
 
         return back();
     }
+
+    public function update(Request $request, PostComment $comment)
+{
+    $studentId = $request->session()->get('student_id');
+    if (!$studentId || $comment->student_id !== $studentId) {
+        return response()->json(['message' => 'Forbidden'], 403);
+    }
+
+    $request->validate([
+        'content' => ['required', 'string'],
+    ]);
+
+    $comment->content = $request->content;
+    $comment->save();
+
+    $comment->load('author');
+
+    return response()->json([
+        'success' => true,
+        'comment_id' => $comment->comment_id ?? $comment->id, // depends on your PK
+        'content' => $comment->content,
+    ]);
+}
+
+public function destroy(PostComment $comment, Request $request)
+{
+    $studentId = $request->session()->get('student_id');
+
+    // only owner can delete
+    if (!$studentId || (string)$comment->student_id !== (string)$studentId) {
+        return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+    }
+
+    $postId = $comment->post_id;
+
+    $comment->delete();
+
+    $commentsCount = PostComment::where('post_id', $postId)->count();
+
+    return response()->json([
+        'success' => true,
+        'post_id' => $postId,
+        'comments_count' => $commentsCount,
+    ]);
+}
+
 }

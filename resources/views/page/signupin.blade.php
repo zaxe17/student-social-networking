@@ -90,7 +90,7 @@
                                 <select name="birth_year" class="text-sm bg-[#dde0e5] w-1/3 h-8 rounded-sm focus:outline-none" required>
                                     <option value="">Year</option>
                                     @for($year = date('Y'); $year >= 1900; $year--)
-                                        <option value="{{ $year }}" {{ old('birth_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                    <option value="{{ $year }}" {{ old('birth_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                     @endfor
                                 </select>
 
@@ -98,14 +98,14 @@
                                     <option value="">Month</option>
                                     @for($month = 1; $month <= 12; $month++)
                                         <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" {{ old('birth_month') == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>{{ date('F', mktime(0,0,0,$month,1)) }}</option>
-                                    @endfor
+                                        @endfor
                                 </select>
 
                                 <select name="birth_day" class="text-sm bg-[#dde0e5] w-1/3 h-8 rounded-sm focus:outline-none" required>
                                     <option value="">Day</option>
                                     @for($day = 1; $day <= 31; $day++)
                                         <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}" {{ old('birth_day') == str_pad($day, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>{{ $day }}</option>
-                                    @endfor
+                                        @endfor
                                 </select>
                             </div>
                             @error('birth_year')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -119,7 +119,7 @@
                             <select name="year_level" id="year_level" class="text-sm bg-[#dde0e5] w-full h-8 rounded-sm focus:outline-none" required>
                                 <option value="">Select Year</option>
                                 @foreach(['1st Year','2nd Year','3rd Year','4th Year','5th Year'] as $year)
-                                    <option value="{{ $year }}" {{ old('year_level') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ old('year_level') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </select>
                             @error('year_level')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -138,7 +138,7 @@
                             <input type="password" name="password" id="password" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
 
                             @if ($errors->has('registration'))
-                                <p class="text-red-500 text-sm mt-1">{{ $errors->first('registration') }}</p>
+                            <p class="text-red-500 text-sm mt-1">{{ $errors->first('registration') }}</p>
                             @endif
 
                             @error('student_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -173,97 +173,101 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('#signup-form form');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('password_confirmation');
-    const passwordError = document.getElementById('password-error');
-    const requiredInputs = form.querySelectorAll('input, select');
+document.addEventListener('DOMContentLoaded', function () {
 
-    // ===== Real-time input highlighting =====
+  // ===== TOGGLE FORMS =====
+  const signinForm = document.getElementById('signin-form');
+  const signupForm = document.getElementById('signup-form');
+  const showSignup = document.getElementById('show-signup');
+  const showSignin = document.getElementById('show-signin');
+
+  showSignup?.addEventListener('click', () => {
+    signinForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+  });
+
+  showSignin?.addEventListener('click', () => {
+    signupForm.classList.add('hidden');
+    signinForm.classList.remove('hidden');
+  });
+
+  // ===== SIGNUP VALIDATION =====
+  const form = document.querySelector('#signup-form form');
+  if (!form) return;
+
+  const password = form.querySelector('input[name="password"]');
+  const confirmPassword = form.querySelector('input[name="password_confirmation"]');
+  const passwordError = document.getElementById('password-error');
+  const requiredInputs = form.querySelectorAll('input, select');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+    let valid = true;
+
     requiredInputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (!input.value) {
-                input.classList.add('border-red-500', 'border');
-            } else {
-                input.classList.remove('border-red-500', 'border');
-            }
+      if (!input.value) {
+        input.classList.add('border-red-500', 'border');
+        valid = false;
+      } else {
+        input.classList.remove('border-red-500', 'border');
+      }
+    });
+
+    if (password.value !== confirmPassword.value) {
+      passwordError.classList.remove('hidden');
+      valid = false;
+    } else {
+      passwordError.classList.add('hidden');
+    }
+
+    if (!valid) return;
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      });
+
+      // IMPORTANT: if server returns HTML (redirect/validation), this will throw
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        console.log(await response.text()); // see what the server returned
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.errors) {
+        Object.entries(data.errors).forEach(([field, messages]) => {
+          const input = form.querySelector(`[name="${field}"]`);
+          if (input) {
+            const p = document.createElement('p');
+            p.className = 'text-red-500 text-sm mt-1 error-msg';
+            p.textContent = messages[0];
+            input.insertAdjacentElement('afterend', p);
+          }
         });
-    });
+      }
 
-    // ===== Real-time password match =====
-    confirmPassword.addEventListener('input', () => {
-        if (password.value !== confirmPassword.value) {
-            passwordError.classList.remove('hidden');
-        } else {
-            passwordError.classList.add('hidden');
-        }
-    });
+      if (data.success && data.redirect) {
+        window.location.href = data.redirect;
+      }
 
-    // ===== AJAX submission with validation =====
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        // Remove old error messages
-        document.querySelectorAll('.error-msg').forEach(el => el.remove());
-
-        let valid = true;
-
-        // Check empty fields
-        requiredInputs.forEach(input => {
-            if (!input.value) {
-                input.classList.add('border-red-500', 'border');
-                valid = false;
-            } else {
-                input.classList.remove('border-red-500', 'border');
-            }
-        });
-
-        // Check password match
-        if (password.value !== confirmPassword.value) {
-            passwordError.classList.remove('hidden');
-            valid = false;
-        } else {
-            passwordError.classList.add('hidden');
-        }
-
-        if (!valid) return; // Stop submission if client-side invalid
-
-        // Prepare form data for AJAX
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
-
-            const data = await response.json();
-
-            if (data.errors) {
-                // Display server-side validation errors
-                for (const [field, messages] of Object.entries(data.errors)) {
-                    const input = document.querySelector(`[name="${field}"]`);
-                    if (input) {
-                        const error = document.createElement('p');
-                        error.classList.add('text-red-500', 'text-sm', 'mt-1', 'error-msg');
-                        error.innerText = messages[0];
-                        input.insertAdjacentElement('afterend', error);
-                        input.classList.add('border-red-500', 'border');
-                    }
-                }
-            } else if (data.success) {
-                // Redirect on successful signup
-                window.location.href = data.redirect;
-            }
-        } catch (err) {
-            console.error('AJAX submission failed', err);
-        }
-    });
+    } catch (err) {
+      console.error('Signup failed', err);
+    }
+  });
 });
 </script>
+
+
 @endsection

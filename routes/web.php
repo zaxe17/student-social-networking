@@ -4,6 +4,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------------
@@ -34,12 +36,16 @@ Route::prefix('feed')->group(function () {
     Route::post('/posts/{post}/report', [PostController::class, 'reportPost'])->name('posts.report');
 
     // Comments
-    Route::get('/posts/{post}/comments', [PostController::class, 'fetchComments'])->name('posts.comments');
-    Route::post('/posts/{post}/comment', [PostController::class, 'storeComment'])->name('posts.comment');
+
+    Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+
 
     // Reactors
     Route::get('/posts/{post}/reactors', [PostController::class, 'reactors']);
-
 });
 
 // ----------------------
@@ -66,3 +72,10 @@ Route::prefix('search')->group(function () {
     Route::get('/results', [SearchController::class, 'searchResults'])->name('search.results'); // search results
     Route::get('/ajax', [PostController::class, 'search'])->name('search.ajax');     // ajax search
 });
+
+
+Route::get('/adminn', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/adminn', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+
+Route::get('/adminn/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
+Route::post('/adminn/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');

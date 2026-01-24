@@ -22,15 +22,23 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id'   => 'required|string|max:15|unique:students,student_id',
-            'first_name'   => 'required|string|max:50',
-            'last_name'    => 'required|string|max:50',
-            'password'     => 'required|string|min:6|confirmed',
-            'course'       => 'required|string|max:10',
-            'year_level'   => 'required|in:1st Year,2nd Year,3rd Year,4th Year,5th Year',
-            'birth_year'   => 'required|digits:4',
-            'birth_month'  => 'required|digits:2',
-            'birth_day'    => 'required|digits:2',
+            'student_id' => [
+                'required',
+                'string',
+                'unique:students,student_id',
+                'regex:/^\d{4}-\d{5}-MN-0$/',
+            ],
+
+            'first_name'  => 'required|string|max:50',
+            'last_name'   => 'required|string|max:50',
+            'password'    => 'required|string|min:6|confirmed',
+            'course'      => 'required|string|max:10',
+
+            'year_level'  => 'required|in:1st Year,2nd Year,3rd Year,4th Year,5th Year',
+
+            'birth_year'  => 'required|digits:4',
+            'birth_month' => 'required|digits:2',
+            'birth_day'   => 'required|digits:2',
         ];
     }
 
@@ -38,6 +46,7 @@ class StoreStudentRequest extends FormRequest
     {
         return [
             'student_id.required' => 'Student ID is required',
+            'student_id.regex' => 'Student ID must follow the format YYYY-#####-MN-0',
             'student_id.unique'   => 'This Student ID is already registered',
             'first_name.required' => 'First name is required',
             'last_name.required'  => 'Last name is required',
