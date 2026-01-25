@@ -434,31 +434,11 @@
                 return;
             }
 
-            // DELETE - Show modal instead of confirm()
+            // DELETE
             if (e.target.closest('.btn-delete-comment')) {
-                const deleteModal = document.getElementById('deletecomment');
-                const confirmBtn = document.getElementById('confirmDeleteComment');
-
-                if (deleteModal) {
-                    // Store comment ID on the modal for later use
-                    deleteModal.dataset.deleteCommentId = commentId;
-                    deleteModal.classList.remove('hidden');
-                }
-                return;
-            }
-        });
-
-        // Handle delete confirmation
-        document.addEventListener('click', async (e) => {
-            if (e.target.id === 'confirmDeleteComment' || e.target.closest('#confirmDeleteComment')) {
-                const deleteModal = document.getElementById('deletecomment');
-                const commentId = deleteModal?.dataset.deleteCommentId;
-
-                if (!commentId) return;
-
-                const btn = e.target.closest('#confirmDeleteComment');
+                const btn = e.target.closest('.btn-delete-comment');
+                if (!confirm('Delete this comment?')) return;
                 btn.disabled = true;
-
                 try {
                     const res = await fetch(`/feed/comments/${commentId}`, {
                         method: 'DELETE',
@@ -473,10 +453,8 @@
                         alert(data.message || 'Failed to delete.');
                         return;
                     }
-
                     // Remove from UI
-                    const item = document.querySelector(`[data-comment-id="${commentId}"]`);
-                    if (item) item.remove();
+                    item.remove();
 
                     // Update counts
                     const postId = data.post_id;
@@ -488,26 +466,22 @@
                         modalComments.textContent = `${count} comment${count !== 1 ? 's' : ''}`;
                     }
 
-                    // Update feed comment counts
+                    // Update feed comment counts (visible text)
                     document.querySelectorAll(`.comment-count[data-post-id="${postId}"]`)
                         .forEach(el => el.textContent = `${count} comment${count !== 1 ? 's' : ''}`);
 
-                    // Sync all comment modal buttons in feed
+                    // UPDATE: Sync all comment modal buttons in feed
                     document.querySelectorAll(`[target-modal="commentModal"][postid-data="${postId}"]`)
                         .forEach(btn => {
                             btn.setAttribute('comment-data', count);
                         });
-
-                    // Close modal
-                    deleteModal.classList.add('hidden');
-                    delete deleteModal.dataset.deleteCommentId;
-
                 } catch (error) {
                     console.error(error);
                     alert('Network error.');
                 } finally {
                     btn.disabled = false;
                 }
+                return;
             }
         });
     </script>
