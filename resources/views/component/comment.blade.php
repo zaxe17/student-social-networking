@@ -47,7 +47,7 @@ $commentId = $comment->comment_id ?? $comment->id;
                                 Edit
                             </button>
                         </li>
-                        <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100" target-modal="deletecomment">
+                        <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
                             <button type="button" class="btn-delete-comment cursor-pointer flex items-center gap-1.5 text-red-600">
                                 <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
                                 Delete

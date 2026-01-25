@@ -344,17 +344,15 @@
         document.addEventListener('click', async (e) => {
             const item = e.target.closest('.comment-item');
             if (!item) return;
-
             const commentId = item.dataset.commentId;
             if (!commentId) return;
-
             const textEl = item.querySelector('.comment-text');
             const editBox = item.querySelector('.comment-edit-box');
             const inputEl = item.querySelector('.comment-input');
             const errEl = item.querySelector('.comment-error');
             const updatedEl = item.querySelector('.comment-updated');
 
-            // ---------- EDIT ----------
+            // EDIT - show edit box
             if (e.target.closest('.btn-edit-comment')) {
                 if (editBox) editBox.classList.remove('hidden');
                 if (textEl) textEl.classList.add('hidden');
@@ -369,7 +367,7 @@
                 return;
             }
 
-            // ---------- CANCEL EDIT ----------
+            // CANCEL
             if (e.target.closest('.btn-cancel-edit')) {
                 if (editBox) editBox.classList.add('hidden');
                 if (textEl) textEl.classList.remove('hidden');
@@ -381,7 +379,7 @@
                 return;
             }
 
-            // ---------- SAVE EDIT ----------
+            // SAVE
             if (e.target.closest('.btn-save-comment')) {
                 const btn = e.target.closest('.btn-save-comment');
                 const content = (inputEl?.value || '').trim();
@@ -393,7 +391,6 @@
                     }
                     return;
                 }
-
                 btn.disabled = true;
                 try {
                     const res = await fetch(`/feed/comments/${commentId}`, {
@@ -408,9 +405,7 @@
                             content
                         })
                     });
-
                     const data = await res.json();
-
                     if (!res.ok || !data.success) {
                         if (errEl) {
                             errEl.textContent = data.message || 'Failed to update comment.';
@@ -418,7 +413,7 @@
                         }
                         return;
                     }
-
+                    // Update UI
                     if (textEl) textEl.textContent = data.content ?? content;
                     if (updatedEl) updatedEl.textContent = data.updated_human ?? 'just now';
                     if (editBox) editBox.classList.add('hidden');
@@ -427,7 +422,6 @@
                         errEl.classList.add('hidden');
                         errEl.textContent = '';
                     }
-
                 } catch (error) {
                     console.error(error);
                     if (errEl) {
@@ -440,31 +434,29 @@
                 return;
             }
 
-            // ---------- DELETE ----------
-            // modal-based delete
-            let currentCommentItem = window.currentCommentItem || null;
+            // DELETE - Show modal instead of confirm()
+            if (e.target.closest('.btn-delete-comment')) {
+                const deleteModal = document.getElementById('deletecomment');
+                const confirmBtn = document.getElementById('confirmDeleteComment');
 
-            // Click on delete button → open modal
-            if (e.target.closest('.btn-delete-comment') && item) {
-                window.currentCommentItem = item;
-                const modal = document.getElementById('deletecomment');
-                if (modal) modal.classList.remove('hidden');
+                if (deleteModal) {
+                    // Store comment ID on the modal for later use
+                    deleteModal.dataset.deleteCommentId = commentId;
+                    deleteModal.classList.remove('hidden');
+                }
                 return;
             }
+        });
 
-            // Click cancel / close modal
-            if (e.target.closest('[close-modal]')) {
-                const modal = e.target.closest('.modal');
-                if (modal) modal.classList.add('hidden');
-                window.currentCommentItem = null;
-                return;
-            }
+        // Handle delete confirmation
+        document.addEventListener('click', async (e) => {
+            if (e.target.id === 'confirmDeleteComment' || e.target.closest('#confirmDeleteComment')) {
+                const deleteModal = document.getElementById('deletecomment');
+                const commentId = deleteModal?.dataset.deleteCommentId;
 
-            // Confirm delete from modal
-            if (e.target.id === 'confirmDeleteComment' && window.currentCommentItem) {
-                const btn = e.target;
-                const commentItem = window.currentCommentItem;
-                const commentId = commentItem.dataset.commentId;
+                if (!commentId) return;
+
+                const btn = e.target.closest('#confirmDeleteComment');
                 btn.disabled = true;
 
                 try {
@@ -476,45 +468,47 @@
                             'X-Requested-With': 'XMLHttpRequest',
                         }
                     });
-
                     const data = await res.json();
-
                     if (!res.ok || !data.success) {
                         alert(data.message || 'Failed to delete.');
                         return;
                     }
 
-                    // Remove from DOM
-                    commentItem.remove();
+                    // Remove from UI
+                    const item = document.querySelector(`[data-comment-id="${commentId}"]`);
+                    if (item) item.remove();
 
-                    // Update comment counts
+                    // Update counts
                     const postId = data.post_id;
                     const count = data.comments_count;
 
-                    // Modal comment count
+                    // Update modal comment count
                     const modalComments = document.getElementById('modalComments');
-                    if (modalComments) modalComments.textContent = `${count} comment${count !== 1 ? 's' : ''}`;
+                    if (modalComments) {
+                        modalComments.textContent = `${count} comment${count !== 1 ? 's' : ''}`;
+                    }
 
-                    // Feed comment counts
+                    // Update feed comment counts
                     document.querySelectorAll(`.comment-count[data-post-id="${postId}"]`)
                         .forEach(el => el.textContent = `${count} comment${count !== 1 ? 's' : ''}`);
 
-                    // Sync comment modal buttons
+                    // Sync all comment modal buttons in feed
                     document.querySelectorAll(`[target-modal="commentModal"][postid-data="${postId}"]`)
-                        .forEach(btn => btn.setAttribute('comment-data', count));
+                        .forEach(btn => {
+                            btn.setAttribute('comment-data', count);
+                        });
+
+                    // Close modal
+                    deleteModal.classList.add('hidden');
+                    delete deleteModal.dataset.deleteCommentId;
 
                 } catch (error) {
                     console.error(error);
                     alert('Network error.');
                 } finally {
                     btn.disabled = false;
-                    const modal = document.getElementById('deletecomment');
-                    if (modal) modal.classList.add('hidden');
-                    window.currentCommentItem = null;
                 }
-                return;
             }
-
         });
     </script>
 
