@@ -14,4 +14,20 @@ class PostReport extends Model
         'reason',
         'details',
     ];
+
+    /**
+     * Get the post that was reported
+     */
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id', 'post_id');
+    }
+
+    /**
+     * Get the student who reported
+     */
+    public function reporter()
+    {
+        return $this->belongsTo(Student::class, 'reported_by', 'student_id');
+    }
 }
