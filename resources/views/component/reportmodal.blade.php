@@ -35,13 +35,15 @@
                 </div>
 
                 <div class="flex flex-col">
-                    <label>Additional details</label>
-                    <textarea name="details" class="shadow-textarea w-full h-25 px-3 focus:outline-none resize-none"></textarea>
+                    <label>Additional Details</label>
+                    <textarea name="details" class="shadow-textarea w-full h-25 px-3 focus:outline-none resize-none"
+                        placeholder="If Other, please specify."></textarea>
                 </div>
 
                 <div class="flex justify-center">
-                    <button type="submit"
-                        class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md cursor-pointer">
+                    <button type="submit" id="reportSubmit"
+                        class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md cursor-not-allowed opacity-50"
+                        disabled>
                         Submit
                     </button>
                 </div>
@@ -70,5 +72,23 @@
 
         form.action = `/posts/${postId}/report`;
         modal.classList.remove('hidden');
+
+        const reasonSelect = form.querySelector('select[name="reason"]');
+        const submitBtn = form.querySelector('#reportSubmit');
+
+        // Initially disable submit
+        submitBtn.disabled = true;
+        submitBtn.classList.add('cursor-not-allowed', 'opacity-50');
+
+        // Enable submit when a valid reason is selected
+        reasonSelect.addEventListener('change', function() {
+            if (reasonSelect.value) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('cursor-not-allowed', 'opacity-50');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('cursor-not-allowed', 'opacity-50');
+            }
+        });
     });
 </script>

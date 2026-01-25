@@ -61,7 +61,6 @@ class AuthController extends Controller
             }
 
             return redirect()->route('feed.page');
-
         } catch (\Exception $e) {
             Log::error('Signup failed', ['error' => $e->getMessage()]);
 
@@ -115,14 +114,10 @@ class AuthController extends Controller
     // LOGOUT
     public function logout(Request $request)
     {
-        /**
-         * Combined logout behavior:
-         * - flush() removes all session data (Luis)
-         * - invalidate() ensures session security (Aro)
-         */
-        $request->session()->flush();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // Only remove student session, keep admin session intact
+        $request->session()->forget('student_id');
+        // Optional: regenerate CSRF token to stay safe
+        $request->session()->put('_token', csrf_token());
 
         return redirect()->route('auth.page');
     }
