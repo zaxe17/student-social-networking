@@ -99,11 +99,11 @@
                 </div>
 
                 {{-- Submit --}}
-                <button type="submit"
+                <button id="formMsg" type="submit"
                     class="w-full bg-[#770d08] text-white py-2 rounded text-lg cursor-pointer">
                     Save Changes
                 </button>
-                <p id="formMsg" class="text-center text-sm mt-2"></p>
+                <!-- <p id="formMsg" class="text-center text-sm mt-2"></p> -->
             </form>
         </div>
     </div>

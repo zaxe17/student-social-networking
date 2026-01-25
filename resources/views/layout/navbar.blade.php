@@ -6,8 +6,7 @@ $student = $studentId ? \App\Models\Student::find($studentId) : null;
 <nav class="shadow-nav sticky top-0 w-full h-18 bg-[#770d08] px-13 flex justify-between items-center z-50">
     <!-- LOGO -->
     <a href="{{ route('feed.page') }}" class="flex items-center gap-4">
-        <img src="/img/logo.png" alt="pup_logo" class="w-10 h-10">
-        <p class="text-2xl text-white font-bold">ISKOnnect</p>
+        <img src="/img/ISKOnnect.png" alt="ISKOnnect" class="w-30">
     </a>
 
     <!-- PAGE LIST ICON -->
@@ -26,6 +25,14 @@ $student = $studentId ? \App\Models\Student::find($studentId) : null;
             {{ Route::currentRouteName() == 'profile.page' ? 'border-b-white' : 'border-b-transparent hover:border-b-white' }}">
             <div class="flex justify-center group-hover:bg-white/10 transition-all duration-300 rounded-lg w-full p-4">
                 <span class="icon bg-white" style="--svg: url('https://api.iconify.design/mdi/user.svg'); --size: 28px; --icon-color: black;"></span>
+            </div>
+        </a>
+        
+        <!-- EVENT PAGE -->
+        <a href="{{ route('events.index') }}" class="group border-b-2 border-solid border-b-transparent hover:border-b-white transition-all duration-300 w-35 h-full flex justify-center items-center
+            {{ Route::currentRouteName() == 'events.index' ? 'border-b-white' : 'border-b-transparent hover:border-b-white' }}">
+            <div class="flex justify-center group-hover:bg-white/10 transition-all duration-300 rounded-lg w-full p-4">
+                <span class="icon bg-white" style="--svg: url('https://api.iconify.design/mdi/event-star.svg'); --size: 28px; --icon-color: black;"></span>
             </div>
         </a>
     </div>

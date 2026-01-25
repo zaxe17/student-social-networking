@@ -77,7 +77,7 @@
 
         <!-- DROPDOWN MENU -->
         <div class="relative ml-auto">
-            <span class="icon bg-[#545454] cursor-pointer dot-btn"
+            <span class="icon bg-[#545454] cursor-pointer mt-1.5 dot-btn"
                 data-dropdown="dotDropdown-{{ $post->post_id }}"
                 style="--svg: url('https://api.iconify.design/solar/menu-dots-bold.svg'); --size: 25px;"></span>
 
@@ -100,44 +100,41 @@
                         <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
                         Restore
                     </li>
-                    <li class="hover:bg-red-50">
+                    <li class="cursor-pointer hover:bg-red-50">
                         <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
                             onsubmit="return confirm('Permanently delete this post?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
+                            <button type="submit" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
                                 <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
                                 Delete
                             </button>
                         </form>
                     </li>
                     @else
-                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
-                        <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
-                        <button type="button" class="editPostBtn text-left w-full"
+                    <li class="px-4 py-2 cursor-pointer text-[#545454] hover:bg-gray-100">
+                        <button type="button" class="editPostBtn text-left w-full cursor-pointer flex items-center gap-1.5"
                             data-post-id="{{ $post->post_id }}"
                             data-post-content="{{ e($post->content) }}">
+                            <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
                             Edit
                         </button>
                     </li>
                     <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
-                        <form action="{{ route('posts.destroy', $post->post_id) }}" method="POST" class="flex items-center gap-1.5 w-full">
+                        <form action="{{ route('posts.destroy', $post->post_id) }}" method="POST" class="w-full">
                             @csrf
-                            @method('DELETE')
-                            <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/archive-outline.svg'); --size: 18px;"></span>
-                            <button type="submit" class="w-full text-left">Archive</button>
-                        </form>
-                    </li>
-                    <li class="hover:bg-red-50">
-                        <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
-                            onsubmit="return confirm('Permanently delete this post?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
-                                <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
-                                Delete
+                            <button type="submit" class="w-full cursor-pointer text-left flex items-center gap-1.5">
+                                @method('DELETE')
+                                <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/archive-outline.svg'); --size: 18px;"></span>
+                                Archive
                             </button>
                         </form>
+                    </li>
+                    <li class="cursor-pointer hover:bg-red-50" target-modal="deletepost{{ $post->post_id }}">
+                        <button type="button" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
+                            <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                            Delete
+                        </button>
                     </li>
                     @endif
                     @endif

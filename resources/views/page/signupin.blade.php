@@ -7,8 +7,7 @@
     <nav class="shadow-nav sticky top-0 w-full h-18 bg-[#770d08] px-13 flex justify-between items-center">
         <!-- LOGO -->
         <div class="flex items-center gap-4">
-            <img src="/img/logo.png" alt="pup_logo" class="w-10 h-10">
-            <p class="text-2xl text-white font-bold">ISKOnnect</p>
+            <img src="/img/ISKOnnect.png" alt="ISKOnnect" class="w-30">
         </div>
     </nav>
 

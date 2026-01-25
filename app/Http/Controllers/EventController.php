@@ -37,21 +37,23 @@ class EventController extends Controller
             'header' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
+        $studentId = $request->session()->get('student_id');
+
+        if (!$studentId) {
+            return back()->with('error', 'You must be logged in to post an event.');
+        }
+
+        $headerPath = $request->hasFile('header')
+            ? $request->file('header')->store('event_headers', 'public')
+            : null;
+
         // Normalize URL
         if (!empty($validated['registration_url']) && !preg_match('/^https?:\/\//i', $validated['registration_url'])) {
             $validated['registration_url'] = 'https://' . $validated['registration_url'];
         }
 
-        $headerPath = null;
-        if ($request->hasFile('header')) {
-            $headerPath = $request->file('header')->store('event_headers', 'public');
-        }
-
-        // Create event with student_id if logged in
-        $studentId = Auth::check() ? Auth::user()->student_id : null;
-
         Event::create([
-            'student_id' => $studentId, // set creator if logged in
+            'student_id' => $studentId,
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
             'event_date' => $validated['event_date'],

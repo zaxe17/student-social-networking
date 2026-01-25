@@ -1,4 +1,4 @@
-<div id="createEventModal" class="@if($errors->any()) block @else hidden @endif fixed inset-0 z-50 overflow-y-auto">
+<div id="createEventModal" class="@if($errors->any()) block @else hidden @endif fixed inset-0 z-50">
     <div class="absolute inset-0 bg-black/40 cursor-pointer"
          onclick="document.getElementById('createEventModal').classList.add('hidden')"></div>
 

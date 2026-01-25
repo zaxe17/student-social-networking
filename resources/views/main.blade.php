@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Document')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -55,7 +56,7 @@
     </script>
 
     <!-- ========================= -->
-    <!-- 3 DOT DROPDOWN -->
+    <!-- 3 DOT DROPDOWN FOR POST CARD-->
     <!-- ========================= -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -343,15 +344,17 @@
         document.addEventListener('click', async (e) => {
             const item = e.target.closest('.comment-item');
             if (!item) return;
+
             const commentId = item.dataset.commentId;
             if (!commentId) return;
+
             const textEl = item.querySelector('.comment-text');
             const editBox = item.querySelector('.comment-edit-box');
             const inputEl = item.querySelector('.comment-input');
             const errEl = item.querySelector('.comment-error');
             const updatedEl = item.querySelector('.comment-updated');
 
-            // EDIT - show edit box
+            // ---------- EDIT ----------
             if (e.target.closest('.btn-edit-comment')) {
                 if (editBox) editBox.classList.remove('hidden');
                 if (textEl) textEl.classList.add('hidden');
@@ -366,7 +369,7 @@
                 return;
             }
 
-            // CANCEL
+            // ---------- CANCEL EDIT ----------
             if (e.target.closest('.btn-cancel-edit')) {
                 if (editBox) editBox.classList.add('hidden');
                 if (textEl) textEl.classList.remove('hidden');
@@ -378,7 +381,7 @@
                 return;
             }
 
-            // SAVE
+            // ---------- SAVE EDIT ----------
             if (e.target.closest('.btn-save-comment')) {
                 const btn = e.target.closest('.btn-save-comment');
                 const content = (inputEl?.value || '').trim();
@@ -390,6 +393,7 @@
                     }
                     return;
                 }
+
                 btn.disabled = true;
                 try {
                     const res = await fetch(`/feed/comments/${commentId}`, {
@@ -404,7 +408,9 @@
                             content
                         })
                     });
+
                     const data = await res.json();
+
                     if (!res.ok || !data.success) {
                         if (errEl) {
                             errEl.textContent = data.message || 'Failed to update comment.';
@@ -412,7 +418,7 @@
                         }
                         return;
                     }
-                    // Update UI
+
                     if (textEl) textEl.textContent = data.content ?? content;
                     if (updatedEl) updatedEl.textContent = data.updated_human ?? 'just now';
                     if (editBox) editBox.classList.add('hidden');
@@ -421,6 +427,7 @@
                         errEl.classList.add('hidden');
                         errEl.textContent = '';
                     }
+
                 } catch (error) {
                     console.error(error);
                     if (errEl) {
@@ -433,11 +440,33 @@
                 return;
             }
 
-            // DELETE
-            if (e.target.closest('.btn-delete-comment')) {
-                const btn = e.target.closest('.btn-delete-comment');
-                if (!confirm('Delete this comment?')) return;
+            // ---------- DELETE ----------
+            // modal-based delete
+            let currentCommentItem = window.currentCommentItem || null;
+
+            // Click on delete button → open modal
+            if (e.target.closest('.btn-delete-comment') && item) {
+                window.currentCommentItem = item;
+                const modal = document.getElementById('deletecomment');
+                if (modal) modal.classList.remove('hidden');
+                return;
+            }
+
+            // Click cancel / close modal
+            if (e.target.closest('[close-modal]')) {
+                const modal = e.target.closest('.modal');
+                if (modal) modal.classList.add('hidden');
+                window.currentCommentItem = null;
+                return;
+            }
+
+            // Confirm delete from modal
+            if (e.target.id === 'confirmDeleteComment' && window.currentCommentItem) {
+                const btn = e.target;
+                const commentItem = window.currentCommentItem;
+                const commentId = commentItem.dataset.commentId;
                 btn.disabled = true;
+
                 try {
                     const res = await fetch(`/feed/comments/${commentId}`, {
                         method: 'DELETE',
@@ -447,41 +476,68 @@
                             'X-Requested-With': 'XMLHttpRequest',
                         }
                     });
+
                     const data = await res.json();
+
                     if (!res.ok || !data.success) {
                         alert(data.message || 'Failed to delete.');
                         return;
                     }
-                    // Remove from UI
-                    item.remove();
 
-                    // Update counts
+                    // Remove from DOM
+                    commentItem.remove();
+
+                    // Update comment counts
                     const postId = data.post_id;
                     const count = data.comments_count;
 
-                    // Update modal comment count
+                    // Modal comment count
                     const modalComments = document.getElementById('modalComments');
-                    if (modalComments) {
-                        modalComments.textContent = `${count} comment${count !== 1 ? 's' : ''}`;
-                    }
+                    if (modalComments) modalComments.textContent = `${count} comment${count !== 1 ? 's' : ''}`;
 
-                    // Update feed comment counts (visible text)
+                    // Feed comment counts
                     document.querySelectorAll(`.comment-count[data-post-id="${postId}"]`)
                         .forEach(el => el.textContent = `${count} comment${count !== 1 ? 's' : ''}`);
 
-                    // UPDATE: Sync all comment modal buttons in feed
+                    // Sync comment modal buttons
                     document.querySelectorAll(`[target-modal="commentModal"][postid-data="${postId}"]`)
-                        .forEach(btn => {
-                            btn.setAttribute('comment-data', count);
-                        });
+                        .forEach(btn => btn.setAttribute('comment-data', count));
+
                 } catch (error) {
                     console.error(error);
                     alert('Network error.');
                 } finally {
                     btn.disabled = false;
+                    const modal = document.getElementById('deletecomment');
+                    if (modal) modal.classList.add('hidden');
+                    window.currentCommentItem = null;
                 }
                 return;
             }
+
+        });
+    </script>
+
+    <!-- ========================= -->
+    <!-- 3 DOTS MENU FOR COMMENT BOX -->
+    <!-- ========================= -->
+    <script>
+        document.addEventListener('click', (e) => {
+            // Toggle dropdown when dot button is clicked
+            const dotBtn = e.target.closest('.dot-btn');
+            if (dotBtn) {
+                const wrapper = dotBtn.closest('.comment-dropdown-wrapper');
+                const menu = wrapper.querySelector('.dropdown-menu');
+                menu.classList.toggle('hidden');
+                return;
+            }
+
+            // Close dropdown if clicking outside
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (!menu.contains(e.target) && !menu.previousElementSibling?.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
         });
     </script>
 
@@ -525,44 +581,80 @@
     <!-- EDIT POST -->
     <!-- ========================= -->
     <script>
-        document.addEventListener('click', async function(e) {
-            const btn = e.target.closest('.editPostBtn');
-            if (!btn) return;
+        document.addEventListener('DOMContentLoaded', () => {
 
-            e.preventDefault();
+            const modal = document.getElementById('editpostModal');
+            const textarea = document.getElementById('editPostContent');
+            const form = document.getElementById('editPostForm');
 
-            const postId = btn.getAttribute('data-post-id');
-            const oldContent = btn.getAttribute('data-post-content') || '';
-            if (!postId) return;
+            if (!modal || !textarea || !form) {
+                console.error('Modal, textarea, or form not found!');
+                return;
+            }
 
-            const newContent = prompt("Edit your post:", oldContent);
-            if (newContent === null || !newContent.trim()) return;
+            let currentPostId = null;
 
-            try {
-                const res = await fetch(`/feed/posts/${postId}/edit`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        content: newContent
-                    })
-                });
+            // OPEN MODAL
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.editPostBtn');
+                if (!btn) return;
 
-                const data = await res.json();
+                e.preventDefault();
+                e.stopPropagation();
 
-                if (res.ok && data.success) {
+                currentPostId = btn.dataset.postId;
+                textarea.value = btn.dataset.postContent || '';
+
+                modal.classList.remove('hidden');
+            });
+
+            // SAVE (AJAX)
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!currentPostId) return;
+
+                try {
+                    // Safe CSRF token retrieval
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+                    if (!csrfToken) {
+                        console.warn('CSRF token not found');
+                    }
+
+                    const res = await fetch(`/feed/posts/${currentPostId}/edit`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            content: textarea.value
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok || !data.success) throw new Error('Failed');
+
+                    modal.classList.add('hidden');
                     window.location.reload();
-                } else {
-                    console.error(data);
+
+                } catch (err) {
+                    console.error(err);
                     alert('Edit failed. Check console.');
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Error editing post. Check console.');
-            }
+            });
+
+            // CLOSE MODAL
+            modal.querySelectorAll('[close-modal]').forEach(btn => {
+                btn.addEventListener('click', () => modal.classList.add('hidden'));
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.add('hidden');
+            });
+
         });
     </script>
 
