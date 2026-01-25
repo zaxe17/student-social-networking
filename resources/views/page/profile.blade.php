@@ -59,4 +59,5 @@
     </div>
 </div>
 @include('component.editprofilemodal', ['title' => 'Edit Profile'])
+@include('component.deleteaccountmodal')
 @endsection

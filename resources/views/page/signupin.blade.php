@@ -13,6 +13,7 @@
     </nav>
 
     <div class="mx-auto w-full h-full">
+        <!-- SIGNIN FORM -->
         <div id="signin-form" class="flex justify-between w-full h-full">
             <div class="w-1/2 h-full flex flex-col justify-end items-start">
                 <div class="mx-25 my-20">
@@ -42,7 +43,11 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <button type="submit" class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5">Sign In</button>
+                        <button
+                            type="submit"
+                            class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5 cursor-pointer">
+                            Sign In
+                        </button>
                     </div>
 
                     <p class="text-center">Don’t have an account yet? <span id="show-signup" class="font-medium underline cursor-pointer">Sign-up</span></p>
@@ -50,6 +55,7 @@
             </form>
         </div>
 
+        <!-- SIGNUP FORM -->
         <div id="signup-form" class="hidden flex justify-center items-center p-4 lg:p-10 h-full">
             <form action="{{ route('students.store') }}" method="POST" class="shadow-form bg-[#f4f6f9]/25 rounded-3xl w-md p-8 backdrop-blur-sm">
                 @csrf
@@ -62,27 +68,21 @@
                         <div class="flex flex-col col-span-12">
                             <label for="student_id">Student ID</label>
                             <input type="text" name="student_id" id="student_id" value="{{ old('student_id') }}" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none">
-                            @error('student_id')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            @error('student_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- First Name -->
                         <div class="flex flex-col col-span-6">
                             <label for="first_name">First Name</label>
                             <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
-                            @error('first_name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            @error('first_name')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Last Name -->
                         <div class="flex flex-col col-span-6">
                             <label for="last_name">Last Name</label>
                             <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
-                            @error('last_name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            @error('last_name')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Birthday -->
@@ -92,7 +92,7 @@
                                 <select name="birth_year" class="text-sm bg-[#dde0e5] w-1/3 h-8 rounded-sm focus:outline-none" required>
                                     <option value="">Year</option>
                                     @for($year = date('Y'); $year >= 1900; $year--)
-                                        <option value="{{ $year }}" {{ old('birth_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                    <option value="{{ $year }}" {{ old('birth_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                     @endfor
                                 </select>
 
@@ -100,14 +100,14 @@
                                     <option value="">Month</option>
                                     @for($month = 1; $month <= 12; $month++)
                                         <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" {{ old('birth_month') == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>{{ date('F', mktime(0,0,0,$month,1)) }}</option>
-                                    @endfor
+                                        @endfor
                                 </select>
 
                                 <select name="birth_day" class="text-sm bg-[#dde0e5] w-1/3 h-8 rounded-sm focus:outline-none" required>
                                     <option value="">Day</option>
                                     @for($day = 1; $day <= 31; $day++)
                                         <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}" {{ old('birth_day') == str_pad($day, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>{{ $day }}</option>
-                                    @endfor
+                                        @endfor
                                 </select>
                             </div>
                             @error('birth_year')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -121,7 +121,7 @@
                             <select name="year_level" id="year_level" class="text-sm bg-[#dde0e5] w-full h-8 rounded-sm focus:outline-none" required>
                                 <option value="">Select Year</option>
                                 @foreach(['1st Year','2nd Year','3rd Year','4th Year','5th Year'] as $year)
-                                    <option value="{{ $year }}" {{ old('year_level') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ old('year_level') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </select>
                             @error('year_level')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -140,7 +140,7 @@
                             <input type="password" name="password" id="password" class="bg-[#dde0e5] w-full h-8 p-2 rounded-sm focus:outline-none" required>
 
                             @if ($errors->has('registration'))
-                                <p class="text-red-500 text-sm mt-1">{{ $errors->first('registration') }}</p>
+                            <p class="text-red-500 text-sm mt-1">{{ $errors->first('registration') }}</p>
                             @endif
 
                             @error('student_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
@@ -164,7 +164,11 @@
                     </div>
 
                     <div class="flex justify-center mt-5">
-                        <button type="submit" class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5">Sign Up</button>
+                        <button
+                            type="submit"
+                            class="bg-[#770d08] w-30 text-white font-medium rounded-md py-1.5 cursor-pointer">
+                            Sign Up
+                        </button>
                     </div>
 
                     <p id="show-signin" class="text-center">Have an account already? <span class="font-medium underline cursor-pointer">Sign-in</span></p>
@@ -175,97 +179,92 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('#signup-form form');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('password_confirmation');
-    const passwordError = document.getElementById('password-error');
-    const requiredInputs = form.querySelectorAll('input, select');
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // ===== Real-time input highlighting =====
-    requiredInputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (!input.value) {
-                input.classList.add('border-red-500', 'border');
-            } else {
-                input.classList.remove('border-red-500', 'border');
-            }
-        });
-    });
+        // ===== TOGGLE FORMS =====
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const showSignup = document.getElementById('show-signup');
+        const showSignin = document.getElementById('show-signin');
 
-    // ===== Real-time password match =====
-    confirmPassword.addEventListener('input', () => {
-        if (password.value !== confirmPassword.value) {
-            passwordError.classList.remove('hidden');
-        } else {
-            passwordError.classList.add('hidden');
-        }
-    });
-
-    // ===== AJAX submission with validation =====
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        // Remove old error messages
-        document.querySelectorAll('.error-msg').forEach(el => el.remove());
-
-        let valid = true;
-
-        // Check empty fields
-        requiredInputs.forEach(input => {
-            if (!input.value) {
-                input.classList.add('border-red-500', 'border');
-                valid = false;
-            } else {
-                input.classList.remove('border-red-500', 'border');
-            }
+        showSignup?.addEventListener('click', () => {
+            signinForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
         });
 
-        // Check password match
-        if (password.value !== confirmPassword.value) {
-            passwordError.classList.remove('hidden');
-            valid = false;
-        } else {
-            passwordError.classList.add('hidden');
-        }
+        showSignin?.addEventListener('click', () => {
+            signupForm.classList.add('hidden');
+            signinForm.classList.remove('hidden');
+        });
 
-        if (!valid) return; // Stop submission if client-side invalid
+        // ===== SIGNUP VALIDATION & AJAX =====
+        const form = document.querySelector('#signup-form form');
+        if (!form) return;
 
-        // Prepare form data for AJAX
-        const formData = new FormData(form);
+        const password = form.querySelector('input[name="password"]');
+        const confirmPassword = form.querySelector('input[name="password_confirmation"]');
+        const passwordError = document.getElementById('password-error');
+        const requiredInputs = form.querySelectorAll('input, select');
 
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+            let valid = true;
+
+            requiredInputs.forEach(input => {
+                if (!input.value) {
+                    input.classList.add('border-red-500', 'border');
+                    valid = false;
+                } else {
+                    input.classList.remove('border-red-500', 'border');
                 }
             });
 
-            const data = await response.json();
-
-            if (data.errors) {
-                // Display server-side validation errors
-                for (const [field, messages] of Object.entries(data.errors)) {
-                    const input = document.querySelector(`[name="${field}"]`);
-                    if (input) {
-                        const error = document.createElement('p');
-                        error.classList.add('text-red-500', 'text-sm', 'mt-1', 'error-msg');
-                        error.innerText = messages[0];
-                        input.insertAdjacentElement('afterend', error);
-                        input.classList.add('border-red-500', 'border');
-                    }
-                }
-            } else if (data.success) {
-                // Redirect on successful signup
-                window.location.href = data.redirect;
+            if (password.value !== confirmPassword.value) {
+                passwordError.classList.remove('hidden');
+                valid = false;
+            } else {
+                passwordError.classList.add('hidden');
             }
-        } catch (err) {
-            console.error('AJAX submission failed', err);
-        }
+
+            if (!valid) return;
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const contentType = response.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) return;
+
+                const data = await response.json();
+
+                if (data.errors) {
+                    Object.entries(data.errors).forEach(([field, messages]) => {
+                        const input = form.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            const p = document.createElement('p');
+                            p.className = 'text-red-500 text-sm mt-1 error-msg';
+                            p.textContent = messages[0];
+                            input.insertAdjacentElement('afterend', p);
+                        }
+                    });
+                }
+
+                if (data.success && data.redirect) window.location.href = data.redirect;
+
+            } catch (err) {
+                console.error('Signup failed', err);
+            }
+        });
     });
-});
 </script>
 @endsection

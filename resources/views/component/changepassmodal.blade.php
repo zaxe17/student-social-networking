@@ -34,7 +34,11 @@
                 </div>
 
                 <div class="flex justify-center mt-7">
-                    <button type="submit" id="saveBtn" class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">
+                    <button type="submit" id="saveBtn"
+                        class="w-30 flex justify-center items-center py-1.5 text-xl font-medium
+                        text-white bg-[#770d08] rounded-md
+                        cursor-pointer hover:opacity-90 transition
+                        disabled:opacity-50 disabled:cursor-not-allowed">
                         Save
                     </button>
                 </div>

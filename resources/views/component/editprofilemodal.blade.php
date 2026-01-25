@@ -30,7 +30,7 @@
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
 
                     <button type="button" id="uploadBtn"
-                        class="px-4 py-2 bg-[#770d08] text-white rounded">
+                        class="px-4 py-2 bg-[#770d08] text-white rounded cursor-pointer">
                         Upload / Take Photo
                     </button>
                 </div>
@@ -99,7 +99,10 @@
                 </div>
 
                 {{-- Submit --}}
-                <button type="submit" class="w-full bg-[#770d08] text-white py-2 rounded text-lg">Save Changes</button>
+                <button type="submit"
+                    class="w-full bg-[#770d08] text-white py-2 rounded text-lg cursor-pointer">
+                    Save Changes
+                </button>
                 <p id="formMsg" class="text-center text-sm mt-2"></p>
             </form>
         </div>
@@ -109,116 +112,121 @@
 
 {{-- CropperJS & AJAX --}}
 <script>
-let cropper = null;
-let croppedBlob = null;
+    let cropper = null;
+    let croppedBlob = null;
 
-const uploadBtn = document.getElementById('uploadBtn');
-const photoInput = document.getElementById('photoInput');
-const cropContainer = document.getElementById('cropContainer');
-const cropImage = document.getElementById('cropImage');
-const photoPreview = document.getElementById('photoPreview');
-const cropBtn = document.getElementById('cropBtn');
-const formMsg = document.getElementById('formMsg');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const photoInput = document.getElementById('photoInput');
+    const cropContainer = document.getElementById('cropContainer');
+    const cropImage = document.getElementById('cropImage');
+    const photoPreview = document.getElementById('photoPreview');
+    const cropBtn = document.getElementById('cropBtn');
+    const formMsg = document.getElementById('formMsg');
 
-uploadBtn.onclick = () => photoInput.click();
+    uploadBtn.onclick = () => photoInput.click();
 
-photoInput.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
+    photoInput.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-        cropImage.src = reader.result;
-        cropContainer.classList.remove('hidden');
+        const reader = new FileReader();
+        reader.onload = () => {
+            cropImage.src = reader.result;
+            cropContainer.classList.remove('hidden');
 
-        cropper?.destroy();
-        cropper = new Cropper(cropImage, {
-            aspectRatio: 1,
-            viewMode: 1,
-            background: false,
-        });
+            cropper?.destroy();
+            cropper = new Cropper(cropImage, {
+                aspectRatio: 1,
+                viewMode: 1,
+                background: false,
+            });
+        };
+        reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-};
 
-cropBtn.onclick = () => {
-    cropper.getCroppedCanvas({ width: 300, height: 300 })
-        .toBlob(blob => {
-            croppedBlob = blob;
-            photoPreview.src = URL.createObjectURL(blob);
-            cropContainer.classList.add('hidden');
-        });
-};
+    cropBtn.onclick = () => {
+        cropper.getCroppedCanvas({
+                width: 300,
+                height: 300
+            })
+            .toBlob(blob => {
+                croppedBlob = blob;
+                photoPreview.src = URL.createObjectURL(blob);
+                cropContainer.classList.add('hidden');
+            });
+    };
 
-// SOCIAL MEDIA VALIDATION
-const facebookInput = document.getElementById('facebook');
-const instagramInput = document.getElementById('instagram');
-const linkedinInput = document.getElementById('linkedin');
+    // SOCIAL MEDIA VALIDATION
+    const facebookInput = document.getElementById('facebook');
+    const instagramInput = document.getElementById('instagram');
+    const linkedinInput = document.getElementById('linkedin');
 
-const facebookError = document.getElementById('facebookError');
-const instagramError = document.getElementById('instagramError');
-const linkedinError = document.getElementById('linkedinError');
+    const facebookError = document.getElementById('facebookError');
+    const instagramError = document.getElementById('instagramError');
+    const linkedinError = document.getElementById('linkedinError');
 
-// Regex patterns
-const regex = {
-    facebook: /^(https?:\/\/)?(www\.)?facebook\.com\/[A-Za-z0-9\.]+\/?$/i,
-    instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_\.]+\/?$/i,
-    linkedin: /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/i,
-};
+    // Regex patterns
+    const regex = {
+        facebook: /^(https?:\/\/)?(www\.)?facebook\.com\/[A-Za-z0-9\.]+\/?$/i,
+        instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_\.]+\/?$/i,
+        linkedin: /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/i,
+    };
 
-// Validate function
-function validateInput(input, pattern, errorElement, platform) {
-    const value = input.value.trim();
-    if (value && !pattern.test(value)) {
-        errorElement.textContent = `Please enter a valid ${platform} URL`;
-    } else {
-        errorElement.textContent = '';
-    }
-}
-
-// Live validation
-facebookInput?.addEventListener('input', () => validateInput(facebookInput, regex.facebook, facebookError, 'Facebook'));
-instagramInput?.addEventListener('input', () => validateInput(instagramInput, regex.instagram, instagramError, 'Instagram'));
-linkedinInput?.addEventListener('input', () => validateInput(linkedinInput, regex.linkedin, linkedinError, 'LinkedIn'));
-
-// FORM SUBMISSION
-document.getElementById('profileForm')?.addEventListener('submit', async e => {
-    e.preventDefault();
-    formMsg.textContent = 'Saving...';
-    formMsg.classList.remove('text-red-600', 'text-green-600');
-
-    // Final validation before sending
-    validateInput(facebookInput, regex.facebook, facebookError, 'Facebook');
-    validateInput(instagramInput, regex.instagram, instagramError, 'Instagram');
-    validateInput(linkedinInput, regex.linkedin, linkedinError, 'LinkedIn');
-
-    if (facebookError.textContent || instagramError.textContent || linkedinError.textContent) {
-        formMsg.textContent = 'Please fix social media URLs before saving.';
-        formMsg.classList.add('text-red-600');
-        return;
+    // Validate function
+    function validateInput(input, pattern, errorElement, platform) {
+        const value = input.value.trim();
+        if (value && !pattern.test(value)) {
+            errorElement.textContent = `Please enter a valid ${platform} URL`;
+        } else {
+            errorElement.textContent = '';
+        }
     }
 
-    const formData = new FormData(e.target);
-    if (croppedBlob) formData.append('photo', croppedBlob, 'profile.png');
+    // Live validation
+    facebookInput?.addEventListener('input', () => validateInput(facebookInput, regex.facebook, facebookError, 'Facebook'));
+    instagramInput?.addEventListener('input', () => validateInput(instagramInput, regex.instagram, instagramError, 'Instagram'));
+    linkedinInput?.addEventListener('input', () => validateInput(linkedinInput, regex.linkedin, linkedinError, 'LinkedIn'));
 
-    try {
-        const res = await fetch(`{{ route('profile.update') }}`, {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            body: formData
-        });
+    // FORM SUBMISSION
+    document.getElementById('profileForm')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        formMsg.textContent = 'Saving...';
+        formMsg.classList.remove('text-red-600', 'text-green-600');
 
-        const data = await res.json();
+        // Final validation before sending
+        validateInput(facebookInput, regex.facebook, facebookError, 'Facebook');
+        validateInput(instagramInput, regex.instagram, instagramError, 'Instagram');
+        validateInput(linkedinInput, regex.linkedin, linkedinError, 'LinkedIn');
 
-        if (!res.ok) throw data;
+        if (facebookError.textContent || instagramError.textContent || linkedinError.textContent) {
+            formMsg.textContent = 'Please fix social media URLs before saving.';
+            formMsg.classList.add('text-red-600');
+            return;
+        }
 
-        formMsg.textContent = data.message;
-        formMsg.classList.add('text-green-600');
+        const formData = new FormData(e.target);
+        if (croppedBlob) formData.append('photo', croppedBlob, 'profile.png');
 
-        setTimeout(() => location.reload(), 800);
-    } catch (err) {
-        formMsg.textContent = err.message || 'Validation failed';
-        formMsg.classList.add('text-red-600');
-    }
-});
+        try {
+            const res = await fetch(`{{ route('profile.update') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw data;
+
+            formMsg.textContent = data.message;
+            formMsg.classList.add('text-green-600');
+
+            setTimeout(() => location.reload(), 800);
+        } catch (err) {
+            formMsg.textContent = err.message || 'Validation failed';
+            formMsg.classList.add('text-red-600');
+        }
+    });
 </script>

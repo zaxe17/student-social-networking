@@ -4,6 +4,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------------
@@ -34,9 +37,11 @@ Route::prefix('feed')->group(function () {
     Route::post('/posts/{post}/report', [PostController::class, 'reportPost'])->name('posts.report');
 
     // Comments
-    Route::get('/posts/{post}/comments', [PostController::class, 'fetchComments'])->name('posts.comments');
-    Route::post('/posts/{post}/comment', [PostController::class, 'storeComment'])->name('posts.comment');
-
+    Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    
     // Reactors
     Route::get('/posts/{post}/reactors', [PostController::class, 'reactors']);
 
@@ -68,3 +73,17 @@ Route::prefix('search')->group(function () {
     Route::get('/', [SearchController::class, 'search'])->name('search');           // main search
     Route::get('/results', [SearchController::class, 'searchResults'])->name('search.results'); // search results
 });
+
+// ----------------------
+// Admin Routes
+// ----------------------
+Route::get('/admin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+Route::get('/admin/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+// ----------------------
+// Event Routes
+// ----------------------
+Route::get('/event', [EventController::class, 'index'])->name('events.index');
+Route::post('/event', [EventController::class, 'store'])->name('events.store');

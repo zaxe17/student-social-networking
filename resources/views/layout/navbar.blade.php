@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
                 const data = await res.json();
+
                 let html = '';
 
                 // Always show "Search results for 'word'" as clickable
@@ -101,15 +102,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     });
 
-    // Keep dropdown open reliably
-    const hideDropdown = (e) => {
+    // Prevent dropdown from closing when interacting with it
+    dropdown.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+    });
+
+    // Handle navigation
+    dropdown.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
+            window.location.href = link.href;
+        }
+    });
+
+    // Only hide when clicking outside both elements
+    document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.classList.add('hidden');
         }
-    };
-
-    document.addEventListener('mousedown', hideDropdown);
-    dropdown.addEventListener('mousedown', (e) => e.stopPropagation());
+    });
 
     // Submit search on Enter
     searchInput.addEventListener('keypress', (e) => {

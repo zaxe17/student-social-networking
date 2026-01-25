@@ -9,6 +9,7 @@ use App\Models\PostLike;
 use App\Models\Student;
 use App\Models\PostComment;
 use App\Models\PostReport;
+use App\Models\Event;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
@@ -27,10 +28,16 @@ class PostController extends Controller
 
         $categories = PostCategory::orderBy('category_name')->get();
 
+        $sidebarEvents = Event::query()
+            ->whereRaw("TIMESTAMP(event_date, COALESCE(end_time, '23:59:59')) >= ?", [now()])
+            ->orderBy('event_date', 'asc')
+            ->take(5)
+            ->get();
+
         $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
             ->latest('created_at')
-            ->get();
+            ->paginate(10);
 
         return view('page.feed', [
             'posts' => $posts,
@@ -38,6 +45,7 @@ class PostController extends Controller
             'student' => $loggedInStudent,
             'loggedInStudent' => $loggedInStudent,
             'loggedInStudentId' => $loggedInStudent->student_id,
+            'sidebarEvents' => $sidebarEvents,
         ]);
     }
 
@@ -211,21 +219,34 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Post permanently deleted.');
     }
 
+    public function likePreview(Post $post)
+    {
+        $likedUsers = $post->likesWithUser()->with('student')->get()->pluck('student')->filter();
+        $previewUsers = $likedUsers->take(5)->map(fn($user) => [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'photo' => $user->photo ? asset('storage/' . $user->photo) : asset('/img/user.png'),
+        ]);
+        $extraCount = max($likedUsers->count() - 5, 0);
+
+        return response()->json([
+            'preview_users' => $previewUsers,
+            'extra_count' => $extraCount,
+        ]);
+    }
+
     // ----------------------
     // Toggle like
     // ----------------------
     public function toggleLike(Post $post, Request $request)
     {
         $studentId = $request->session()->get('student_id');
-
         if (!$studentId) {
             return response()->json(['error' => 'Not logged in'], 403);
         }
-
         $existingLike = PostLike::where('post_id', $post->post_id)
             ->where('student_id', $studentId)
             ->first();
-
         if ($existingLike) {
             $existingLike->delete();
             $liked = false;
@@ -236,20 +257,22 @@ class PostController extends Controller
             ]);
             $liked = true;
         }
-
-        // Get updated likes
+        // Get updated likes with user info for hover preview (ONLY FIRST 5)
         $likedUsers = $post->likesWithUser()->with('student')->get()->pluck('student')->filter();
-
         $previewUsers = $likedUsers->take(5)->map(fn($user) => [
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'photo' => $user->photo ? asset('storage/' . $user->photo) : asset('/img/user.png'),
         ]);
 
+        // Calculate extra count for "+X more"
+        $extraCount = max($likedUsers->count() - 5, 0);
+
         return response()->json([
             'liked' => $liked,
             'likes_count' => $post->likes()->count(),
             'preview_users' => $previewUsers,
+            'extra_count' => $extraCount,
         ]);
     }
 

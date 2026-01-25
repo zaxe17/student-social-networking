@@ -50,7 +50,9 @@
                 <span>{{ $loggedInStudent->first_name ?? 'Guest' }}</span>
                 <form method="POST" action="{{ route('students.logout') }}">
                     @csrf
-                    <button type="submit" class="text-[#545454] underline block">Log-out</button>
+                    <button type="submit" class="text-[#545454] underline block cursor-pointer">
+                        Log-out
+                    </button>
                 </form>
             </div>
         </div>
