@@ -1,5 +1,7 @@
 @extends('layout.app')
 
+@section('title', 'Sign Up or Sign In | ISKOnnect')
+
 @section('page')
 <div class="flex flex-col h-screen bg-[url('/public/img/background.jpg')] bg-black/60 bg-blend-multiply bg-cover bg-center">
     <nav class="shadow-nav sticky top-0 w-full h-18 bg-[#770d08] px-13 flex justify-between items-center">

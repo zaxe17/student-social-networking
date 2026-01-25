@@ -1,5 +1,7 @@
 @extends('layout.app')
 
+@section('title', 'Feed | ISKOnnect')
+
 @section('page')
 @include('layout.navbar')
 @include('component.changepassmodal', ['title' => 'Change password'])

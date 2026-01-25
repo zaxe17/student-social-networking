@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>@yield('title', 'Document')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!query) { resultsContainer.classList.add('hidden'); resultsContainer.innerHTML = ''; return; }
 
         timeout = setTimeout(() => {
-            fetch(`{{ route('search.ajax') }}?q=${encodeURIComponent(query)}`)
+            fetch(`{{ route('search') }}?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(data => {
                 resultsContainer.innerHTML = '';

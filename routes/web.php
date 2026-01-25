@@ -40,6 +40,9 @@ Route::prefix('feed')->group(function () {
     // Reactors
     Route::get('/posts/{post}/reactors', [PostController::class, 'reactors']);
 
+    // Hashtags
+    Route::get('/hashtag', [PostController::class, 'hashtag'])->name('hashtag.page');
+
 });
 
 // ----------------------
@@ -64,5 +67,4 @@ Route::prefix('profile')->group(function () {
 Route::prefix('search')->group(function () {
     Route::get('/', [SearchController::class, 'search'])->name('search');           // main search
     Route::get('/results', [SearchController::class, 'searchResults'])->name('search.results'); // search results
-    Route::get('/ajax', [PostController::class, 'search'])->name('search.ajax');     // ajax search
 });

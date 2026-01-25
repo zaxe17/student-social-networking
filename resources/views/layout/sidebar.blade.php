@@ -18,13 +18,13 @@
                 facebook-data="{{ $loggedInStudent->facebook ?? '' }}"
                 linkedin-data="{{ $loggedInStudent->linkedin ?? '' }}"
                 studentId-data="{{ $loggedInStudent->student_id ?? '' }}">
-                <span>Edit profile</span>
+                <span>Edit Profile</span>
             </li>
 
             {{-- CHANGE PASSWORD --}}
             <li target-modal="changepassModal"
                 class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
-                <span>Change password</span>
+                <span>Change Password</span>
             </li>
 
             {{-- ARCHIVE --}}
@@ -36,7 +36,7 @@
             {{-- DELETE ACCOUNT --}}
             <li target-modal="deleteaccount"
                 class="px-2.5 py-3 mx-5 text-xl text-[#545454] hover:bg-[#770d08] hover:text-white transition-all duration-300 rounded-lg cursor-pointer">
-                <span>Delete account</span>
+                <span>Delete Account</span>
             </li>
         </ul>
 

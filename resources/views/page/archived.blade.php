@@ -1,5 +1,7 @@
 @extends('layout.app')
 
+@section('title', 'Archive | ISKOnnect')
+
 @section('page')
 @include('layout.navbar')
 

@@ -1,6 +1,6 @@
 @php
-    $studentId = session('student_id');
-    $student = $studentId ? \App\Models\Student::find($studentId) : null;
+$studentId = session('student_id');
+$student = $studentId ? \App\Models\Student::find($studentId) : null;
 @endphp
 
 <nav class="shadow-nav sticky top-0 w-full h-18 bg-[#770d08] px-13 flex justify-between items-center z-50">
@@ -79,21 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 let html = '';
 
-                if (data.profiles.length) {
-                    html += `<div class="px-4 py-2 border-b font-semibold">Profiles</div>`;
-                    data.profiles.forEach(profile => {
-                        html += `<a href="/profile/${profile.student_id}" class="block px-4 py-2 hover:bg-gray-100">${profile.name}</a>`;
-                    });
-                }
+                // Always show "Search results for 'word'" as clickable
+                html += `<a href="/search/results?q=${encodeURIComponent(query)}" 
+                            class="block px-4 py-2 border-b font-semibold text-gray-700 hover:bg-gray-100">
+                            Search results for "${query}"
+                        </a>`;
 
-                if (data.posts.length) {
-                    html += `<div class="px-4 py-2 border-b font-semibold">Posts</div>`;
-                    data.posts.forEach(post => {
-                        html += `<a href="/search/results?q=${encodeURIComponent(post.content)}" class="block px-4 py-2 hover:bg-gray-100">${post.short_content}</a>`;
-                    });
-                }
-
-                if (!html) html = `<div class="px-4 py-2">No results</div>`;
+                // Profiles suggestions in "Profile: Name" format
+                data.profiles.forEach(profile => {
+                    html += `<a href="/profile/${profile.student_id}" 
+                                class="block px-4 py-2 hover:bg-gray-100">
+                                <strong>Profile:</strong> ${profile.name}
+                            </a>`;
+                });
 
                 dropdown.innerHTML = html;
                 dropdown.classList.remove('hidden');
@@ -103,10 +101,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     });
 
-    document.addEventListener('click', (e) => {
+    // Keep dropdown open reliably
+    const hideDropdown = (e) => {
         if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.classList.add('hidden');
+        }
+    };
+
+    document.addEventListener('mousedown', hideDropdown);
+    dropdown.addEventListener('mousedown', (e) => e.stopPropagation());
+
+    // Submit search on Enter
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `/search/results?q=${encodeURIComponent(query)}`;
+            }
         }
     });
 });
 </script>
+

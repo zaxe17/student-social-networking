@@ -1,5 +1,6 @@
 @extends('layout.app')
 
+@section('title', $student->first_name . ' ' . $student->last_name . "'s Profile | ISKOnnect")
 @section('page')
 @include('layout.navbar')
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])

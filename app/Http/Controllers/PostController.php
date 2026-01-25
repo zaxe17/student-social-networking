@@ -237,11 +237,22 @@ class PostController extends Controller
             $liked = true;
         }
 
+        // Get updated likes
+        $likedUsers = $post->likesWithUser()->with('student')->get()->pluck('student')->filter();
+
+        $previewUsers = $likedUsers->take(5)->map(fn($user) => [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'photo' => $user->photo ? asset('storage/' . $user->photo) : asset('/img/user.png'),
+        ]);
+
         return response()->json([
             'liked' => $liked,
             'likes_count' => $post->likes()->count(),
+            'preview_users' => $previewUsers,
         ]);
     }
+
 
     // ----------------------
     // Category filter
@@ -395,5 +406,37 @@ class PostController extends Controller
             ]);
 
         return response()->json($users);
+    }
+
+    // ----------------------
+    // Hashtag page
+    // ----------------------
+    public function hashtag(Request $request)
+    {
+        $tag = $request->query('tag');
+
+        if (!$tag) {
+            return redirect()->route('feed.page');
+        }
+
+        $studentId = $request->session()->get('student_id');
+        $student = $this->student($studentId);
+
+        $categories = PostCategory::orderBy('category_name')->get();
+
+        // Fetch posts containing the hashtag (case-insensitive)
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
+            ->withCount(['likes', 'comments'])
+            ->where('content', 'LIKE', "%#{$tag}%")
+            ->latest('created_at')
+            ->get();
+
+        return view('page.feed', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'student' => $student,
+            'hashtag' => $tag,
+            'loggedInStudent' => $student,
+        ]);
     }
 }

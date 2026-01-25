@@ -5,44 +5,63 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Post;
+use App\Models\PostCategory;
 
 class SearchController extends Controller
 {
-    // Autocomplete endpoint
+    // ----------------------
+    // Autocomplete for profiles only
+    // ----------------------
     public function search(Request $request)
     {
         $query = $request->input('q');
 
-        // Recommend profiles
-        $profiles = Student::where('name', 'like', "%{$query}%")->limit(5)->get();
+        // If query is empty, return empty profiles array
+        if (!$query) {
+            return response()->json(['profiles' => []]);
+        }
 
-        // Recommend posts (limit and show short content)
-        $posts = Post::where('content', 'like', "%{$query}%")
-                     ->limit(5)
-                     ->get()
-                     ->map(function($post) {
-                         $post->short_content = strlen($post->content) > 50
-                             ? substr($post->content, 0, 50) . '...'
-                             : $post->content;
-                         return $post;
-                     });
+        // Fetch profiles only (first_name OR last_name match)
+        $profiles = Student::where('first_name', 'like', "%{$query}%")
+            ->orWhere('last_name', 'like', "%{$query}%")
+            ->limit(5)
+            ->get()
+            ->map(function ($profile) {
+                return [
+                    'student_id' => $profile->student_id,
+                    'name' => $profile->first_name . ' ' . $profile->last_name,
+                ];
+            });
 
         return response()->json([
             'profiles' => $profiles,
-            'posts' => $posts,
         ]);
     }
 
+    // ----------------------
     // Full search results page
+    // ----------------------
     public function searchResults(Request $request)
     {
         $query = $request->input('q');
 
-        $posts = Post::where('content', 'like', "%{$query}%")
-            ->with(['author', 'category'])
+        $studentId = $request->session()->get('student_id');
+        $student = $studentId ? Student::find($studentId) : null;
+
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
+            ->withCount(['comments', 'likes'])
+            ->where('content', 'LIKE', "%{$query}%")
             ->latest()
             ->get();
 
-        return view('page.results', compact('posts', 'query'));
+        $categories = PostCategory::orderBy('category_name')->get();
+
+        return view('page.results', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'query' => $query,
+            'student' => $student,
+            'loggedInStudent' => $student,
+        ]);
     }
 }

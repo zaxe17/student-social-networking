@@ -1,25 +1,32 @@
 <div class="shadow-bg px-10 pt-7 pb-4 mb-5">
 
     @php
+    use Illuminate\Support\Str;
+
+    // CATEGORY ICONS
     $categoryIcons = [
-    'Announcements' => 'mdi:bullhorn',
-    'Events' => 'mdi:calendar-star',
-    'Discussions' => 'mdi:forum',
-    'Help' => 'mdi:help-circle',
-    'Achievements' => 'mdi:trophy',
-    'Lost & Found' => 'mdi:magnify',
-    'Marketplace' => 'mdi:store',
-    'Clubs & Organizations' => 'mdi:account-group',
-    'Entertainment' => 'mdi:movie-open',
-    'Miscellaneous' => 'mdi:dots-horizontal',
+        'Announcements' => 'mdi:bullhorn',
+        'Events' => 'mdi:calendar-star',
+        'Discussions' => 'mdi:forum',
+        'Help' => 'mdi:help-circle',
+        'Achievements' => 'mdi:trophy',
+        'Lost & Found' => 'mdi:magnify',
+        'Marketplace' => 'mdi:store',
+        'Clubs & Organizations' => 'mdi:account-group',
+        'Entertainment' => 'mdi:movie-open',
+        'Miscellaneous' => 'mdi:dots-horizontal',
     ];
 
+    // LIKE STATUS
     $isLiked = $post->isLikedBy($student->student_id ?? null);
 
     // ❤️ LIKE PREVIEW
     $likedUsers = $post->likesWithUser->pluck('student')->filter();
     $previewUsers = $likedUsers->take(5);
     $extraCount = max($likedUsers->count() - 5, 0);
+
+    // COMMENT COUNT (defined early so it's available in Blade)
+    $commentsCount = $post->comments_count ?? 0;
     @endphp
 
     <!-- ================= HEADER ================= -->
@@ -41,8 +48,8 @@
         $categoryId = $post->category->category_id;
         $selectedCategories = request()->query('category', []);
         $queryCategories = in_array($categoryId, $selectedCategories)
-        ? $selectedCategories
-        : array_merge($selectedCategories, [$categoryId]);
+            ? $selectedCategories
+            : array_merge($selectedCategories, [$categoryId]);
         @endphp
 
         <span>•</span>
@@ -76,55 +83,55 @@
                     @endif
 
                     @if ($student && $post->student_id === $student->student_id)
-                    @if (request()->routeIs('archived.page'))
-                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100"
-                        onclick="document.getElementById('restoreForm-{{ $post->post_id }}').submit();">
-                        <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
-                        Restore
-                    </li>
-                    <li class="hover:bg-red-50">
-                        <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
-                            onsubmit="return confirm('Permanently delete this post?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
-                                <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
-                                Delete
-                            </button>
-                        </form>
-                    </li>
-                    @else
-                    <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
-                        <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
-                        <button type="button" class="editPostBtn text-left w-full"
-                            data-post-id="{{ $post->post_id }}"
-                            data-post-content="{{ e($post->content) }}">
-                            Edit
-                        </button>
-                    </li>
+                        @if (request()->routeIs('archived.page'))
+                            <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100"
+                                onclick="document.getElementById('restoreForm-{{ $post->post_id }}').submit();">
+                                <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
+                                Restore
+                            </li>
+                            <li class="hover:bg-red-50">
+                                <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
+                                    onsubmit="return confirm('Permanently delete this post?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
+                                        <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                                        Delete
+                                    </button>
+                                </form>
+                            </li>
+                        @else
+                            <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
+                                <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
+                                <button type="button" class="editPostBtn text-left w-full"
+                                    data-post-id="{{ $post->post_id }}"
+                                    data-post-content="{{ e($post->content) }}">
+                                    Edit
+                                </button>
+                            </li>
 
-                    <li class="px-4 py-2">
-                        <form action="{{ route('posts.destroy', $post->post_id) }}" method="POST"
-                            class="flex items-center gap-1.5 text-[#545454]">
-                            @csrf
-                            @method('DELETE')
-                            <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/archive-outline.svg'); --size: 18px;"></span>
-                            <button type="submit">Archive</button>
-                        </form>
-                    </li>
+                            <li class="px-4 py-2">
+                                <form action="{{ route('posts.destroy', $post->post_id) }}" method="POST"
+                                    class="flex items-center gap-1.5 text-[#545454]">
+                                    @csrf
+                                    @method('DELETE')
+                                    <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/archive-outline.svg'); --size: 18px;"></span>
+                                    <button type="submit">Archive</button>
+                                </form>
+                            </li>
 
-                    <li class="hover:bg-red-50">
-                        <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
-                            onsubmit="return confirm('Permanently delete this post?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
-                                <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
-                                Delete
-                            </button>
-                        </form>
-                    </li>
-                    @endif
+                            <li class="hover:bg-red-50">
+                                <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
+                                    onsubmit="return confirm('Permanently delete this post?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full px-4 py-2 flex items-center gap-1.5 text-red-600">
+                                        <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                                        Delete
+                                    </button>
+                                </form>
+                            </li>
+                        @endif
                     @endif
                 </ul>
             </div>
@@ -134,7 +141,13 @@
     <!-- ================= CONTENT ================= -->
     @php
     $content = e($post->content);
-    $content = preg_replace('/#([\p{L}\p{N}_]+)/u', '<span class="text-blue-600">#$1</span>', $content);
+
+    // Convert hashtags into clickable links
+    $content = preg_replace_callback('/#([\p{L}\p{N}_]+)/u', function($matches) {
+        $tag = $matches[1];
+        $url = route('hashtag.page', ['tag' => $tag]);
+        return '<a href="' . $url . '" class="text-blue-600 hover:underline">#' . $tag . '</a>';
+    }, $content);
     @endphp
     <p class="border-b border-black/50 pb-5 mb-3.5">{!! nl2br($content) !!}</p>
 
@@ -149,7 +162,6 @@
             <span class="like-count" data-post-id="{{ $post->post_id }}">
                 ❤️ {{ $post->likes_count }}
             </span>
-
 
             @if ($likedUsers->count())
             <div class="absolute left-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-lg p-3
@@ -170,7 +182,6 @@
             @endif
         </button>
 
-
         <!-- 💬 COMMENTS -->
         <span
             target-modal="commentModal"
@@ -182,10 +193,10 @@
             content-data="{{ e($post->content) }}"
             likes-data="{{ $post->likes_count }}"
             liked-data="{{ $post->isLikedBy($student->student_id) ? 1 : 0 }}"
-            comment-data="{{ $post->comments_count }}"
+            comment-data="{{ $commentsCount }}"
             userphoto-data="{{ $post->author->photo ? asset('storage/'.$post->author->photo) : asset('/img/user.png') }}"
             class="cursor-pointer hover:underline">
-            {{ $post->comments_count }} comment{{ $post->comments_count > 1 ? 's' : '' }}
+            {{ $commentsCount }} {{ Str::plural('comment', $commentsCount) }}
         </span>
     </div>
 
@@ -214,12 +225,12 @@
             content-data="{{ e($post->content) }}"
             likes-data="{{ $post->likes_count }}"
             liked-data="{{ $post->isLikedBy($student->student_id) ? 1 : 0 }}"
-            comment-data="{{ $post->comments_count }}"
+            comment-data="{{ $commentsCount }}"
             userphoto-data="{{ $post->author->photo ? asset('storage/'.$post->author->photo) : asset('/img/user.png') }}"
             class="flex items-center gap-2 text-[#545454] hover:text-black transition">
             <span
                 class="icon mt-1 bg-[#545454]"
-                style="--svg: url('https://api.iconify.design/mdi/comment-outline.svg'); --size: 22px;">
+                style="--svg: url('https://api.iconify.design/mdi:comment-outline.svg'); --size: 22px;">
             </span>
             Comment
         </button>
