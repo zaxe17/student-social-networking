@@ -2,10 +2,10 @@
 
 **ISKOnnect** is a social networking web application designed specifically for students, developed using **Laravel**, **MySQL**, **Tailwind CSS**, and **JavaScript**. The platform goes beyond academic learning by providing a space where students can connect, collaborate, and express themselves in a safe and supportive online environment, while promoting responsible and respectful online interaction.
 
-**As a <u>Student</u> Access ISKOnnect here:**
+ISKOnnect **Student** Access here:
 🔗 [https://iskonnect.bsit3-3.site/](https://iskonnect.bsit3-3.site/)
 
-**As an <u>Admin</u> Access ISKOnnect here:**
+ISKOnnect **Admin** Access here:
 🔗 [https://iskonnect.bsit3-3.site/admin](https://iskonnect.bsit3-3.site/admin)
 
 ## Intended Users
@@ -36,14 +36,14 @@ The development of ISKOnnect would not be possible without the following technol
 
 ## Features
 
-1. **Registration / Sign Up Page**
+**1. Registration / Sign Up Page**
 - Student ID validation (format checking and duplicate account detection)
 - Password validation (minimum number of characters)
 
-2. **Sign In Page**
+**2. Sign In Page**
 - User credentials validation
 
-3. **Feed Page**
+**3. Feed Page**
 - Create, edit, and delete posts
 - Category selection for posts
 - Display of post time and category
@@ -53,47 +53,47 @@ The development of ISKOnnect would not be possible without the following technol
 - Report post feature
 - Hashtag support
 
-4. **Category Filter Side Panel**
+**4. Category Filter Side Panel**
 - Checkbox-based category filtering
 
-5. **Event Side Panel**
+**5. Event Side Panel**
 - View all events
 - Add new events
 - Event registration
 
-6. **Navigation Bar**
+**6. Navigation Bar**
 - Clickable system logo
 - Icons for Feed, Profile, and Event pages
 - Search bar for posts and users
 - Sidebar toggle icon
 
-7. **Sidebar**
+**7. Sidebar**
 - Edit profile with photo cropper and input validations
 - Change password with validations
 - Archive posts
 - Delete account
 - Log out
 
-8. **Profile Page**
+**8. Profile Page**
 - Display of personal details with social media links
 - Post management
 
-9. **Other User’s Profile Page**
+**9. Other User’s Profile Page**
 - Display of personal details with social media links
 - View user’s posts
 
-10. **Archive Page**
+**10. Archive Page**
 - Restore archived posts
 - Permanently delete archived posts
 
-11. **Event Page**
+**11. Event Page**
 - Add new events
 - Event registration
 
-12. **Admin Sign In Page**
+**12. Admin Sign In Page**
 - Admin credentials validation
 
-13. **Admin Dashboard Page**
+**13. Admin Dashboard Page**
 - Delete reported posts
 - Delete records of reported posts
 - Search posts by content
@@ -101,130 +101,132 @@ The development of ISKOnnect would not be possible without the following technol
 
 ## Screenshots
 
- **User Side**
+## User Side
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/signin.png" alt="Sign In Page" width="500"/>
-  <figcaption><b>Sign In Page</b></figcaption>
-</figure>
+  <br/><b>Sign In Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/signup.png" alt="Sign Up Page" width="500"/>
-  <figcaption><b>Sign Up Page</b></figcaption>
-</figure>
+  <br/><b>Sign Up Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/feed.png" alt="Feed Page" width="500"/>
-  <figcaption><b>Feed Page</b></figcaption>
-</figure>
+  <br/><b>Feed Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/createpost.png" alt="Create Post" width="500"/>
-  <figcaption><b>Create Post</b></figcaption>
-</figure>
+  <br/><b>Create Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/like&comment.png" alt="Like and Comment" width="500"/>
-  <figcaption><b>Like and Comment</b></figcaption>
-</figure>
+  <br/><b>Like and Comment</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/viewreacts.png" alt="View Reacts" width="500"/>
-  <figcaption><b>View Reacts</b></figcaption>
-</figure>
+  <br/><b>View Reacts</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/report.png" alt="Post Reporting" width="500"/>
   <img src="readmeimages/report1.png" alt="Post Reporting" width="500"/>
-  <figcaption><b>Post Reporting</b></figcaption>
-</figure>
+  <br/><b>Post Reporting</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/filtered.png" alt="Filtered Posts" width="500"/>
-  <figcaption><b>Filtered Posts</b></figcaption>
-</figure>
+  <br/><b>Filtered Posts</b>
+</p>
 
-<figure align="center">
-  <img src="readmeimages/postssettings.png" alt="Posts Options" width="500"/>
-  <figcaption><b>Posts Options</b></figcaption>
-</figure>
+<p align="center">
+  <img src="readmeimages/postsetting.png" alt="Posts Options" width="500"/>
+  <br/><b>Posts Options</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/editpost.png" alt="Edit Post" width="500"/>
-  <figcaption><b>Edit Post</b></figcaption>
-</figure>
+  <br/><b>Edit Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/deletepost.png" alt="Delete Post" width="500"/>
-  <figcaption><b>Delete Post</b></figcaption>
-</figure>
+  <br/><b>Delete Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/profile.png" alt="Profile Page" width="500"/>
-  <figcaption><b>Profile Page</b></figcaption>
-</figure>
+  <br/><b>Profile Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/eventbar.png" alt="Event on Feed" width="500"/>
-  <figcaption><b>Event on Feed</b></figcaption>
-</figure>
+  <br/><b>Event on Feed</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/event.png" alt="Event Page" width="500"/>
-  <figcaption><b>Event Page</b></figcaption>
-</figure>
+  <br/><b>Event Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/addevent.png" alt="Event Adding" width="500"/>
-  <figcaption><b>Event Adding</b></figcaption>
-</figure>
+  <br/><b>Event Adding</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/search.png" alt="Post Searching" width="500"/>
-  <figcaption><b>Post Searching</b></figcaption>
-</figure>
+  <br/><b>Post Searching</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/sidebar.png" alt="Sidebar" width="500"/>
-  <figcaption><b>Sidebar</b></figcaption>
-</figure>
+  <br/><b>Sidebar</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/editprofile.png" alt="Edit Profile" width="500"/>
-  <figcaption><b>Edit Profile</b></figcaption>
-</figure>
+  <br/><b>Edit Profile</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/changepassword.png" alt="Change Password" width="500"/>
-  <figcaption><b>Change Password</b></figcaption>
-</figure>
+  <br/><b>Change Password</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/archived.png" alt="Archived Posts" width="500"/>
-  <figcaption><b>Archived Posts</b></figcaption>
-</figure>
+  <br/><b>Archived Posts</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/deleteaccount.png" alt="Delete Account" width="500"/>
-  <figcaption><b>Delete Account</b></figcaption>
-</figure>
+  <br/><b>Delete Account</b>
+</p>
 
-**Admin Side**
 
-<figure align="center">
+## Admin Side
+
+<p align="center">
   <img src="readmeimages/adminsignin.png" alt="Admin Sign In Page" width="500"/>
-  <figcaption><b>Admin Sign In Page</b></figcaption>
-</figure>
+  <br/><b>Admin Sign In Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/admindashboard.png" alt="Admin Dashboard" width="500"/>
-  <figcaption><b>Admin Dashboard</b></figcaption>
-</figure>
+  <br/><b>Admin Dashboard</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/adminsearch.png" alt="Admin Search Feature" width="500"/>
-  <figcaption><b>Admin Search Feature</b></figcaption>
-</figure>
+  <br/><b>Admin Search Feature</b>
+</p>
+
 
 ## License
 
