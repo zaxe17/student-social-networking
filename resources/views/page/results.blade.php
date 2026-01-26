@@ -6,16 +6,18 @@
 @include('layout.navbar')
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])
 
-<div class="container mx-auto px-20 py-10">
-    <h2 class="text-xl mb-5">Search results for "{{ $query }}"</h2>
+<div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
+    <div class="w-full h-full px-18 pb-13 overflow-scroll no-scrollbar">
+        <h2 class="text-xl mb-5">Search results for "{{ $query }}"</h2>
 
-    @if($posts->count())
+        @if($posts->count())
         @foreach($posts as $post)
-            @include('component.postcard', ['post' => $post])
+        @include('component.postcard', ['post' => $post])
         @endforeach
-    @else
+        @else
         <p>No posts found for "{{ $query }}"</p>
-    @endif
+        @endif
+    </div>
 </div>
 @include('component.editprofilemodal', ['title' => 'Edit Profile'])
 
