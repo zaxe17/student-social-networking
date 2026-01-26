@@ -11,7 +11,8 @@
             {{-- Header --}}
             <div class="shadow-postheader w-full pb-3 pt-7 relative text-center">
                 <h2 class="text-xl font-medium">Edit Profile</h2>
-                <span close-modal class="icon absolute top-5 right-5 cursor-pointer text-xl">✖</span>
+                <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;">
+                </span>
             </div>
 
             {{-- Form --}}
@@ -30,18 +31,21 @@
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
 
                     <button type="button" id="uploadBtn"
-                        class="px-4 py-2 bg-[#770d08] text-white rounded cursor-pointer">
+                        class="px-4 py-2 bg-[#770d08] text-white rounded cursor-pointer flex items-center gap-1.5">
+                        <span class="icon bg-white" style="--svg: url('https://api.iconify.design/material-symbols/upload-rounded.svg'); --size: 20px;"></span>
                         Upload / Take Photo
                     </button>
                 </div>
 
                 {{-- CROPPER --}}
-                <div id="cropContainer" class="hidden flex flex-col items-center gap-3">
-                    <img id="cropImage" class="max-w-full rounded">
-                    <button type="button" id="cropBtn"
-                        class="mt-3 w-full bg-green-600 text-white py-2 rounded">
-                        Crop & Use
-                    </button>
+                <div id="cropContainer" class="hidden">
+                    <div class="flex flex-col items-center gap-3">
+                        <img id="cropImage" class="max-w-full rounded">
+                        <button type="button" id="cropBtn"
+                            class="mt-3 w-full bg-green-600 text-white py-2 rounded">
+                            Crop & Use
+                        </button>
+                    </div>
                 </div>
 
                 {{-- INPUT FIELDS --}}
@@ -69,7 +73,7 @@
 
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
-                            <span class="icon bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 35px;"></span>
+                            <span class="instagram-icon" style="--svg: url('https://api.iconify.design/skill-icons/instagram.svg'); --size: 35px;"></span>
                             <input type="text" id="instagram" name="instagram" value="{{ $loggedInStudent?->instagram ?? '' }}"
                                 placeholder="https://www.instagram.com/username/"
                                 class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
@@ -79,7 +83,7 @@
 
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
-                            <span class="icon bg-[#0e2391]" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 35px;"></span>
+                            <span class="facebook-icon" style="--svg: url('https://api.iconify.design/logos/facebook.svg'); --size: 35px;"></span>
                             <input type="text" id="facebook" name="facebook" value="{{ $loggedInStudent?->facebook ?? '' }}"
                                 placeholder="https://www.facebook.com/example.username/"
                                 class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
@@ -89,7 +93,7 @@
 
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
-                            <span class="icon bg-[#0a66c2]" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 35px;"></span>
+                            <span class="linkedin-icon" style="--svg: url('https://api.iconify.design/devicon/linkedin.svg'); --size: 35px;"></span>
                             <input type="text" id="linkedin" name="linkedin" value="{{ $loggedInStudent?->linkedin ?? '' }}"
                                 placeholder="https://www.linkedin.com/in/username-example/"
                                 class="w-full py-1.5 px-2 rounded-lg focus:outline-none">

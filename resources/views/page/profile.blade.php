@@ -30,19 +30,19 @@
             <div class="flex items-center gap-2">
                 @if($student->instagram)
                 <a href="{{ $student->instagram }}" target="_blank">
-                    <span class="icon bg-black" style="--svg: url('https://api.iconify.design/mdi/instagram.svg'); --size: 30px;"></span>
+                    <span class="instagram-icon" style="--svg: url('https://api.iconify.design/skill-icons/instagram.svg'); --size: 30px;"></span>
                 </a>
                 @endif
 
                 @if($student->facebook)
                 <a href="{{ $student->facebook }}" target="_blank">
-                    <span class="icon bg-[#0e2391]" style="--svg: url('https://api.iconify.design/mdi/facebook.svg'); --size: 30px;"></span>
+                    <span class="facebook-icon" style="--svg: url('https://api.iconify.design/logos/facebook.svg'); --size: 30px;"></span>
                 </a>
                 @endif
 
                 @if($student->linkedin)
                 <a href="{{ $student->linkedin }}" target="_blank">
-                    <span class="icon bg-[#0a66c2]" style="--svg: url('https://api.iconify.design/mdi/linkedin.svg'); --size: 30px;"></span>
+                    <span class="linkedin-icon" style="--svg: url('https://api.iconify.design/devicon/linkedin.svg'); --size: 30px;"></span>
                 </a>
                 @endif
             </div>
@@ -64,5 +64,14 @@
 'modal_id' => 'deleteaccount',
 'route' => route('student.delete')
 ])
+
+@foreach ($posts as $post)
+@include('component.deleteconfirm', [
+'title' => 'Delete post',
+'modal_id' => 'deletepost' . $post->post_id,
+'route' => route('posts.forceDelete', ['id' => $post->post_id])
+])
+@endforeach
+
 @include('component.editpostmodal')
 @endsection

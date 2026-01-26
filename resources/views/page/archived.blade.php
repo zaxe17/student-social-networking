@@ -32,4 +32,13 @@
 'modal_id' => 'deleteaccount',
 'route' => route('student.delete')
 ])
+
+@foreach ($posts as $post)
+@include('component.deleteconfirm', [
+'title' => 'Delete post',
+'modal_id' => 'deletepost' . $post->post_id,
+'route' => route('posts.forceDelete', ['id' => $post->post_id])
+])
+@endforeach
+
 @endsection

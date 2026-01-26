@@ -1,6 +1,5 @@
 <div id="editpostModal" class="modal hidden">
-    <div
-        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen flex justify-center items-center z-50 backdrop-blur-[1px]">
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen flex justify-center items-center z-50 backdrop-blur-[1px]">
 
         <div class="w-2/5 bg-[#F5F5F5] form-shadow rounded-3xl overflow-hidden">
 
@@ -31,7 +30,7 @@
                 <textarea
                     id="editPostContent"
                     name="content"
-                    class="w-full min-h-[120px] px-3 py-2 resize-none focus:outline-none"
+                    class="w-full min-h-30 px-3 py-2 resize-none focus:outline-none"
                     required>
                 </textarea>
 

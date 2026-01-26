@@ -100,16 +100,11 @@
                         <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
                         Restore
                     </li>
-                    <li class="cursor-pointer hover:bg-red-50">
-                        <form action="{{ route('posts.forceDelete', $post->post_id) }}" method="POST"
-                            onsubmit="return confirm('Permanently delete this post?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
-                                <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
-                                Delete
-                            </button>
-                        </form>
+                    <li class="cursor-pointer hover:bg-red-50"  target-modal="deletepost{{ $post->post_id }}">
+                        <button type="button" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
+                            <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
+                            Delete
+                        </button>
                     </li>
                     @else
                     <li class="px-4 py-2 cursor-pointer text-[#545454] hover:bg-gray-100">
