@@ -23,7 +23,7 @@
     @endphp
 
     <!-- CATEGORY LIST -->
-    <div class="shadow-bg flex flex-col overflow-y-auto max-h-100 no-scrollbar">
+    <div class="shadow-bg flex flex-col overflow-y-auto max-h-70 no-scrollbar">
 
         <!-- REMOVE THE BOTTOM BORDER IF THE CATEGORY IS LAST -->
         @foreach($categories as $cat)

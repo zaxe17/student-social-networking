@@ -4,10 +4,9 @@
 
 @section('page')
 <div class="min-h-screen bg-gray-100">
-    <nav class="bg-[#770d08] px-10 py-4">
+    <nav class="bg-[#770d08] px-10 h-18">
         <div class="flex items-center gap-4">
-            <img src="/img/logo.png" class="w-10 h-10">
-            <p class="text-2xl text-white font-bold">ISKOnnect</p>
+            <img src="/img/ISKOnnect.png" alt="ISKOnnect" class="w-30">
         </div>
     </nav>
 
