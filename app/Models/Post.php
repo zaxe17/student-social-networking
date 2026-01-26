@@ -37,7 +37,6 @@ class Post extends Model
         return $this->hasMany(PostLike::class, 'post_id', 'post_id');
     }
 
-    // ✅ THIS IS WHAT YOUR VIEW EXPECTS
     public function likesWithUser()
     {
         return $this->hasMany(PostLike::class, 'post_id', 'post_id')

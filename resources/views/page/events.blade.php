@@ -4,7 +4,6 @@
 @section('page')
 @include('layout.navbar')
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])
-@include('component.changepassmodal', ['title' => 'Change password'])
 
 <div class="max-w-7xl mx-auto px-6 py-8">
     <div class="flex items-center justify-between">

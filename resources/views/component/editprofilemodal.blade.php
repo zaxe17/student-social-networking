@@ -1,4 +1,4 @@
-{{-- CropperJS --}}
+<!-- CropperJS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
@@ -8,19 +8,24 @@
 
         <div class="w-2/5 h-3/4 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col">
 
-            {{-- Header --}}
+            <!-- HEADER -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative text-center">
+                <!-- TITLE -->
                 <h2 class="text-xl font-medium">Edit Profile</h2>
+
+                <!-- CLOSE BUTTON -->
                 <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;">
                 </span>
             </div>
 
-            {{-- Form --}}
+            <!-- EDIT PROFILE FORM -->
             <form id="profileForm" class="flex flex-col flex-1 overflow-y-auto p-8 gap-6" method="POST" enctype="multipart/form-data">
                 @csrf
+
+                <!-- HIDDEN FIELD FOR PASSING STUDENT ID LOGGED-IN -->
                 <input type="hidden" name="student_id" value="{{ $loggedInStudent?->student_id ?? '' }}">
 
-                {{-- PROFILE PHOTO --}}
+                <!-- PROFILE PHOTO -->
                 <div class="flex flex-col items-center gap-3">
                     <img
                         id="photoPreview"
@@ -30,14 +35,15 @@
 
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
 
+                    <!-- UPLOAD BUTTON -->
                     <button type="button" id="uploadBtn"
                         class="px-4 py-2 bg-[#770d08] text-white rounded cursor-pointer flex items-center gap-1.5">
                         <span class="icon bg-white" style="--svg: url('https://api.iconify.design/material-symbols/upload-rounded.svg'); --size: 20px;"></span>
-                        Upload / Take Photo
+                        Upload Photo
                     </button>
                 </div>
 
-                {{-- CROPPER --}}
+                <!-- CROPPER PICTURE -->
                 <div id="cropContainer" class="hidden">
                     <div class="flex flex-col items-center gap-3">
                         <img id="cropImage" class="max-w-full rounded">
@@ -48,18 +54,21 @@
                     </div>
                 </div>
 
-                {{-- INPUT FIELDS --}}
+                <!-- INPUT FIELDS -->
                 <div class="grid grid-cols-12 gap-3">
+                    <!-- FIRST NAME FIELD -->
                     <div class="col-span-6 flex flex-col gap-1">
                         <label for="first_name">First Name</label>
                         <input name="first_name" value="{{ $loggedInStudent?->first_name ?? '' }}" required
                             class="bg-[#000000]/10 py-1.5 px-2 rounded-lg focus:outline-none">
                     </div>
+                    <!-- LAST NAME FIELD -->
                     <div class="col-span-6 flex flex-col gap-1">
                         <label for="last_name">Last Name</label>
                         <input name="last_name" value="{{ $loggedInStudent?->last_name ?? '' }}" required
                             class="bg-[#000000]/10 py-1.5 px-2 rounded-lg focus:outline-none">
                     </div>
+                    <!-- BIO FIELD -->
                     <div class="col-span-12 flex flex-col gap-1">
                         <label for="bio">Bio</label>
                         <input name="bio" value="{{ $loggedInStudent?->bio ?? '' }}"
@@ -67,30 +76,32 @@
                     </div>
                 </div>
 
-                {{-- SOCIAL LINKS --}}
+                <!-- SOCIAL LINKS -->
                 <div class="flex flex-col gap-2">
                     <label>Account links</label>
-
+                    <!-- INSTAGRAM LINK FIELD -->
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
                             <span class="instagram-icon" style="--svg: url('https://api.iconify.design/skill-icons/instagram.svg'); --size: 35px;"></span>
                             <input type="text" id="instagram" name="instagram" value="{{ $loggedInStudent?->instagram ?? '' }}"
-                                placeholder="https://www.instagram.com/username/"
-                                class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
+                            placeholder="https://www.instagram.com/username/"
+                            class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
                         </div>
                         <small id="instagramError" class="text-red-600"></small>
                     </div>
-
+                    
+                    <!-- FACEBOOK LINK FIELD -->
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
                             <span class="facebook-icon" style="--svg: url('https://api.iconify.design/logos/facebook.svg'); --size: 35px;"></span>
                             <input type="text" id="facebook" name="facebook" value="{{ $loggedInStudent?->facebook ?? '' }}"
-                                placeholder="https://www.facebook.com/example.username/"
-                                class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
+                            placeholder="https://www.facebook.com/example.username/"
+                            class="w-full py-1.5 px-2 rounded-lg focus:outline-none">
                         </div>
                         <small id="facebookError" class="text-red-600"></small>
                     </div>
-
+                    
+                    <!-- LINKEDIN LINK FIELD -->
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
                             <span class="linkedin-icon" style="--svg: url('https://api.iconify.design/devicon/linkedin.svg'); --size: 35px;"></span>
@@ -102,7 +113,7 @@
                     </div>
                 </div>
 
-                {{-- Submit --}}
+                <!-- SAVE BUTTON -->
                 <button id="formMsg" type="submit"
                     class="w-full bg-[#770d08] text-white py-2 rounded text-lg cursor-pointer">
                     Save Changes
@@ -114,7 +125,7 @@
 </div>
 @endif
 
-{{-- CropperJS & AJAX --}}
+<!-- CropperJS & AJAX -->
 <script>
     let cropper = null;
     let croppedBlob = null;

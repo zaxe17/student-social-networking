@@ -11,6 +11,7 @@ use App\Models\PostReport;
 use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -145,8 +146,8 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($student->photo && \Storage::disk('public')->exists($student->photo)) {
-                \Storage::disk('public')->delete($student->photo);
+            if ($student->photo && Storage::disk('public')->exists($student->photo)) {
+                Storage::disk('public')->delete($student->photo);
             }
 
             $validated['photo'] = $request->file('photo')
@@ -298,8 +299,8 @@ class ProfileController extends Controller
         }
 
         // Delete profile photo if exists
-        if ($student->photo && \Storage::disk('public')->exists($student->photo)) {
-            \Storage::disk('public')->delete($student->photo);
+        if ($student->photo && Storage::disk('public')->exists($student->photo)) {
+            Storage::disk('public')->delete($student->photo);
         }
 
         // Optionally: delete related posts, comments, likes

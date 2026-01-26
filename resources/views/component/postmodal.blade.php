@@ -1,3 +1,4 @@
+<!-- GET THE STUDENT LIKE TO REFLECT IN THIS MODAL -->
 @php
 $isLiked = false;
 if (isset($post) && isset($student)) {
@@ -7,7 +8,7 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
 <div id="commentModal" class="modal hidden">
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen py-8 flex justify-center items-center z-50 backdrop-blur-[1px]">
         <div class="w-2/4 h-full bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col">
-            {{-- POST HEADER --}}
+            <!-- POST HEADER -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
                 <h2 class="text-center text-xl font-medium" id="modalTitle"></h2>
                 <span close-modal
@@ -15,10 +16,10 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                     style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;">
                 </span>
             </div>
-            {{-- POST CONTENT --}}
+            <!-- POST CONTENT -->
             <div class="flex-1 overflow-y-auto">
                 <div class="border-b border-b-black/50 border-solid p-8 pb-2 mb-5">
-                    {{-- POST INFO --}}
+                    <!-- POST INFO -->
                     <div class="flex items-center gap-2 mb-8">
                         <img id="modalUserPhoto"
                             src="{{ isset($post->author) && $post->author->photo ? asset('storage/'.$post->author->photo) : asset('/img/user.png') }}"
@@ -34,27 +35,28 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                             </div>
                         </div>
                     </div>
-                    {{-- POST CONTENT TEXT --}}
+                    <!-- POST CONTENT TEXT -->
                     <p id="modalContent" class="mb-6"></p>
-                    {{-- REACT + COMMENT COUNT --}}
+                    <!-- REACT + COMMENT COUNT -->
                     <div class="flex justify-between items-center mb-3 text-sm text-[#545454]">
-                        {{-- LIKE COUNT WITH HOVER PREVIEW --}}
+                        <!-- LIKE COUNT -->
                         <button type="button"
                             id="modalReactorsButton"
                             target-modal="reactorsModal"
                             postid-data="{{ $post->post_id ?? '' }}"
-                            class="relative group flex items-center gap-1 cursor-pointer">
+                            class="relative group flex items-center gap-1">
                             <span>❤️</span>
                             <span id="modalLikes">{{ $post->likes_count ?? 0 }}</span>
-                            {{-- Hover preview will be inserted here dynamically --}}
                         </button>
 
-                        <span id="modalComments" class="text-[#545454] cursor-pointer hover:underline">
+                        <!-- COMMENT COUNT -->
+                        <span id="modalComments" class="text-[#545454]">
                             {{ $post->comments_count ?? 0 }} comment{{ ($post->comments_count ?? 0) > 1 ? 's' : '' }}
                         </span>
                     </div>
-                    {{-- ACTION BUTTONS --}}
+                    <!-- ACTION BUTTONS -->
                     <div class="flex justify-around items-center mt-3 mb-5">
+                        <!-- REACT BUTTON -->
                         <button id="modalReactBtn"
                             class="react-btn flex items-center gap-2 text-[#545454] hover:text-black transition"
                             data-post-id="{{ $post->post_id ?? '' }}">
@@ -65,6 +67,7 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                             </span>
                             React
                         </button>
+                        <!-- COMMENT BUTTON -->
                         <button type="button"
                             class="flex items-center gap-2 text-[#545454] cursor-pointer"
                             onclick="document.querySelector('#modalAddCommentForm input[name=content]')?.focus()">
@@ -73,12 +76,12 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                         </button>
                     </div>
                 </div>
-                {{-- COMMENTS CONTAINER --}}
+                <!-- COMMENTS CONTAINER -->
                 <div id="modalCommentsContainer">
                     <div class="px-8 text-sm text-[#545454]">Loading comments...</div>
                 </div>
             </div>
-            {{-- ADD COMMENT --}}
+            <!-- ADD COMMENT FORM -->
             <div class="p-5 border-t border-black/20 bg-[#F5F5F5]">
                 <form id="modalAddCommentForm"
                     action=""
@@ -86,15 +89,21 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                     class="flex items-center gap-5 h-10"
                     data-post-id="{{ $post->post_id ?? '' }}">
                     @csrf
+
+                    <!-- STUDENT PROFFILE -->
                     <img id="modalCommentUserPhoto"
                         src="{{ isset($loggedInStudent) && $loggedInStudent->photo ? asset('storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
                         alt="User Photo"
                         class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
+
+                    <!-- COMMENT FIELD -->
                     <input type="text"
                         name="content"
                         placeholder="write a comment..."
                         class="w-full h-full px-2.5 rounded-lg bg-[#dde0e5] focus:outline-none placeholder:text-[#545454]"
                         required>
+
+                    <!-- SUBMIT BUTTON -->
                     <button type="submit"
                         class="flex items-center justify-center rounded-lg bg-transparent"
                         aria-label="Send comment">

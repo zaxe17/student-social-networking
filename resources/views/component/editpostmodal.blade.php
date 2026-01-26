@@ -16,17 +16,18 @@
                 @csrf
                 @method('PUT')
 
-                <!-- USER -->
+                <!-- STUDENT DISPLAY -->
                 <div class="flex items-center gap-4">
-                    <img
-                        src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
-                        class="w-10 h-10 rounded-full object-cover border">
+                    <!-- STUDENT IMG -->
+                    <img src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}" class="w-10 h-10 rounded-full object-cover border">
+
+                    <!-- STUDENT NAME -->
                     <span class="text-lg">
                         {{ $student->first_name ?? 'Guest' }} {{ $student->last_name ?? '' }}
                     </span>
                 </div>
 
-                <!-- CONTENT -->
+                <!-- CONTENT FIELD -->
                 <textarea
                     id="editPostContent"
                     name="content"
@@ -34,7 +35,7 @@
                     required>
                 </textarea>
 
-                <!-- SAVE -->
+                <!-- SAVE BUTTON -->
                 <div class="flex justify-center">
                     <button type="submit"
                         class="px-8 py-2 text-lg font-medium text-white bg-[#770d08] rounded-md">

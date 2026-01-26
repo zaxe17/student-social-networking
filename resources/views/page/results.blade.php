@@ -18,7 +18,7 @@
     @endif
 </div>
 @include('component.editprofilemodal', ['title' => 'Edit Profile'])
-@include('component.changepassmodal', ['title' => 'Change password'])
+
 @include('component.deleteconfirm', [
 'title' => 'Delete account',
 'modal_id' => 'deleteaccount',

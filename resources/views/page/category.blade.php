@@ -21,7 +21,7 @@
 </div>
 
 @include('layout.sidebar', ['student' => $student ?? null])
-@include('component.changepassmodal', ['title' => 'Change password'])
+
 @include('component.deleteconfirm', [
 'title' => 'Delete account',
 'modal_id' => 'deleteaccount',

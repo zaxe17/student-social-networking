@@ -4,35 +4,40 @@
 
             <!-- HEADER OF MODAL -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
-                <!-- Title -->
+                <!-- TITLE -->
                 <h2 class="text-center text-xl font-medium">{{ $title }}</h2>
 
-                <!-- Close Button -->
+                <!-- CLOSE BUTTON -->
                 <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px; --icon-color: black;"></span>
             </div>
 
+            <!-- CHANGE PASSWORD FORM FIELDS -->
             <form id="changepassForm" action="{{ route('student.changePassword') }}" method="POST" class="flex flex-col gap-3.5 p-8">
                 @csrf
 
+                <!-- OLD PASSWORD FIELD -->
                 <div class="flex flex-col gap-2">
                     <label for="current_password">Old Password</label>
                     <input type="password" name="current_password" id="current_password" class="shadow-input p-2 bg-[#dde0e5] focus:outline-none" required>
                     <span id="oldPasswordError" class="text-red-600 text-sm hidden">Old password is incorrect.</span>
                 </div>
-
+                
+                <!-- NEW PASSWORD FIELD -->
                 <div class="flex flex-col gap-2">
                     <label for="new_password">New Password</label>
                     <input type="password" name="new_password" id="new_password" class="shadow-input p-2 focus:outline-none" required>
                     <!-- Real-time weak password message -->
                     <span id="passwordWeak" class="text-red-600 text-sm hidden">Password is too weak (minimum should 6 characters).</span>
                 </div>
-
+                
+                <!-- CONFIRM PASSWORD FIELD -->
                 <div class="flex flex-col gap-2">
                     <label for="new_password_confirmation">Confirm New Password</label>
                     <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="shadow-input p-2 focus:outline-none" required>
                     <span id="passwordMismatch" class="text-red-600 text-sm hidden">Passwords do not match.</span>
                 </div>
-
+                
+                <!-- SAVE BUTTON -->
                 <div class="flex justify-center mt-7">
                     <button type="submit" id="saveBtn"
                         class="w-30 flex justify-center items-center py-1.5 text-xl font-medium
@@ -47,6 +52,7 @@
     </div>
 </div>
 
+<!-- SCRIPT FOR CONFIRMING PASSWORD IF NOT MATCH -->
 <script>
     const form = document.getElementById('changepassForm');
     const oldPassword = document.getElementById('current_password');

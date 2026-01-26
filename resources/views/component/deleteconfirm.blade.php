@@ -6,20 +6,24 @@
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
                 <h2 class="text-center text-xl font-medium">{{ $title }}</h2>
 
+                <!-- CLOSE BUTTON -->
                 <span close-modal
                     class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer"
                     style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;">
                 </span>
             </div>
 
+            <!-- DELETE FORM -->
             <form action="{{ $route }}" method="POST" class="flex flex-col gap-3.5 p-8">
                 @csrf
                 @method('DELETE')
 
+                <!-- CANCEL BUTTON -->
                 <button type="button" close-modal class="w-full py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
                     Cancel
                 </button>
 
+                <!-- DELETE BUTTON -->
                 <button type="submit" class="w-full py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
                     Delete
                 </button>

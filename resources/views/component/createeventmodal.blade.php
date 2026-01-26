@@ -1,33 +1,39 @@
 <div id="createEventModal" class="@if($errors->any()) block @else hidden @endif fixed inset-0 z-50">
+    <!-- HIDE MODAL IF CLICK OUTSIDE -->
     <div class="absolute inset-0 bg-black/40 cursor-pointer" onclick="document.getElementById('createEventModal').classList.add('hidden')"></div>
 
+    <!-- MODAL BODY -->
     <div class="relative mx-auto my-12 w-[92%] max-w-xl bg-white rounded-xl shadow-lg p-6 overflow-y-auto max-h-[90vh]">
+        <!-- MODAL HEADER -->
         <div class="flex items-start justify-between">
+            <!-- TITLE -->
             <h2 class="text-lg font-semibold text-gray-800 cursor-pointer">Add new event</h2>
+            <!-- CLOSE BUTTON -->
             <span onclick="document.getElementById('createEventModal').classList.add('hidden')" class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px;">
             </span>
         </div>
 
-        <!-- Removed previous success message -->
-
+        <!-- EVENT FIELDS FORM -->
         <form id="createEventForm" class="mt-5 space-y-4" method="POST" action="{{ route('events.store') }}" enctype="multipart/form-data">
             @csrf
 
-            <!-- Event Name -->
+            <!-- EVENT NAME FIELD -->
             <div>
                 <label class="text-sm text-gray-700 font-medium">Event name</label>
                 <input name="name" value="{{ old('name') }}" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none" required>
-                @error('name') 
+                <!-- ERROR MESSAGE -->
+                @error('name')
                 <p class="text-xs text-red-600 mt-1">
                     {{ $message }}
-                </p> 
+                </p>
                 @enderror
             </div>
 
-            <!-- Description -->
+            <!-- DESCRIPTION FIELD -->
             <div>
                 <label class="text-sm text-gray-700 font-medium">Description</label>
                 <textarea name="description" rows="3" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none resize-none">{{ old('description') }}</textarea>
+                <!-- ERROR MESSAGE -->
                 @error('description')
                 <p class="text-xs text-red-600 mt-1">
                     {{ $message }}
@@ -35,11 +41,13 @@
                 @enderror
             </div>
 
-            <!-- Date & Time -->
+            <!-- DATE AND TIME -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- DATE FIELD -->
                 <div>
                     <label class="text-sm text-gray-700 font-medium">Date</label>
                     <input id="event_date" type="date" name="event_date" value="{{ old('event_date') }}" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none" required>
+                    <!-- ERROR MESSAGE -->
                     @error('event_date')
                     <p class="text-xs text-red-600 mt-1">
                         {{ $message }}
@@ -47,9 +55,11 @@
                     @enderror
                 </div>
 
+                <!-- START TIME FIELD -->
                 <div>
                     <label class="text-sm text-gray-700 font-medium">Time</label>
                     <input id="start_time" type="time" name="start_time" value="{{ old('start_time') }}" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                    <!-- ERROR MESSAGE -->
                     @error('start_time')
                     <p class="text-xs text-red-600 mt-1">
                         {{ $message }}
@@ -57,9 +67,11 @@
                     @enderror
                 </div>
 
+                <!-- END TIME FIELD -->
                 <div>
                     <label class="text-sm text-gray-700 font-medium">End</label>
                     <input id="end_time" type="time" name="end_time" value="{{ old('end_time') }}" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                    <!-- ERROR MESSAGE -->
                     @error('end_time')
                     <p class="text-xs text-red-600 mt-1">
                         {{ $message }}
@@ -68,10 +80,11 @@
                 </div>
             </div>
 
-            <!-- Location -->
+            <!-- LOCATION -->
             <div>
                 <label class="text-sm text-gray-700 font-medium">Location</label>
                 <input name="location" value="{{ old('location') }}" class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                <!-- ERROR MESSAGE -->
                 @error('location')
                 <p class="text-xs text-red-600 mt-1">
                     {{ $message }}
@@ -79,11 +92,12 @@
                 @enderror
             </div>
 
-            <!-- Registration URL -->
+            <!-- REGISTRATION URL FORM LINK FIELD -->
             <div>
                 <label class="text-sm text-gray-700 font-medium">Registration Link/URL</label>
                 <input name="registration_url" value="{{ old('registration_url') }}"
                     class="shadow-input mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                <!-- ERROR MESSAGE -->
                 @error('registration_url')
                 <p class="text-xs text-red-600 mt-1">
                     {{ $message }}
@@ -91,7 +105,7 @@
                 @enderror
             </div>
 
-            <!-- Upload Event Header -->
+            <!-- UPLOAD IMG HEADER EVENT -->
             <div class="flex items-center gap-3">
                 <label class="cursor-pointer inline-flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-[#6b1d1d] rounded-lg hover:opacity-90">
                     <span class="icon bg-white" style="--svg: url('https://api.iconify.design/material-symbols/upload-rounded.svg'); --size: 20px;"></span>
@@ -99,13 +113,19 @@
                     <input type="file" name="header" accept="image/*" class="hidden">
                 </label>
 
+                <!-- FILE NAME -->
                 <span id="fileName" class="text-xs text-gray-600 truncate">
                     @if(old('header_name')) {{ old('header_name') }} @endif
                 </span>
             </div>
-            @error('header') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            <!-- ERROR MESSAGE -->
+            @error('header')
+            <p class="text-xs text-red-600 mt-1">
+                {{ $message }}
+            </p>
+            @enderror
 
-            <!-- Submit Button -->
+            <!-- SUBMIT BUTTON -->
             <button id="submitEventBtn" type="submit"
                 class="w-full bg-[#6b1d1d] text-white py-2 rounded-lg font-semibold hover:opacity-90 cursor-pointer">
                 Submit

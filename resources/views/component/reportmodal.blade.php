@@ -2,7 +2,7 @@
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen flex justify-center items-center z-50 backdrop-blur-[1px]">
         <div class="w-2/5 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden">
 
-            {{-- HEADER --}}
+            <!-- HEADER -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
                 <h2 class="text-center text-xl font-medium">Report Post</h2>
                 <p class="text-center text-sm">Why are you reporting this post? We will review it.</p>
@@ -13,11 +13,13 @@
                 </span>
             </div>
 
-            {{-- FORM --}}
+            <!-- FORM -->
             <form id="reportForm" action="" method="POST" class="flex flex-col gap-3.5 p-8">
                 @csrf
+                <!-- MESSAGE FIELD -->
                 <input type="hidden" name="post_id" id="reportPostId">
 
+                <!-- REASON SELECT -->
                 <div class="flex flex-col">
                     <label>Select reason</label>
                     <select name="reason" required class="w-full bg-black/15 px-4 py-2 rounded-md border-none focus:outline-none cursor-pointer">
@@ -52,6 +54,7 @@
     </div>
 </div>
 
+<!-- SUBMITION OF REPORT -->
 <script>
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('[target-modal="reportModal"]');

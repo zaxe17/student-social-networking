@@ -1,5 +1,4 @@
-<div id="menuOverlay"
-    class="fixed left-0 top-18 w-full h-[calc(100vh-4.5rem)] bg-black/45 flex justify-end items-center z-40 backdrop-blur-[2px] hidden">
+<div id="menuOverlay" class="fixed left-0 top-18 w-full h-[calc(100vh-4.5rem)] bg-black/45 flex justify-end items-center z-40 backdrop-blur-[2px] hidden">
 
     <!-- SIDEBAR PANEL -->
     <div id="menuPanel"
@@ -61,3 +60,5 @@
 
 {{-- INCLUDE EDIT PROFILE MODAL --}}
 @include('component.editprofilemodal')
+
+@include('component.changepassmodal', ['title' => 'Change password'])

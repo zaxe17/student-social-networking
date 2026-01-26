@@ -4,7 +4,6 @@
 
 @section('page')
 @include('layout.navbar')
-@include('component.changepassmodal', ['title' => 'Change password'])
 
 <div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
 
@@ -45,7 +44,9 @@
         ])
 
         {{-- EVENTS WIDGET --}}
+        @if(empty($selectedCategories))
         @include('component.eventwidget', ['events' => $sidebarEvents ?? collect()])
+        @endif
     </div>
 </div>
 
@@ -72,6 +73,7 @@
 ])
 
 @include('component.createeventmodal')
+
 @include('component.editpostmodal')
 
 @include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])

@@ -37,7 +37,7 @@
     }, $content);
     @endphp
 
-    <!-- ================= HEADER ================= -->
+    <!-- HEADER -->
     <div class="flex items-center gap-2 text-sm mb-5">
 
         <!-- AUTHOR PROFILE LINK + PHOTO -->
@@ -48,9 +48,10 @@
         </a>
 
         <span>•</span>
+        <!-- TIMESTAMP -->
         <span class="text-[#545454]">{{ $post->created_at?->diffForHumans() }}</span>
 
-        <!-- CATEGORY -->
+        <!-- CATEGORY ICON -->
         @if ($post->category)
         @php
         $icon = $categoryIcons[$post->category->category_name] ?? 'mdi:tag';
@@ -62,6 +63,7 @@
         @endphp
 
         <span>•</span>
+        <!-- CATEGORY NAME AND ICON -->
         <a href="{{ route('category.page', ['category' => $queryCategories]) }}"
             class="flex items-center gap-1 hover:underline">
             <span class="icon bg-[#770d08] mt-0.5"
@@ -81,6 +83,7 @@
                 data-dropdown="dotDropdown-{{ $post->post_id }}"
                 style="--svg: url('https://api.iconify.design/solar/menu-dots-bold.svg'); --size: 25px;"></span>
 
+            <!-- ACTION POST BUTTON MENU -->
             <div id="dotDropdown-{{ $post->post_id }}" class="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 hidden z-50">
                 <ul class="py-2 text-sm">
                     <!-- REPORT POST -->
@@ -92,21 +95,24 @@
                     </li>
                     @endif
 
-                    <!-- EDIT / ARCHIVE / DELETE -->
+                    <!-- MENU BUTTON WHILE IN ARCHIVED PAGE -->
                     @if ($student && $post->student_id === $student->student_id)
                     @if (request()->routeIs('archived.page'))
+                    <!-- RESTORE BUTTON FOR ARCHIVED POST -->
                     <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100"
                         onclick="document.getElementById('restoreForm-{{ $post->post_id }}').submit();">
                         <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/restore.svg'); --size: 18px;"></span>
                         Restore
                     </li>
-                    <li class="cursor-pointer hover:bg-red-50"  target-modal="deletepost{{ $post->post_id }}">
+                    <!-- DELETE BUTTON IF IN ARCHIVE PAGE -->
+                    <li class="cursor-pointer hover:bg-red-50" target-modal="deletepost{{ $post->post_id }}">
                         <button type="button" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
                             <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
                             Delete
                         </button>
                     </li>
                     @else
+                    <!-- EDIT BUTTON -->
                     <li class="px-4 py-2 cursor-pointer text-[#545454] hover:bg-gray-100">
                         <button type="button" class="editPostBtn text-left w-full cursor-pointer flex items-center gap-1.5"
                             data-post-id="{{ $post->post_id }}"
@@ -115,6 +121,7 @@
                             Edit
                         </button>
                     </li>
+                    <!-- ARCHIVED BUTTON -->
                     <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
                         <form action="{{ route('posts.destroy', $post->post_id) }}" method="POST" class="w-full">
                             @csrf
@@ -125,6 +132,7 @@
                             </button>
                         </form>
                     </li>
+                    <!-- DELETE BUTTON -->
                     <li class="cursor-pointer hover:bg-red-50" target-modal="deletepost{{ $post->post_id }}">
                         <button type="button" class="w-full cursor-pointer px-4 py-2 flex items-center gap-1.5 text-red-600">
                             <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
@@ -138,19 +146,20 @@
         </div>
     </div>
 
-    <!-- ================= CONTENT ================= -->
+    <!-- CONTENT POST -->
     <p class="border-b border-black/50 pb-5 mb-3.5">{!! nl2br($content) !!}</p>
 
-    <!-- ================= COUNTS ================= -->
+    <!-- REACT AND COMMENT COUNT -->
     <div class="flex justify-between items-center mb-3 text-sm text-[#545454]">
 
-        <!-- LIKE COUNT + HOVER PREVIEW -->
+        <!-- LIKE COUNT -->
         <button type="button" target-modal="reactorsModal" postid-data="{{ $post->post_id }}"
             class="relative group flex items-center gap-1 cursor-pointer">
             <span class="like-count" data-post-id="{{ $post->post_id }}">
                 ❤️ {{ $post->likes_count }}
             </span>
 
+            <!-- SHOW THE STUDENT WHO REACT THIS POST -->
             @if ($likedUsers->count())
             <div class="absolute left-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-lg p-3 text-sm hidden group-hover:block z-50">
                 @foreach ($previewUsers as $user)
@@ -169,7 +178,7 @@
             @endif
         </button>
 
-        <!-- COMMENT COUNT -->
+        <!-- COMMENT COUNT BUTTON WITH PASSING DATA IN JS TO DISPLAY DATA IN POSTMODAL BLADE -->
         <span target-modal="commentModal"
             postid-data="{{ $post->post_id }}"
             firstname-data="{{ $post->author->first_name }}"
@@ -187,9 +196,9 @@
         </span>
     </div>
 
-    <!-- ================= ACTION BUTTONS ================= -->
+    <!-- ACTION BUTTONS -->
     <div class="flex justify-around items-center">
-        <!-- REACT -->
+        <!-- REACT BUTTON -->
         <button class="react-btn flex items-center gap-2 text-[#545454] hover:text-black transition" data-post-id="{{ $post->post_id }}">
             <span class="icon mt-1 {{ $isLiked ? 'bg-red-600' : 'bg-[#545454]' }}" data-heart-icon
                 style="--svg: url('https://api.iconify.design/{{ $isLiked ? 'mdi:heart' : 'mdi:heart-outline' }}.svg'); --size: 24px;">
@@ -197,7 +206,7 @@
             React
         </button>
 
-        <!-- COMMENT -->
+        <!-- COMMENT BUTTON WITH PASSING DATA IN JS TO DISPLAY DATA IN POSTMODAL BLADE -->
         <button target-modal="commentModal"
             postid-data="{{ $post->post_id }}"
             firstname-data="{{ $post->author->first_name }}"
