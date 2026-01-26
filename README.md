@@ -103,152 +103,130 @@ The development of ISKOnnect would not be possible without the following technol
 
 ## User Side
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/signin.png" alt="Sign In Page" width="500"/>
-  <figcaption><b>Sign In Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Sign In Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/signup.png" alt="Sign Up Page" width="500"/>
-  <figcaption><b>Sign Up Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Sign Up Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/feed.png" alt="Feed Page" width="500"/>
-  <figcaption><b>Feed Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Feed Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/createpost.png" alt="Create Post" width="500"/>
-  <figcaption><b>Create Post</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Create Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/like&comment.png" alt="Like and Comment" width="500"/>
-  <figcaption><b>Like and Comment</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Like and Comment</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/viewreacts.png" alt="View Reacts" width="500"/>
-  <figcaption><b>View Reacts</b></figcaption>
-</figure>
-<br/>
+  <br/><b>View Reacts</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/report.png" alt="Post Reporting" width="500"/>
   <img src="readmeimages/report1.png" alt="Post Reporting" width="500"/>
-  <figcaption><b>Post Reporting</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Post Reporting</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/filtered.png" alt="Filtered Posts" width="500"/>
-  <figcaption><b>Filtered Posts</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Filtered Posts</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/postsetting.png" alt="Posts Options" width="500"/>
-  <figcaption><b>Posts Options</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Posts Options</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/editpost.png" alt="Edit Post" width="500"/>
-  <figcaption><b>Edit Post</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Edit Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/deletepost.png" alt="Delete Post" width="500"/>
-  <figcaption><b>Delete Post</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Delete Post</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/profile.png" alt="Profile Page" width="500"/>
-  <figcaption><b>Profile Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Profile Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/eventbar.png" alt="Event on Feed" width="500"/>
-  <figcaption><b>Event on Feed</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Event on Feed</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/event.png" alt="Event Page" width="500"/>
-  <figcaption><b>Event Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Event Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/addevent.png" alt="Event Adding" width="500"/>
-  <figcaption><b>Event Adding</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Event Adding</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/search.png" alt="Post Searching" width="500"/>
-  <figcaption><b>Post Searching</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Post Searching</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/sidebar.png" alt="Sidebar" width="500"/>
-  <figcaption><b>Sidebar</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Sidebar</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/editprofile.png" alt="Edit Profile" width="500"/>
-  <figcaption><b>Edit Profile</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Edit Profile</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/changepassword.png" alt="Change Password" width="500"/>
-  <figcaption><b>Change Password</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Change Password</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/archived.png" alt="Archived Posts" width="500"/>
-  <figcaption><b>Archived Posts</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Archived Posts</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/deleteaccount.png" alt="Delete Account" width="500"/>
-  <figcaption><b>Delete Account</b></figcaption>
-</figure>
+  <br/><b>Delete Account</b>
+</p>
 
----
 
 ## Admin Side
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/adminsignin.png" alt="Admin Sign In Page" width="500"/>
-  <figcaption><b>Admin Sign In Page</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Admin Sign In Page</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/admindashboard.png" alt="Admin Dashboard" width="500"/>
-  <figcaption><b>Admin Dashboard</b></figcaption>
-</figure>
-<br/>
+  <br/><b>Admin Dashboard</b>
+</p>
 
-<figure align="center">
+<p align="center">
   <img src="readmeimages/adminsearch.png" alt="Admin Search Feature" width="500"/>
-  <figcaption><b>Admin Search Feature</b></figcaption>
-</figure>
+  <br/><b>Admin Search Feature</b>
+</p>
+
 
 ## License
 
