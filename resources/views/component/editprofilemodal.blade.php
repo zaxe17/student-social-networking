@@ -29,7 +29,7 @@
                 <div class="flex flex-col items-center gap-3">
                     <img
                         id="photoPreview"
-                        src="{{ $loggedInStudent?->photo ? asset('storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
+                        src="{{ $loggedInStudent?->photo ? asset('/storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
                         class="w-40 h-40 rounded-full object-cover border"
                         alt="Profile Preview">
 

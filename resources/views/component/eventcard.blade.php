@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl shadow-bg overflow-hidden border border-gray-100">
     <!-- EVENT IMG HEADER -->
     @if(!empty($event->header_path))
-    <img src="{{ asset('storage/'.$event->header_path) }}"
+    <img src="{{ asset('/storage/'.$event->header_path) }}"
         class="w-full h-40 object-cover"
         alt="header"
         onerror="this.style.display='none'">

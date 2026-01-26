@@ -22,7 +22,7 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
                     <!-- POST INFO -->
                     <div class="flex items-center gap-2 mb-8">
                         <img id="modalUserPhoto"
-                            src="{{ isset($post->author) && $post->author->photo ? asset('storage/'.$post->author->photo) : asset('/img/user.png') }}"
+                            src="{{ isset($post->author) && $post->author->photo ? asset('/storage/'.$post->author->photo) : asset('/img/user.png') }}"
                             alt="User Photo"
                             class="w-8 h-8 rounded-full object-cover cursor-pointer border-2 border-gray-300">
                         <div class="flex flex-col text-sm">
@@ -92,7 +92,7 @@ $isLiked = $post->isLikedBy($student->student_id ?? null);
 
                     <!-- STUDENT PROFFILE -->
                     <img id="modalCommentUserPhoto"
-                        src="{{ isset($loggedInStudent) && $loggedInStudent->photo ? asset('storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
+                        src="{{ isset($loggedInStudent) && $loggedInStudent->photo ? asset('/storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}"
                         alt="User Photo"
                         class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
 

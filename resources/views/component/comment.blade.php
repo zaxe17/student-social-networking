@@ -14,7 +14,7 @@ $commentId = $comment->comment_id ?? $comment->id;
     data-post-id="{{ $comment->post_id }}">
 
     <!-- AUTHOR PHOTO -->
-    <img src="{{ $comment->author?->photo ? asset('storage/'.$comment->author->photo) : asset('/img/user.png') }}"
+    <img src="{{ $comment->author?->photo ? asset('/storage/'.$comment->author->photo) : asset('/img/user.png') }}"
         class="w-8 h-8 rounded-full object-cover border-2 border-gray-300"
         alt="User photo">
 

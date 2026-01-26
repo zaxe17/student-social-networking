@@ -29,7 +29,7 @@
         <div class="rounded-lg overflow-hidden border border-gray-100 shadow-sm bg-white">
             <!-- EVENT IMG HEADER -->
             @if(!empty($event->header_path))
-            <img src="{{ asset('storage/'.$event->header_path) }}"
+            <img src="{{ asset('/storage/'.$event->header_path) }}"
                 class="w-full h-28 object-cover"
                 alt="event header"
                 onerror="this.style.display='none'">

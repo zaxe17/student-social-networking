@@ -19,7 +19,7 @@
                 <!-- STUDENT DISPLAY -->
                 <div class="flex items-center gap-4">
                     <!-- STUDENT IMG -->
-                    <img src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}" class="w-10 h-10 rounded-full object-cover border">
+                    <img src="{{ $student && $student->photo ? asset('/storage/'.$student->photo) : asset('/img/user.png') }}" class="w-10 h-10 rounded-full object-cover border">
 
                     <!-- STUDENT NAME -->
                     <span class="text-lg">

@@ -12,7 +12,7 @@
             <div class="flex items-center text-3xl gap-6">
 
                 <img
-                    src="{{ $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
+                    src="{{ $student->photo ? asset('/storage/'.$student->photo) : asset('/img/user.png') }}"
                     class="w-40 h-40 rounded-full object-cover border"
                     alt="Profile Picture">
 

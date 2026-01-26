@@ -50,7 +50,7 @@ $student = $studentId ? \App\Models\Student::find($studentId) : null;
 
         <!-- PROFILE PICTURE -->
         @if($student)
-        <img src="{{ $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
+        <img src="{{ $student->photo ? Storage::url($student->photo) : asset('/img/user.png') }}"
             class="w-8 h-8 rounded-full object-cover cursor-pointer border-2 border-white"
             id="menuBtn"
             alt="Profile">

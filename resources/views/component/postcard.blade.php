@@ -42,7 +42,7 @@
 
         <!-- AUTHOR PROFILE LINK + PHOTO -->
         <a href="{{ route('profile.view', $post->author->student_id) }}" class="flex items-center gap-2 hover:underline">
-            <img src="{{ $post->author?->photo ? asset('storage/' . $post->author->photo) : asset('/img/user.png') }}"
+            <img src="{{ $post->author?->photo ? asset('/storage/' . $post->author->photo) : asset('/img/user.png') }}"
                 class="w-7 h-7 rounded-full object-cover border-2 border-gray-300" alt="">
             <span class="font-medium">{{ $post->author?->first_name }} {{ $post->author?->last_name }}</span>
         </a>
@@ -164,7 +164,7 @@
             <div class="absolute left-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-lg p-3 text-sm hidden group-hover:block z-50">
                 @foreach ($previewUsers as $user)
                 <div class="flex items-center gap-2 mb-1 pointer-events-none">
-                    <img src="{{ $user->photo ? asset('storage/'.$user->photo) : asset('/img/user.png') }}"
+                    <img src="{{ $user->photo ? asset('/storage/'.$user->photo) : asset('/img/user.png') }}"
                         class="w-6 h-6 rounded-full object-cover">
                     <span>{{ $user->first_name }} {{ $user->last_name }}</span>
                 </div>

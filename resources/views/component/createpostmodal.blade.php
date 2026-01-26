@@ -19,7 +19,7 @@
                 <div class="flex items-center gap-5">
                     <!-- STUDENT IMG -->
                     <img id="modalCommentUserPhoto"
-                        src="{{ $student && $student->photo ? asset('storage/'.$student->photo) : asset('/img/user.png') }}"
+                        src="{{ $student && $student->photo ? asset('/storage/'.$student->photo) : asset('/img/user.png') }}"
                         alt="User Photo"
                         class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
                     <!-- STUDENT NAME -->
