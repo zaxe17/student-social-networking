@@ -41,8 +41,7 @@
 
         <!-- USER PROFILE FOOTER -->
         <div class="w-full bg-[#bababa] px-16 py-10 border-t-2 border-t-[#770d08] flex items-center gap-5">
-            <img
-                src="{{ $loggedInStudent?->photo ? Storage::url($loggedInStudent->photo) : asset('/img/user.png') }}"
+            <img onclick="window.location=`{{ route('profile.page') }}`;" src="{{ $loggedInStudent?->photo ? Storage::url($loggedInStudent->photo) : asset('/img/user.png') }}"
                 class="w-15 h-15 rounded-full object-cover border cursor-pointer"
                 alt="Profile picture">
             <div class="text-lg">

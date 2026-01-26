@@ -11,7 +11,7 @@
         </div>
     </nav>
 
-    <div class="mx-auto w-full h-full">
+    <div class="mx-auto w-full h-full overflow-auto no-scrollbar">
         <!-- SIGNIN FORM -->
         <div id="signin-form" class="flex justify-between w-full h-full">
             <div class="w-1/2 h-full flex flex-col justify-end items-start">

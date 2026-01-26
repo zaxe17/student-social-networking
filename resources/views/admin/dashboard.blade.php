@@ -2,40 +2,59 @@
 @section('title', 'Admin Dashboard | ISKOnnect')
 @section('page')
 
-<div class="min-h-screen bg-gray-100">
-    <nav class="bg-[#770d08] px-10 py-4 flex justify-between items-center">
+<div class="h-screen bg-gray-100 flex flex-col">
+
+    {{-- NAVBAR --}}
+    <nav class="bg-[#770d08] px-10 h-18 flex justify-between items-center shrink-0">
         <div class="flex items-center gap-4">
-            <img src="/img/logo.png" class="w-10 h-10">
-            <p class="text-2xl text-white font-bold">ISKOnnect</p>
+            <img src="/img/ISKOnnect.png" alt="ISKOnnect" class="w-30">
         </div>
         <form method="POST" action="{{ route('admin.logout') }}">
             @csrf
-            <button class="text-white underline hover:text-gray-200 cursor-pointer">Logout</button>
+            <button class="text-white underline hover:text-gray-200 cursor-pointer">
+                Logout
+            </button>
         </form>
     </nav>
 
-    <div class="max-w-7xl mx-auto py-10 px-4">
-        <div class="bg-white rounded-2xl shadow-lg p-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-semibold">Reported Posts Management</h2>
-                <input class="bg-gray-200 rounded-full px-4 py-2 text-sm" placeholder="Search by Content" id="searchInput">
+    {{-- PAGE CONTENT --}}
+    <div class="flex-1 max-w-7xl mx-auto px-4 py-6 overflow-hidden w-full">
+
+        {{-- CARD --}}
+        <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col h-full">
+
+            {{-- HEADER --}}
+            <div class="flex justify-between items-center mb-6 shrink-0">
+                <h2 class="text-3xl font-semibold">
+                    Reported Posts Management
+                </h2>
+                <input
+                    id="searchInput"
+                    class="bg-gray-200 rounded-full px-4 py-2 text-sm"
+                    placeholder="Search by Content">
             </div>
 
-            {{-- Success/Error Messages --}}
-            @if(session('success'))
-            <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
-                {{ session('success') }}
-            </div>
-            @endif
-            @if(session('error'))
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {{ session('error') }}
-            </div>
-            @endif
+            {{-- SUCCESS / ERROR --}}
+            <div class="mb-4 shrink-0">
+                @if(session('success'))
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm mb-2">
+                    {{ session('success') }}
+                </div>
+                @endif
 
-            <div class="overflow-x-auto">
+                @if(session('error'))
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    {{ session('error') }}
+                </div>
+                @endif
+            </div>
+
+            {{-- TABLE SCROLL AREA --}}
+            <div class="flex-1 overflow-y-auto no-scrollbar">
+
                 <table class="w-full border-separate border-spacing-1">
-                    <thead class="bg-[#770d08] text-white">
+
+                    <thead class="bg-[#770d08] text-white sticky top-0 z-20">
                         <tr>
                             <th class="p-3 text-left">ID</th>
                             <th class="p-3 text-left">Post ID</th>
@@ -47,20 +66,19 @@
                             <th class="p-3 text-center">Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @forelse($reports as $postId => $postReports)
                         <tr class="hover:bg-gray-50">
-                            {{-- ID --}}
+
                             <td class="bg-gray-700 text-white p-3 text-center font-semibold">
                                 {{ $postReports->first()->id }}
                             </td>
 
-                            {{-- Post ID --}}
                             <td class="bg-gray-100 p-3 text-center">
                                 {{ $postId }}
                             </td>
 
-                            {{-- Posted By --}}
                             <td class="bg-gray-100 p-3">
                                 @if($postReports->first()->post && $postReports->first()->post->author)
                                 <div class="text-sm">
@@ -77,44 +95,24 @@
                                 @endif
                             </td>
 
-                            {{-- Content --}}
                             <td class="bg-gray-100 p-3">
                                 @if($postReports->first()->post)
-                                <div class="max-w-xs">
-                                    <p class="text-sm line-clamp-3">{{ $postReports->first()->post->content }}</p>
-                                </div>
+                                <p class="text-sm line-clamp-3">
+                                    {{ $postReports->first()->post->content }}
+                                </p>
                                 @else
                                 <span class="text-gray-400">Post deleted</span>
                                 @endif
                             </td>
 
-                            {{-- Reasons --}}
                             <td class="bg-gray-100 p-3">
-                                @php
-                                $reasonMap = [
-                                'spam' => 'Spam or misleading',
-                                'harassment' => 'Harassment or hate speech',
-                                'inappropriate' => 'Inappropriate content',
-                                'violence' => 'Violence or threats',
-                                'sexual' => 'Sexual content',
-                                'false_info' => 'False information',
-                                'scam' => 'Scam or fraud',
-                                'copyright' => 'Copyright violation',
-                                'other' => 'Other',
-                                ];
-                                @endphp
-
                                 @foreach($postReports as $report)
-                                @php
-                                $reasonFormatted = $reasonMap[$report->reason ?? 'other'] ?? 'Other';
-                                @endphp
                                 <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-1 mb-1">
-                                    {{ $reasonFormatted }}
+                                    {{ ucfirst(str_replace('_',' ', $report->reason ?? 'other')) }}
                                 </span>
                                 @endforeach
                             </td>
 
-                            {{-- Additional Details --}}
                             <td class="bg-gray-100 p-3">
                                 @foreach($postReports as $report)
                                 @if($report->details)
@@ -125,44 +123,43 @@
                                 @endforeach
                             </td>
 
-                            {{-- Total Reports --}}
-                            <td class="bg-gray-100 p-3 text-center text-sm font-semibold">
-                                {{ $postReports->count() }} report{{ $postReports->count() > 1 ? 's' : '' }}
+                            <td class="bg-gray-100 p-3 text-center font-semibold">
+                                {{ $postReports->count() }}
                             </td>
 
-                            {{-- Actions --}}
                             <td class="bg-gray-100 p-3">
                                 <div class="flex gap-2 justify-center">
-                                    {{-- Delete Report --}}
-                                    <form method="POST" action="{{ route('admin.reports.delete', $postReports->first()->id) }}"
-                                        onsubmit="return confirm('Delete this report? The post will remain.');">
+
+                                    <form method="POST"
+                                        action="{{ route('admin.reports.delete', $postReports->first()->id) }}"
+                                        onsubmit="return confirm('Delete this report?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-2 rounded font-medium cursor-pointer">
+                                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-2 rounded">
                                             Delete Record
                                         </button>
                                     </form>
 
-                                    {{-- Delete Post --}}
                                     @if($postReports->first()->post && !$postReports->first()->post->trashed())
-                                    <form method="POST" action="{{ route('admin.posts.delete', $postReports->first()->id) }}"
-                                        onsubmit="return confirm('Delete this post permanently? This action cannot be undone.');">
+                                    <form method="POST"
+                                        action="{{ route('admin.posts.delete', $postReports->first()->id) }}"
+                                        onsubmit="return confirm('Delete this post permanently?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded font-medium cursor-pointer">
+                                        <button class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded">
                                             Delete Post
                                         </button>
                                     </form>
                                     @else
                                     <button disabled
-                                        class="bg-gray-300 text-gray-500 text-xs px-3 py-2 rounded font-medium cursor-not-allowed">
+                                        class="bg-gray-300 text-gray-500 text-xs px-3 py-2 rounded">
                                         Post Deleted
                                     </button>
                                     @endif
+
                                 </div>
                             </td>
+
                         </tr>
                         @empty
                         <tr>
@@ -172,28 +169,22 @@
                         </tr>
                         @endforelse
                     </tbody>
+
                 </table>
+
             </div>
         </div>
     </div>
 </div>
 
-{{-- Simple Search Functionality (Content only) --}}
+{{-- SEARCH --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const tableRows = document.querySelectorAll('tbody tr');
-
-        searchInput?.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-
-            tableRows.forEach(row => {
-                const contentTd = row.querySelectorAll('td')[3]; // 4th column = Content
-                if (!contentTd) return;
-
-                const contentText = contentTd.textContent.toLowerCase();
-                row.style.display = contentText.includes(searchTerm) ? '' : 'none';
-            });
+    document.getElementById('searchInput')?.addEventListener('input', function() {
+        const term = this.value.toLowerCase();
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const cell = row.children[3];
+            if (!cell) return;
+            row.style.display = cell.textContent.toLowerCase().includes(term) ? '' : 'none';
         });
     });
 </script>
