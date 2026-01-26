@@ -6,6 +6,7 @@
         <span class="text-white text-lg">Filter by Categories</span>
     </div>
 
+    <!-- CATEGORY ICONS -->
     @php
     $categoryIcons = [
     'Announcements' => 'mdi:bullhorn',
@@ -24,6 +25,7 @@
     <!-- CATEGORY LIST -->
     <div class="shadow-bg flex flex-col overflow-y-auto max-h-100 no-scrollbar">
 
+        <!-- REMOVE THE BOTTOM BORDER IF THE CATEGORY IS LAST -->
         @foreach($categories as $cat)
         @php
         $iconUrl = $cat->icon_url ?? 'https://api.iconify.design/' . ($categoryIcons[$cat->category_name] ?? 'mdi:tag') . '.svg';
@@ -33,7 +35,7 @@
 
         <label for="cat-{{ $cat->category_id }}" class="flex items-center gap-7 text-sm px-6 py-5 {{ $borderClass }} cursor-pointer hover:bg-black/5">
 
-            <!-- Checkbox -->
+            <!-- CHECKBOX -->
             <input
                 type="checkbox"
                 name="category[]"
@@ -41,7 +43,7 @@
                 id="cat-{{ $cat->category_id }}"
                 @if($isChecked) checked @endif>
 
-            <!-- Category Name and Icon -->
+            <!-- CATEGORY NAME AND ICON -->
             <div class="flex items-center gap-2 text-nowrap">
                 <span class="icon bg-[#770d08] mt-1" style="--svg: url('{{ $iconUrl }}'); --size: 20px;"></span>
                 <span>{{ $cat->category_name }}</span>

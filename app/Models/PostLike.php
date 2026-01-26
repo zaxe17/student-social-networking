@@ -14,6 +14,7 @@ class PostLike extends Model
     {
         return $this->belongsTo(Post::class, 'post_id', 'post_id');
     }
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id', 'student_id');

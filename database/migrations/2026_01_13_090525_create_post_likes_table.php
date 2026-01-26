@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('post_likes', function (Blueprint $table) {
             $table->id('like_id');
-            $table->foreignId('post_id')->constrained('posts', 'post_id');
+            $table->foreignId('post_id')->constrained('posts', 'post_id')->onDelete('cascade');
             $table->string('student_id', 15);
             $table->timestamps();
             $table->unique(['post_id', 'student_id']);
-            $table->foreign('student_id')->references('student_id')->on('students');
+            $table->foreign('student_id')
+                ->references('student_id')
+                ->on('students')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
