@@ -1,59 +1,248 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## ISKOnnect
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**ISKOnnect** is a social networking web application designed specifically for students, developed using **Laravel**, **MySQL**, **Tailwind CSS**, and **JavaScript**. The platform goes beyond academic learning by providing a space where students can connect, collaborate, and express themselves in a safe and supportive online environment, while promoting responsible and respectful online interaction.
 
-## About Laravel
+**As a <u>Student</u> Access ISKOnnect here:**
+🔗 [https://iskonnect.bsit3-3.site/](https://iskonnect.bsit3-3.site/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**As an <u>Admin</u> Access ISKOnnect here:**
+🔗 [https://iskonnect.bsit3-3.site/admin](https://iskonnect.bsit3-3.site/admin)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Intended Users
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The intended users of ISKOnnect are **students** and **administrators**.
 
-## Learning Laravel
+**Students** use the system to:
+- Connect and interact with fellow students
+- Share academic- and social-related content
+- Create posts, comment, and react to posts
+- Create and join events
+- Manage personal profiles securely
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Administrators** are responsible solely for:
+- Managing and reviewing reported posts
+- Deleting reported content when necessary to maintain a safe and respectful environment
 
-## Laravel Sponsors
+By clearly separating student and administrative roles, ISKOnnect ensures that user interactions remain relevant, secure, and aligned with the needs of an academic community.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Technologies Used
 
-### Premium Partners
+The development of ISKOnnect would not be possible without the following technologies, which served as the foundation of the system’s functionality, design, and performance:
+- **MySQL** – Used for database management and storage of user accounts, posts, events, and system records
+- **Laravel** – Used as the backend framework for routing, authentication, validation, and core system logic
+- **Tailwind CSS** – Used for designing a responsive, modern, and user-friendly interface
+- **JavaScript** – Used for enhancing interactivity and dynamic behavior across the system
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Features
 
-## Contributing
+1. **Registration / Sign Up Page**
+- Student ID validation (format checking and duplicate account detection)
+- Password validation (minimum number of characters)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Sign In Page**
+- User credentials validation
 
-## Code of Conduct
+3. **Feed Page**
+- Create, edit, and delete posts
+- Category selection for posts
+- Display of post time and category
+- Reactions with hover functionality
+- Write, edit, and delete comments
+- Reaction and comment count display
+- Report post feature
+- Hashtag support
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Category Filter Side Panel**
+- Checkbox-based category filtering
 
-## Security Vulnerabilities
+5. **Event Side Panel**
+- View all events
+- Add new events
+- Event registration
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. **Navigation Bar**
+- Clickable system logo
+- Icons for Feed, Profile, and Event pages
+- Search bar for posts and users
+- Sidebar toggle icon
+
+7. **Sidebar**
+- Edit profile with photo cropper and input validations
+- Change password with validations
+- Archive posts
+- Delete account
+- Log out
+
+8. **Profile Page**
+- Display of personal details with social media links
+- Post management
+
+9. **Other User’s Profile Page**
+- Display of personal details with social media links
+- View user’s posts
+
+10. **Archive Page**
+- Restore archived posts
+- Permanently delete archived posts
+
+11. **Event Page**
+- Add new events
+- Event registration
+
+12. **Admin Sign In Page**
+- Admin credentials validation
+
+13. **Admin Dashboard Page**
+- Delete reported posts
+- Delete records of reported posts
+- Search posts by content
+- Log out
+
+## Screenshots
+
+ **User Side**
+
+<figure align="center">
+  <img src="readmeimages/signin.png" alt="Sign In Page" width="500"/>
+  <figcaption><b>Sign In Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/signup.png" alt="Sign Up Page" width="500"/>
+  <figcaption><b>Sign Up Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/feed.png" alt="Feed Page" width="500"/>
+  <figcaption><b>Feed Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/createpost.png" alt="Create Post" width="500"/>
+  <figcaption><b>Create Post</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/like&comment.png" alt="Like and Comment" width="500"/>
+  <figcaption><b>Like and Comment</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/viewreacts.png" alt="View Reacts" width="500"/>
+  <figcaption><b>View Reacts</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/report.png" alt="Post Reporting" width="500"/>
+  <img src="readmeimages/report1.png" alt="Post Reporting" width="500"/>
+  <figcaption><b>Post Reporting</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/filtered.png" alt="Filtered Posts" width="500"/>
+  <figcaption><b>Filtered Posts</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/postssettings.png" alt="Posts Options" width="500"/>
+  <figcaption><b>Posts Options</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/editpost.png" alt="Edit Post" width="500"/>
+  <figcaption><b>Edit Post</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/deletepost.png" alt="Delete Post" width="500"/>
+  <figcaption><b>Delete Post</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/profile.png" alt="Profile Page" width="500"/>
+  <figcaption><b>Profile Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/eventbar.png" alt="Event on Feed" width="500"/>
+  <figcaption><b>Event on Feed</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/event.png" alt="Event Page" width="500"/>
+  <figcaption><b>Event Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/addevent.png" alt="Event Adding" width="500"/>
+  <figcaption><b>Event Adding</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/search.png" alt="Post Searching" width="500"/>
+  <figcaption><b>Post Searching</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/sidebar.png" alt="Sidebar" width="500"/>
+  <figcaption><b>Sidebar</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/editprofile.png" alt="Edit Profile" width="500"/>
+  <figcaption><b>Edit Profile</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/changepassword.png" alt="Change Password" width="500"/>
+  <figcaption><b>Change Password</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/archived.png" alt="Archived Posts" width="500"/>
+  <figcaption><b>Archived Posts</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/deleteaccount.png" alt="Delete Account" width="500"/>
+  <figcaption><b>Delete Account</b></figcaption>
+</figure>
+
+**Admin Side**
+
+<figure align="center">
+  <img src="readmeimages/adminsignin.png" alt="Admin Sign In Page" width="500"/>
+  <figcaption><b>Admin Sign In Page</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/admindashboard.png" alt="Admin Dashboard" width="500"/>
+  <figcaption><b>Admin Dashboard</b></figcaption>
+</figure>
+
+<figure align="center">
+  <img src="readmeimages/adminsearch.png" alt="Admin Search Feature" width="500"/>
+  <figcaption><b>Admin Search Feature</b></figcaption>
+</figure>
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ISKOnnect is a project developed for educational purposes only.
+
+**Members** ***(Group 2: Subsection 2)***
+- Angeles, Allaine Jacob C.
+- Aro, Rupert Matthew W.
+- Damicog, Kyrsten Daphne M.
+- Dela Cruz, Luis Gabriel F.
+- Jacolbia, Jan Marc S.
+- Soriano, Micka Andrea A.
+
+## Acknowledgment
+
+This project is submitted to and made possible through the guidance and teachings of:
+**Mr. Angelo Joshua San Luis**
+
+
+
+
