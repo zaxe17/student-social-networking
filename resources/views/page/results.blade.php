@@ -1,31 +1,25 @@
 @extends('layout.app')
 
-@section('title', 'Archive | ISKOnnect')
+@section('title', 'Search Results | ISKOnnect')
 
 @section('page')
 @include('layout.navbar')
+@include('layout.sidebar', ['loggedInStudent' => $loggedInStudent])
 
 <div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
-    <div class="w-full h-full px-18 overflow-scroll no-scrollbar">
+    <div class="w-full h-full px-18 pb-13 overflow-scroll no-scrollbar">
+        <h2 class="text-xl mb-5">Search results for "{{ $query }}"</h2>
 
-        <div class="py-8 border-b border-b-[#770d08] mb-12">
-            <h1 class="text-[#36384e] text-3xl font-bold">
-                Archived Posts
-            </h1>
-        </div>
-
-        @forelse ($posts as $post)
+        @if($posts->count())
+        @foreach($posts as $post)
         @include('component.postcard', ['post' => $post])
-        @empty
-        <p class="text-center text-gray-500">
-            No archived posts.
-        </p>
-        @endforelse
-
+        @endforeach
+        @else
+        <p>No posts found for "{{ $query }}"</p>
+        @endif
     </div>
 </div>
-
-@include('layout.sidebar', ['student' => $student ?? null])
+@include('component.editprofilemodal', ['title' => 'Edit Profile'])
 
 @include('component.deleteconfirm', [
 'title' => 'Delete account',

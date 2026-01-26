@@ -4,24 +4,29 @@
 
             <!-- HEADER OF MODAL -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
-                <!-- Title -->
+                <!-- TITLE -->
                 <h2 class="text-center text-xl font-medium">Create New Post</h2>
 
-                <!-- Close Button -->
+                <!-- CLOSE BUTTON -->
                 <span close-modal class="icon bg-black absolute top-10 right-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer" style="--svg: url('https://api.iconify.design/material-symbols-light/close-rounded.svg'); --size: 35px; --icon-color: black;"></span>
             </div>
 
-            <!-- FORM -->
+            <!-- POST FORM -->
             <form action="{{ route('posts.store') }}" method="POST" class="flex flex-col gap-3.5 p-8">
                 @csrf
 
-                <!-- USER DISPLAY -->
+                <!-- STUDENT DISPLAY -->
                 <div class="flex items-center gap-5">
-                    <img src="{{ auth()->user()?->photo ? asset('storage/' . auth()->user()->photo) : asset('/img/user.png') }}" alt="" class="w-10 h-10 rounded-full object-cover cursor-pointer border-2 border-gray-300">
+                    <!-- STUDENT IMG -->
+                    <img id="modalCommentUserPhoto"
+                        src="{{ $student && $student->photo ? asset('/storage/'.$student->photo) : asset('/img/user.png') }}"
+                        alt="User Photo"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
+                    <!-- STUDENT NAME -->
                     <span class="text-xl">{{ $student->first_name ?? 'Guest' }} {{ $student->last_name ?? '' }}</span>
                 </div>
 
-                <!-- POST CONTENT -->
+                <!-- POST CONTENT FIELD -->
                 <textarea name="content" placeholder="Type something..." class="w-full h-25 px-3 focus:outline-none resize-none" required></textarea>
 
                 <!-- CATEGORY SELECT -->

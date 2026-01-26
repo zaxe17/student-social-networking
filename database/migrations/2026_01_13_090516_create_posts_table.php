@@ -18,7 +18,11 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('post_categories', 'category_id');
             $table->timestamps();
             $table->softDeletes(); // For archived posts.
-            $table->foreign('student_id')->references('student_id')->on('students');
+            $table->foreign('student_id')
+                ->references('student_id')
+                ->on('students')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

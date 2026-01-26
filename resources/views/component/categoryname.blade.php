@@ -1,8 +1,9 @@
 <div class="flex justify-start items-start flex-col mb-8 h-10 text-[#36384e]">
 
-    <!-- FILTER -->
+    <!-- FILTER HEADER -->
     <span class="font-light">Filter by Categories ></span>
 
+    <!-- SHOW CATEGORY NAME WHEN CHECKBOX IS SELECTED -->
     @php
     $selectedCategoryIds = request()->query('category', []);
 
@@ -12,6 +13,7 @@
     ->all();
     @endphp
 
+    <!-- DISPLAY SELECTED CATEGORY NAME -->
     @if(count($selectedCategoryNames))
     <p class="font-medium">{{ implode(', ', $selectedCategoryNames) }}</p>
     @else

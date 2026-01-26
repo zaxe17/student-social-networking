@@ -7,74 +7,205 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\PostLike;
 use App\Models\Student;
+use App\Models\PostComment;
+use App\Models\PostReport;
+use App\Models\Event;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
+    // ----------------------
+    // Feed page
+    // ----------------------
     public function index(Request $request)
     {
-        $postModel = new Post();
-        $categoryModel = new PostCategory();
-
         $studentId = $request->session()->get('student_id');
-        $student = $this->student($studentId);
+        $loggedInStudent = $this->student($studentId);
 
-        $categories = $categoryModel->orderBy('category_name')->get();
+        if (!$loggedInStudent) {
+            return redirect()->route('auth.page')->with('error', 'Please log in first.');
+        }
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
-            ->withCount(['likes', 'comments'])
-            ->latest('created_at')
+        $categories = PostCategory::orderBy('category_name')->get();
+
+        $sidebarEvents = Event::query()
+            ->whereRaw("TIMESTAMP(event_date, COALESCE(end_time, '23:59:59')) >= ?", [now()])
+            ->orderBy('event_date', 'asc')
+            ->take(5)
             ->get();
 
-        return view('page.feed', compact('posts', 'categories', 'student'));
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
+            ->withCount(['likes', 'comments'])
+            ->latest('created_at')
+            ->paginate(10);
+
+        return view('page.feed', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'student' => $loggedInStudent,
+            'loggedInStudent' => $loggedInStudent,
+            'loggedInStudentId' => $loggedInStudent->student_id,
+            'sidebarEvents' => $sidebarEvents,
+        ]);
     }
 
+    // ----------------------
+    // Logged-in student's profile
+    // ----------------------
     public function profile(Request $request)
     {
-        $postModel = new Post();
-        $categoryModel = new PostCategory();
-
         $studentId = $request->session()->get('student_id');
-        $student = $this->student($studentId);
+        $loggedInStudent = $this->student($studentId);
 
-        $categories = $categoryModel->orderBy('category_name')->get();
+        $categories = PostCategory::orderBy('category_name')->get();
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
             ->where('student_id', $studentId)
             ->latest('created_at')
             ->get();
 
-        return view('page.profile', compact('posts', 'categories', 'student'));
+        return view('page.profile', [
+            'student' => $loggedInStudent,
+            'posts' => $posts,
+            'categories' => $categories,
+            'loggedInStudent' => $loggedInStudent,
+            'loggedInStudentId' => $studentId,
+        ]);
     }
 
+    // ----------------------
+    // View another student's profile
+    // ----------------------
+    public function viewProfile($student_id, Request $request)
+    {
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        $loggedInStudentId = $request->session()->get('student_id');
+        $loggedInStudent = $this->student($loggedInStudentId);
+
+        $posts = $student->posts()->with(['author', 'category', 'comments.author', 'likes'])
+            ->withCount(['likes', 'comments'])
+            ->latest('created_at')
+            ->get();
+
+        $categories = PostCategory::all();
+
+        return view('page.profile', [
+            'student' => $student,
+            'posts' => $posts,
+            'categories' => $categories,
+            'loggedInStudent' => $loggedInStudent,
+            'loggedInStudentId' => $loggedInStudentId,
+        ]);
+    }
+
+    // ----------------------
+    // Archived posts
+    // ----------------------
     public function archived(Request $request)
     {
-        $postModel = new Post();
-        $categoryModel = new PostCategory();
-
         $studentId = $request->session()->get('student_id');
-        $student = $this->student($studentId);
+        $loggedInStudent = $this->student($studentId);
 
-        $categories = $categoryModel->orderBy('category_name')->get();
-
-        $posts = $postModel->onlyTrashed()
-            ->with(['author', 'category', 'comments.author'])
+        $posts = Post::onlyTrashed()
+            ->with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
             ->where('student_id', $studentId)
             ->latest('deleted_at')
             ->get();
 
-        return view('page.archived', compact('posts', 'categories', 'student'));
+        $categories = PostCategory::orderBy('category_name')->get();
+
+        return view('page.archived', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'student' => $loggedInStudent,
+            'loggedInStudent' => $loggedInStudent,
+            'loggedInStudentId' => $studentId,
+        ]);
     }
 
-    public function forceDelete($id, Request $request)
+    // ----------------------
+    // Store post
+    // ----------------------
+    public function store(Request $request)
     {
-        $postModel = new Post();
-
         $studentId = $request->session()->get('student_id');
 
-        $post = $postModel->withTrashed()
+        $request->validate([
+            'content' => 'required|string',
+            'category_id' => 'nullable|exists:post_categories,category_id',
+        ]);
+
+        $post = new Post();
+        $post->student_id = $studentId;
+        $post->content = $request->content;
+        $post->category_id = $request->category_id;
+        $post->save();
+
+        return back()->with('success', 'Post created!');
+    }
+
+    // ----------------------
+    // Edit post (AJAX)
+    // ----------------------
+    public function edit(Request $request, Post $post)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        if (!$studentId || $post->student_id !== $studentId) {
+            abort(403);
+        }
+
+        $request->validate(['content' => 'required|string']);
+
+        $post->content = $request->content;
+        $post->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    // ----------------------
+    // Delete / archive post
+    // ----------------------
+    public function destroy(Post $post, Request $request)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        if ($post->student_id !== $studentId) {
+            abort(403);
+        }
+
+        $post->delete();
+        return back()->with('success', 'Post archived');
+    }
+
+    // ----------------------
+    // Restore post
+    // ----------------------
+    public function restore($postId, Request $request)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        $post = Post::withTrashed()->findOrFail($postId);
+
+        if ($post->student_id !== $studentId) {
+            abort(403);
+        }
+
+        $post->restore();
+        return back()->with('success', 'Post restored');
+    }
+
+    // ----------------------
+    // Force delete post
+    // ----------------------
+    public function forceDelete($id, Request $request)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        $post = Post::withTrashed()
             ->where('post_id', $id)
             ->where('student_id', $studentId)
             ->firstOrFail();
@@ -88,110 +219,247 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Post permanently deleted.');
     }
 
-    public function store(Request $request)
+    public function likePreview(Post $post)
     {
-        $postModel = new Post();
+        $likedUsers = $post->likesWithUser()->with('student')->get()->pluck('student')->filter();
+        $previewUsers = $likedUsers->take(5)->map(fn($user) => [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'photo' => $user->photo ? asset('storage/' . $user->photo) : asset('/img/user.png'),
+        ]);
+        $extraCount = max($likedUsers->count() - 5, 0);
 
+        return response()->json([
+            'preview_users' => $previewUsers,
+            'extra_count' => $extraCount,
+        ]);
+    }
+
+    // ----------------------
+    // Toggle like
+    // ----------------------
+    public function toggleLike(Post $post, Request $request)
+    {
         $studentId = $request->session()->get('student_id');
-
-        $request->validate([
-            'content' => 'required|string',
-            'category_id' => 'nullable|exists:post_categories,category_id',
+        if (!$studentId) {
+            return response()->json(['error' => 'Not logged in'], 403);
+        }
+        $existingLike = PostLike::where('post_id', $post->post_id)
+            ->where('student_id', $studentId)
+            ->first();
+        if ($existingLike) {
+            $existingLike->delete();
+            $liked = false;
+        } else {
+            PostLike::create([
+                'post_id' => $post->post_id,
+                'student_id' => $studentId,
+            ]);
+            $liked = true;
+        }
+        // Get updated likes with user info for hover preview (ONLY FIRST 5)
+        $likedUsers = $post->likesWithUser()->with('student')->get()->pluck('student')->filter();
+        $previewUsers = $likedUsers->take(5)->map(fn($user) => [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'photo' => $user->photo ? asset('storage/' . $user->photo) : asset('/img/user.png'),
         ]);
 
-        $postModel->student_id = $studentId;
-        $postModel->content = $request->content;
-        $postModel->category_id = $request->category_id;
+        // Calculate extra count for "+X more"
+        $extraCount = max($likedUsers->count() - 5, 0);
 
-        $postModel->save();
-
-        return back()->with('success', 'Post created!');
+        return response()->json([
+            'liked' => $liked,
+            'likes_count' => $post->likes()->count(),
+            'preview_users' => $previewUsers,
+            'extra_count' => $extraCount,
+        ]);
     }
 
-    public function destroy(Post $post, Request $request)
-    {
-        $studentId = $request->session()->get('student_id');
 
-        if ($post->student_id !== $studentId) {
-            abort(403);
-        }
-
-        $post->delete();
-        return back()->with('success', 'Post archived');
-    }
-
-    public function restore($postId, Request $request)
-    {
-        $postModel = new Post();
-
-        $studentId = $request->session()->get('student_id');
-
-        $post = $postModel->withTrashed()->findOrFail($postId);
-
-        if ($post->student_id !== $studentId) {
-            abort(403);
-        }
-
-        $post->restore();
-        return back()->with('success', 'Post restored');
-    }
-
+    // ----------------------
+    // Category filter
+    // ----------------------
     public function category(Request $request)
     {
-        $postModel = new Post();
-        $categoryModel = new PostCategory();
-
         $studentId = $request->session()->get('student_id');
         $student = $this->student($studentId);
 
-        $categories = $categoryModel->orderBy('category_name')->get();
-
-        $selectedCategories = $request->query('category', []);
+        $categories = PostCategory::orderBy('category_name')->get();
+        $selectedCategories = $request->input('category', []);
 
         if (empty($selectedCategories)) {
             return redirect()->route('feed.page');
         }
 
-        $posts = $postModel->with(['author', 'category', 'comments.author'])
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
             ->whereIn('category_id', $selectedCategories)
             ->latest('created_at')
             ->get();
 
-        return view('page.category', compact('posts', 'categories', 'student', 'selectedCategories'));
+        return view('page.feed', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'student' => $student,
+            'selectedCategories' => $selectedCategories,
+            'loggedInStudent' => $student,
+        ]);
     }
 
-
-
-
-
-
-    public function toggleLike(Post $post, Request $request)
+    // ----------------------
+    // AJAX search
+    // ----------------------
+    public function search(Request $request)
     {
-        $studentId = $request->session()->get('student_id');
-        if (!$studentId) return back()->with('error', 'Student not logged in.');
+        $query = $request->query('q');
 
-        $existingLike = PostLike::where('post_id', $post->id)
-            ->where('student_id', $studentId)
-            ->first();
+        if (!$query) return response()->json([]);
 
-        if ($existingLike) {
-            $existingLike->delete();
-        } else {
-            PostLike::create([
-                'post_id' => $post->id,
-                'student_id' => $studentId,
-            ]);
+        $posts = Post::with('author', 'category')
+            ->where('content', 'LIKE', "%{$query}%")
+            ->take(5)->get();
+
+        $categories = PostCategory::where('category_name', 'LIKE', "%{$query}%")
+            ->take(5)->get();
+
+        $students = Student::where('first_name', 'LIKE', "%{$query}%")
+            ->orWhere('last_name', 'LIKE', "%{$query}%")
+            ->take(5)->get();
+
+        return response()->json([
+            'posts' => $posts,
+            'categories' => $categories,
+            'students' => $students,
+        ]);
+    }
+
+    // ----------------------
+    // Fetch comments (AJAX)
+    // ----------------------
+    public function fetchComments(Post $post)
+    {
+        $comments = $post->comments()->with('author')->orderBy('created_at', 'asc')->get();
+
+        $html = '';
+        foreach ($comments as $comment) {
+            $html .= view('component.comment', ['comment' => $comment])->render();
         }
 
-        return back();
+        return response()->json([
+            'success' => true,
+            'comment_html' => $html,
+            'comments_count' => $comments->count(),
+        ]);
     }
 
+    // ----------------------
+    // Store comment (AJAX)
+    // ----------------------
+    public function storeComment(Request $request, Post $post)
+    {
+        $studentId = $request->session()->get('student_id');
+
+        if (!$studentId) return response()->json(['error' => 'Not logged in'], 403);
+
+        $request->validate(['content' => 'required|string']);
+
+        $comment = PostComment::create([
+            'post_id' => $post->post_id,
+            'student_id' => $studentId,
+            'content' => $request->content,
+        ]);
+
+        $comment->load('author');
+
+        $commentHtml = view('component.comment', ['comment' => $comment])->render();
+        $commentsCount = $post->comments()->count();
+
+        return response()->json([
+            'success' => true,
+            'comment_html' => $commentHtml,
+            'comments_count' => $commentsCount,
+        ]);
+    }
+
+    // ----------------------
+    // Report post
+    // ----------------------
+    public function reportPost(Request $request, Post $post)
+    {
+        $studentId = $request->session()->get('student_id');
+        if (!$studentId) {
+            return back()->with('error', 'You must be logged in.');
+        }
+
+        $request->validate([
+            'reason'  => 'required|string|max:255',
+            'details' => 'nullable|string|max:2000',
+        ]);
+
+        PostReport::create([
+            'post_id'      => $post->post_id,
+            'reported_by'  => $studentId,
+            'reason'       => $request->reason,
+            'details'      => $request->details,
+        ]);
+
+        return back()->with('success', 'Report submitted.');
+    }
+
+    // ----------------------
+    // Helper: get student by id
+    // ----------------------
     private function student($studentId)
     {
-        $studentModel = new Student();
-        $student = $studentId ? $studentModel->find($studentId) : null;
+        return $studentId ? Student::find($studentId) : null;
+    }
 
-        return $student;
+    public function reactors(Post $post)
+    {
+        $users = $post->likesWithUser()
+            ->with('student')
+            ->get()
+            ->pluck('student')
+            ->map(fn($s) => [
+                'name' => $s->first_name . ' ' . $s->last_name,
+                'photo' => $s->photo
+                    ? asset('storage/' . $s->photo)
+                    : asset('/img/user.png'),
+            ]);
+
+        return response()->json($users);
+    }
+
+    // ----------------------
+    // Hashtag page
+    // ----------------------
+    public function hashtag(Request $request)
+    {
+        $tag = $request->query('tag');
+
+        if (!$tag) {
+            return redirect()->route('feed.page');
+        }
+
+        $studentId = $request->session()->get('student_id');
+        $student = $this->student($studentId);
+
+        $categories = PostCategory::orderBy('category_name')->get();
+
+        // Fetch posts containing the hashtag (case-insensitive)
+        $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
+            ->withCount(['likes', 'comments'])
+            ->where('content', 'LIKE', "%#{$tag}%")
+            ->latest('created_at')
+            ->get();
+
+        return view('page.feed', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'student' => $student,
+            'hashtag' => $tag,
+            'loggedInStudent' => $student,
+        ]);
     }
 }
