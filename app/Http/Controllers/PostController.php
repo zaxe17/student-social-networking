@@ -37,7 +37,7 @@ class PostController extends Controller
         $posts = Post::with(['author', 'category', 'comments.author', 'likes'])
             ->withCount(['likes', 'comments'])
             ->latest('created_at')
-            ->paginate(10);
+            ->paginate(50);
 
         return view('page.feed', [
             'posts' => $posts,

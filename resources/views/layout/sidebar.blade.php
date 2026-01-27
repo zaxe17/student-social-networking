@@ -13,7 +13,7 @@
                 firstname-data="{{ $loggedInStudent->first_name ?? '' }}"
                 lastname-data="{{ $loggedInStudent->last_name ?? '' }}"
                 bio-data="{{ $loggedInStudent->bio ?? '' }}"
-                instagram-data="{{ $loggedInStudent->instagram ?? '' }}"
+                instagram-data="{{ $loggedInStudexnt->instagram ?? '' }}"
                 facebook-data="{{ $loggedInStudent->facebook ?? '' }}"
                 linkedin-data="{{ $loggedInStudent->linkedin ?? '' }}"
                 studentId-data="{{ $loggedInStudent->student_id ?? '' }}">
