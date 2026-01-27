@@ -1,4 +1,4 @@
-<form id="categoryFilterForm" action="{{ route('category.page') }}" method="GET" class="flex flex-col gap-6 w-full">
+<form id="categoryFilterForm" action="{{ route('category.page') }}" method="GET" class="flex flex-col gap-2.5 w-full">
 
     <!-- HEADER -->
     <div class="shadow-category flex justify-center items-center gap-5 bg-[#770d08] rounded-sm py-2.5">
@@ -23,7 +23,7 @@
     @endphp
 
     <!-- CATEGORY LIST -->
-    <div class="shadow-bg flex flex-col overflow-y-auto max-h-70 no-scrollbar">
+    <div class="shadow-bg flex flex-col rounded-sm overflow-y-auto max-h-70 no-scrollbar">
 
         <!-- REMOVE THE BOTTOM BORDER IF THE CATEGORY IS LAST -->
         @foreach($categories as $cat)
