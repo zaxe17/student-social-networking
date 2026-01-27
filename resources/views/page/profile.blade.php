@@ -50,9 +50,9 @@
         <!-- POSTS -->
         @foreach($posts as $post)
         @include('component.postcard', [
-            'post' => $post,
-            'student' => $student,
-            'categories' => $categories
+        'post' => $post,
+        'student' => $loggedInStudent,
+        'categories' => $categories
         ])
         @endforeach
     </div>
