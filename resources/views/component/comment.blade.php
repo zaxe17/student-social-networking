@@ -45,14 +45,14 @@ $commentId = $comment->comment_id ?? $comment->id;
                     <ul class="py-2 text-sm">
                         <!-- EDIT BUTTON -->
                         <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
-                            <button type="button" class="btn-edit-comment cursor-pointer flex items-center gap-1.5">
+                            <button type="button" class="btn-edit-comment w-full cursor-pointer flex items-center gap-1.5">
                                 <span class="icon bg-[#545454]" style="--svg: url('https://api.iconify.design/mdi/edit-outline.svg'); --size: 18px;"></span>
                                 Edit
                             </button>
                         </li>
                         <!-- DELETE BUTTON -->
                         <li class="px-4 py-2 cursor-pointer flex items-center gap-1.5 text-[#545454] hover:bg-gray-100">
-                            <button type="button" class="btn-delete-comment cursor-pointer flex items-center gap-1.5 text-red-600">
+                            <button type="button" class="btn-delete-comment w-full cursor-pointer flex items-center gap-1.5 text-red-600">
                                 <span class="icon bg-red-600" style="--svg: url('https://api.iconify.design/mdi/delete-outline.svg'); --size: 18px;"></span>
                                 Delete
                             </button>
