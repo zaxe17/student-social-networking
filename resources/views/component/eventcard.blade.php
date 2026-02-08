@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-bg overflow-hidden border border-gray-100">
+<div class="bg-white rounded-xl shadow-event overflow-hidden transition-all duration-300 ease-in-out hover:scale-101">
     <!-- EVENT IMG HEADER -->
     @if(!empty($event->header_path))
     <img src="{{ asset('/storage/'.$event->header_path) }}"
@@ -47,7 +47,7 @@
         <!-- URL REGISTRATION FORM BUTTON -->
         @if(!empty($event->registration_url))
         <a href="{{ $event->registration_url }}" target="_blank" rel="noopener noreferrer"
-            class="mt-4 inline-flex items-center justify-center text-xs bg-[#6b1d1d] text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90">
+            class="mt-4 inline-flex items-center justify-center text-xs bg-[#6b1d1d] text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 ease-in-out hover:opacity-90">
             Register now
         </a>
         @endif

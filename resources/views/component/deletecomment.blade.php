@@ -16,12 +16,12 @@
             <!-- ACTION BUTTON -->
             <div class="flex flex-col gap-3.5 p-8">
                 <!-- CANCEL BUTTON -->
-                <button type="button" close-modal class="w-full py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+                <button type="button" close-modal class="w-full py-2 rounded-lg bg-gray-200 hover:bg-gray-300 cursor-pointer">
                     Cancel
                 </button>
 
                 <!-- DELETE BUTTON -->
-                <button type="button" id="confirmDeleteComment" class="w-full py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
+                <button type="button" id="confirmDeleteComment" class="w-full py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 cursor-pointer">
                     Delete
                 </button>
             </div>

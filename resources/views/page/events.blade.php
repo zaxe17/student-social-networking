@@ -11,7 +11,7 @@
             <h1 class="text-xl font-semibold text-gray-800">Events</h1>
 
             <button type="button"
-                class="bg-[#6b1d1d] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90"
+                class="bg-[#6b1d1d] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ease-in-out hover:opacity-90 cursor-pointer"
                 onclick="document.getElementById('createEventModal')?.classList.remove('hidden')">
                 Add new event
             </button>

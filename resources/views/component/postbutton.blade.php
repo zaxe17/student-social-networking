@@ -4,5 +4,5 @@
     <img onclick="window.location=`{{ route('profile.page') }}`;" id="sidebarProfilePic" src="{{ $loggedInStudent->photo ? asset('/storage/'.$loggedInStudent->photo) : asset('/img/user.png') }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover cursor-pointer border-2 border-gray-300">
 
     <!-- CREATE POST BUTTON -->
-    <input type="text" name="" target-modal="createPostModal" placeholder="Create New Post" class="w-full h-full px-2.5 rounded-sm bg-[#e7e8e9] focus:outline-none" readonly>
+    <input type="text" name="" target-modal="createPostModal" placeholder="Create New Post" class="w-full h-full px-2.5 rounded-sm bg-[#e7e8e9] transition-all duration-300 ease-in-out hover:bg-[#dddfe0] focus:outline-none" readonly>
 </div>

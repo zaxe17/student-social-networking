@@ -1,6 +1,6 @@
 <div class="bg-white rounded-lg shadow-bg p-4">
     <!-- WIDGET HEADER -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between sticky top-0 bg-white z-10 p-2">
         <h3 class="text-sm font-semibold text-gray-700">Events</h3>
 
         <div class="flex items-center gap-2">
@@ -12,7 +12,7 @@
 
             <!-- ADD EVENT BUTTON -->
             <button type="button"
-                class="text-xs bg-[#6b1d1d] text-white px-3 py-1 rounded-md hover:opacity-90"
+                class="text-xs bg-[#6b1d1d] text-white px-3 py-1 rounded-md transition-all duration-300 ease-in-out hover:opacity-90 cursor-pointer"
                 onclick="document.getElementById('createEventModal')?.classList.remove('hidden')">
                 Add new event
             </button>
@@ -26,7 +26,7 @@
         $timeText = $event->start_time ? \Carbon\Carbon::parse($event->start_time)->format('g:i A') : null;
         @endphp
 
-        <div class="rounded-lg overflow-hidden border border-gray-100 shadow-sm bg-white">
+        <div class="rounded-lg overflow-hidden transition-all duration-300 ease-in-out shadow-widgetevents hover:scale-101 bg-white">
             <!-- EVENT IMG HEADER -->
             @if(!empty($event->header_path))
             <img src="{{ asset('/storage/'.$event->header_path) }}"
@@ -66,7 +66,7 @@
                 <!-- URL FORM REGISTRATION BUTTON -->
                 @if(!empty($event->registration_url))
                 <a href="{{ $event->registration_url }}" target="_blank" rel="noopener noreferrer"
-                    class="mt-3 inline-flex text-xs bg-[#6b1d1d] text-white px-3 py-1 rounded-md hover:opacity-90">
+                    class="mt-3 inline-flex text-xs bg-[#6b1d1d] text-white px-3 py-1 rounded-md transition-all duration-300 ease-in-out hover:opacity-90">
                     Register now
                 </a>
                 @endif

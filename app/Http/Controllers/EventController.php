@@ -30,11 +30,11 @@ class EventController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:2000'],
             'event_date' => ['required', 'date'],
-            'start_time' => ['nullable', 'date_format:H:i'],
-            'end_time' => ['nullable', 'date_format:H:i'],
-            'location' => ['nullable', 'string', 'max:255'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
+            'location' => ['required', 'string', 'max:255'],
             'registration_url' => ['nullable', 'url', 'max:500'],
-            'header' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'header' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         $studentId = $request->session()->get('student_id');

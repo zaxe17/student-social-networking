@@ -5,10 +5,10 @@
 @section('page')
 @include('layout.navbar')
 
-<div class="container mx-auto flex items-start px-20 py-10 h-screen gap-15">
+<div class="container mx-auto flex items-start lg:px-20 lg:py-10 h-screen lg:gap-15">
 
     {{-- LEFT: POSTS --}}
-    <div class="shadow-bg w-full h-full px-18 py-13 overflow-scroll no-scrollbar">
+    <div class="shadow-feed w-full h-full lg:px-18 lg:py-13 px-5 pt-5 pb-18 overflow-scroll scrollbar-visible">
 
         {{-- POST BUTTON / CATEGORY HEADER --}}
         @if(empty($selectedCategories))
@@ -36,7 +36,7 @@
     </div>
 
     {{-- RIGHT: CATEGORIES + EVENTS --}}
-    <div class="h-full w-1/3 pb-13 overflow-y-scroll no-scrollbar flex flex-col gap-2.5">
+    <div class="h-full w-1/3 pb-13 overflow-y-scroll no-scrollbar lg:flex hidden flex-col gap-2.5">
         {{-- CATEGORY FILTER --}}
         @include('component.categoryfilter', [
         'categories' => $categories,
