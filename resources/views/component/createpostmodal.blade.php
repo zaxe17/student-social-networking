@@ -1,6 +1,6 @@
 <div id="createPostModal" class="modal hidden">
-    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen flex justify-center items-center z-50 backdrop-blur-[1px]">
-        <div class="w-2/5 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden">
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/35 w-full h-screen flex justify-center lg:items-center items-end z-50 backdrop-blur-[1px]">
+        <div class="lg:w-2/5 w-full bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden">
 
             <!-- HEADER OF MODAL -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative">
@@ -12,7 +12,7 @@
             </div>
 
             <!-- POST FORM -->
-            <form action="{{ route('posts.store') }}" method="POST" class="flex flex-col gap-3.5 p-8">
+            <form action="{{ route('posts.store') }}" method="POST" class="flex flex-col gap-3.5 p-8" novalidate>
                 @csrf
 
                 <!-- STUDENT DISPLAY -->
@@ -41,7 +41,7 @@
 
                 <!-- SUBMIT BUTTON -->
                 <div class="flex justify-center">
-                    <button type="submit" class="w-30 flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">Post</button>
+                    <button type="submit" class="lg:w-30 w-full flex justify-center items-center py-1.5 text-xl font-medium text-white bg-[#770d08] rounded-md">Post</button>
                 </div>
             </form>
         </div>

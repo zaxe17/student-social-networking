@@ -800,3 +800,100 @@
                 .catch(console.error);
         });
     </script>
+
+    <!-- HEART REACT ANIMATION -->
+    <script>
+        document.querySelectorAll('.react-btn').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.classList.add('clicked');
+            });
+        });
+    </script>
+
+    <script>
+        // Automatically find all elements with class 'modal'
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                // Check if click is on the backdrop
+                if (e.target.classList.contains('bg-black/35') || e.target === this) {
+                    this.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Generic function to open any modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    </script>
+
+    <script>
+        // AUTO-DETECT: Prevent scroll when ANY modal opens
+        document.querySelectorAll('.modal').forEach(modal => {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'class') {
+                        const hasOpenModal = Array.from(document.querySelectorAll('.modal'))
+                            .some(m => !m.classList.contains('hidden'));
+
+                        document.body.style.overflow = hasOpenModal ? 'hidden' : '';
+                    }
+                });
+            });
+
+            observer.observe(modal, {
+                attributes: true
+            });
+        });
+    </script>
+
+    <script>
+        // Sync like count visibility when reacting
+        document.querySelectorAll('.react-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postId = this.getAttribute('data-post-id');
+
+                // Wait for AJAX to complete, then update UI
+                setTimeout(() => {
+                    const likeContainer = document.querySelector(`.like-count-container[data-post-id="${postId}"]`);
+                    const likeCountSpan = likeContainer?.querySelector('.like-count');
+
+                    if (likeContainer && likeCountSpan) {
+                        const currentCount = parseInt(likeCountSpan.textContent.match(/\d+/)[0]);
+
+                        // Show/hide based on count
+                        if (currentCount > 0) {
+                            likeContainer.classList.remove('invisible');
+                        } else {
+                            likeContainer.classList.add('invisible');
+                        }
+                    }
+                }, 500); // Adjust timing based on your AJAX response
+            });
+        });
+
+        // Sync comment count visibility when commenting
+        document.querySelectorAll('.comment-count').forEach(commentCount => {
+            const observer = new MutationObserver(() => {
+                const text = commentCount.textContent.trim();
+                const count = parseInt(text.match(/\d+/)?.[0] || 0);
+
+                if (count > 0) {
+                    commentCount.classList.remove('invisible');
+                } else {
+                    commentCount.classList.add('invisible');
+                }
+            });
+
+            observer.observe(commentCount, {
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+        });
+    </script>

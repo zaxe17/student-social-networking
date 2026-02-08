@@ -6,7 +6,7 @@
 <div id="editProfileModal" class="modal hidden">
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen py-8 flex justify-center items-center z-50 backdrop-blur-[1px]">
 
-        <div class="w-2/5 h-3/4 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col">
+        <div class="w-2/5 h-3/4 bg-[#F5F5F5] form-shadow rounded-3xl backdrop-blur-sm overflow-hidden flex flex-col scrollbar-visible">
 
             <!-- HEADER -->
             <div class="shadow-postheader w-full pb-3 pt-7 relative text-center">

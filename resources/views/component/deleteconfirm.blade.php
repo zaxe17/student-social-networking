@@ -19,12 +19,12 @@
                 @method('DELETE')
 
                 <!-- CANCEL BUTTON -->
-                <button type="button" close-modal class="w-full py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+                <button type="button" close-modal class="w-full py-2 rounded-lg bg-gray-200 transition-all duration-300 ease-in-out hover:bg-gray-300 cursor-pointer">
                     Cancel
                 </button>
 
                 <!-- DELETE BUTTON -->
-                <button type="submit" class="w-full py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
+                <button type="submit" class="w-full py-2 rounded-lg bg-red-600 text-white transition-all duration-300 ease-in-out hover:bg-red-700 cursor-pointer">
                     Delete
                 </button>
             </form>
